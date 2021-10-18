@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Abstract;
+using Business.Concrete;
 using DataAccess.AutoMapper;
 using DataAccess.Concrete;
 using Entities.Models;
@@ -55,7 +57,7 @@ namespace LMS_Api
                 });
             });
 
-            services.Configure<JWT>(Configuration.GetSection("JWT"));
+            services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
 
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -63,10 +65,10 @@ namespace LMS_Api
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.FromMinutes(1),
-                ValidIssuer = Configuration["JWT:Issuer"],
-                ValidAudience = Configuration["JWT:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
+                ClockSkew = TimeSpan.FromSeconds(0),
+                ValidIssuer = Configuration["JWTConfig:Issuer"],
+                ValidAudience = Configuration["JWTConfig:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTConfig:Key"]))
             };
 
             services.AddSingleton(tokenValidationParameters);
@@ -82,6 +84,8 @@ namespace LMS_Api
                     o.SaveToken = true;
                     o.TokenValidationParameters = tokenValidationParameters;
                 });
+
+            services.AddScoped<IUserService, UserService>();
         }
 
 

@@ -10,3 +10,12 @@
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/ref/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Core.dll
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/DataAccess.dll
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Entities.dll
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Entities.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/DataAccess.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Core.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.csproj.CopyComplete
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Utils.dll
+/Users/niyazibabayev/Projects/LMS_Api/Business/bin/Debug/net5.0/Utils.pdb

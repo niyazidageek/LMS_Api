@@ -2179,6 +2179,11 @@
       "Business/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "DataAccess": "1.0.0",
+          "Entities": "1.0.0",
+          "Utils": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Business.dll": {}
         },
@@ -2227,6 +2232,16 @@
         },
         "runtime": {
           "bin/placeholder/Entities.dll": {}
+        }
+      },
+      "Utils/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/Utils.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Utils.dll": {}
         }
       }
     }
@@ -7640,6 +7655,11 @@
       "type": "project",
       "path": "../Entities/Entities.csproj",
       "msbuildProject": "../Entities/Entities.csproj"
+    },
+    "Utils/1.0.0": {
+      "type": "project",
+      "path": "../Utils/Utils.csproj",
+      "msbuildProject": "../Utils/Utils.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7656,7 +7676,8 @@
       "Swashbuckle.AspNetCore.Swagger >= 6.2.3",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.2.3",
       "Swashbuckle.AspNetCore.SwaggerUI >= 6.2.3",
-      "System.IdentityModel.Tokens.Jwt >= 6.13.1"
+      "System.IdentityModel.Tokens.Jwt >= 6.13.1",
+      "Utils >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -7689,6 +7710,9 @@
             },
             "/Users/niyazibabayev/Projects/LMS_Api/DataAccess/DataAccess.csproj": {
               "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/DataAccess/DataAccess.csproj"
+            },
+            "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj": {
+              "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj"
             }
           }
         }

@@ -1,31 +1,34 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.ItemProperties.Core FirstBuild="True" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/appsettings.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/UserController.cs">
     <Files>
-      <File FileName="LMS_Api/Startup.cs" Line="51" Column="32" />
-      <File FileName="LMS_Api/appsettings.json" Line="19" Column="2" />
+      <File FileName="LMS_Api/Controllers/UserController.cs" Line="53" Column="38" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="LMS_Api" expanded="True">
+            <Node name="Business" expanded="True">
+              <Node name="Abstract" expanded="True" />
+              <Node name="Concrete" expanded="True" />
+            </Node>
             <Node name="Entities" expanded="True">
+              <Node name="DTOs" expanded="True" />
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="appsettings.json" selected="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="UserController.cs" selected="True" />
+              </Node>
             </Node>
+            <Node name="Utils" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.LMS__Api FirstBuild="True" PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.ItemProperties.LMS__Api PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.DataAccess FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.Entities FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.Business FirstBuild="True" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

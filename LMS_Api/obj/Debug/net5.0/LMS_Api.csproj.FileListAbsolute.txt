@@ -148,3 +148,5 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/ref/LMS_Api.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.genruntimeconfig.cache
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Utils.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Utils.pdb

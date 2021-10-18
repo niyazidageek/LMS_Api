@@ -1,0 +1,12 @@
+/Users/niyazibabayev/Projects/LMS_Api/Core/bin/Debug/net5.0/Core.deps.json
+/Users/niyazibabayev/Projects/LMS_Api/Core/bin/Debug/net5.0/Core.dll
+/Users/niyazibabayev/Projects/LMS_Api/Core/bin/Debug/net5.0/ref/Core.dll
+/Users/niyazibabayev/Projects/LMS_Api/Core/bin/Debug/net5.0/Core.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.csproj.AssemblyReference.cache
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.AssemblyInfoInputs.cache
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.AssemblyInfo.cs
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.csproj.CoreCompileInputs.cache
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.dll
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/ref/Core.dll
+/Users/niyazibabayev/Projects/LMS_Api/Core/obj/Debug/net5.0/Core.pdb

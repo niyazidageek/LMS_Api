@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Concrete\" />
+    <None Remove="Abstract\" />
+    <None Remove="AutoMapper\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
+    <None Remove="Microsoft.EntityFrameworkCore.Tools" />
+    <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Concrete\" />
+    <Folder Include="Abstract\" />
+    <Folder Include="AutoMapper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+  </ItemGroup>
+</Project>

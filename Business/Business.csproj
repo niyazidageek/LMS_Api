@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Abstratc\" />
+    <None Remove="Concrete\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstratc\" />
+    <Folder Include="Concrete\" />
+  </ItemGroup>
+</Project>

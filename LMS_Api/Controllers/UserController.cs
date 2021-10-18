@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
+using DataAccess.Identity;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +49,7 @@ namespace LMS_Api.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = nameof(Roles.SuperAdmin))]
         [HttpPost]
         public async Task<ActionResult> AddRole([FromBody] AddRoleDTO addRoleRequest)
         {

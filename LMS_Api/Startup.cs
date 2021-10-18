@@ -86,6 +86,7 @@ namespace LMS_Api
                 });
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IJwtService, JwtService>();
         }
 
 

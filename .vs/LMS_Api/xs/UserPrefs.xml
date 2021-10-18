@@ -1,26 +1,12 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/UserController.cs">
-    <Files>
-      <File FileName="LMS_Api/Controllers/UserController.cs" Line="53" Column="38" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="LMS_Api" expanded="True">
-            <Node name="Business" expanded="True">
-              <Node name="Abstract" expanded="True" />
-              <Node name="Concrete" expanded="True" />
-            </Node>
-            <Node name="Entities" expanded="True">
-              <Node name="DTOs" expanded="True" />
-              <Node name="Models" expanded="True" />
-            </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="UserController.cs" selected="True" />
-              </Node>
+              <Node name="appsettings.json" selected="True" />
             </Node>
-            <Node name="Utils" expanded="True" />
           </Node>
         </State>
       </Pad>

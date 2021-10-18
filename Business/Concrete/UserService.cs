@@ -21,19 +21,16 @@ namespace Business.Concrete
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly JWTConfig _jwtConfig;
-        private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly AppDbContext _context;
+        private readonly IJwtService _jwtService;
 
-        public UserService(UserManager<AppUser> userManager, IOptions<JWTConfig> jwtConfig, RoleManager<IdentityRole> roleManager,
-            TokenValidationParameters tokenValidationParameters,
-            AppDbContext context)
+        public UserService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
+            IJwtService jwtService,AppDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _jwtConfig = jwtConfig.Value;
-            _tokenValidationParameters = tokenValidationParameters;
             _context = context;
+            _jwtService = jwtService;
         }
 
         public async Task<ResponseDTO> RegisterAsync(RegisterDTO request)
@@ -98,7 +95,7 @@ namespace Business.Concrete
 
             if (succeeded)
             {
-                JWT token = await CreateJwtTokenAsync(user);
+                JWT token = await _jwtService.CreateJwtTokenAsync(user);
 
                 return new LoginResponseDTO
                 {
@@ -118,49 +115,9 @@ namespace Business.Concrete
 
         }
 
-        public async Task<JWT> CreateJwtTokenAsync(AppUser user)
-        {
-            var userClaims = await _userManager.GetClaimsAsync(user);
-            var roles = await _userManager.GetRolesAsync(user);
-
-            var roleClaims = new List<Claim>();
-
-            for (int i = 0; i < roles.Count; i++)
-            {
-                roleClaims.Add(new Claim("roles", roles[i]));
-            }
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("uid", user.Id)
-            }
-            .Union(userClaims)
-            .Union(roleClaims);
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: _jwtConfig.Issuer,
-                audience: _jwtConfig.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes),
-                signingCredentials: signingCredentials);
-
-
-            return new JWT
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
-            };
-
-
-        }
-
         public async Task<ResponseDTO> AddRoleAsync(AddRoleDTO request)
         {
-            var validatedToken = GetPrincipalFromToken(request.Token);
+            var validatedToken = _jwtService.GetPrincipalFromToken(request.Token);
 
             if (validatedToken == null) return new ResponseDTO
             {
@@ -193,35 +150,6 @@ namespace Business.Concrete
                 Status = StatusTypes.RoleError.ToString(),
                 Message = "There is no such role"
             };
-        }
-
-        private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
-        {
-            return (validatedToken is JwtSecurityToken jwtSecurityToken) &&
-                jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private ClaimsPrincipal GetPrincipalFromToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            try
-            {
-                var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
-
-                if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
-                {
-                    return null;
-                }
-
-                return principal;
-            }
-
-            catch
-            {
-                return null;
-            }
         }
     }
 }

@@ -96,7 +96,10 @@ namespace LMS_Api.Controllers
             if (result.Status == nameof(StatusTypes.UserError))
                 return NotFound(result);
 
-            return Ok(result);
+            if (result.Status == nameof(StatusTypes.Success))
+                return Ok(result);
+
+            return BadRequest(result);
         }
     }
 }

@@ -76,9 +76,10 @@ namespace Business.Concrete
                 var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
                 var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-                string url = $"https://localhost:5001/api/user/confirmemail?userid={user.Id}&token={validEmailToken}";
+                //string url = $"https://localhost:5001/api/user/confirmemail?userid={user.Id}&token={validEmailToken}";
+                string url = $"http://localhost:3000/ConfirmationSuccess/{user.Id}/{validEmailToken}";
 
-                _emailService.SendMailToOneUser(user.Email, "Confirm your email", url);
+                _emailService.SendMailToOneUser(user.Email, "Confirm your email", "", url);
 
                 return new ResponseDTO
                 {
@@ -197,8 +198,9 @@ namespace Business.Concrete
             };
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var url = $"http://localhost:3000/resetpassword";
 
-            _emailService.SendMailToOneUser(user.Email, "Reset password", token);
+            _emailService.SendMailToOneUser(user.Email, "Reset password",token,url);
 
             return new ResponseDTO
             {
@@ -222,13 +224,13 @@ namespace Business.Concrete
             if (result.Succeeded) return new ResponseDTO
             {
                 Status = nameof(StatusTypes.Success),
-                Message = "Password has been changed successfully"
+                Message = "Password has been changed successfully!"
             };
 
             return new ResponseDTO
             {
                 Status = nameof(StatusTypes.ResetPasswordError),
-                Message = "Failed to change the password"
+                Message = "Failed to change the password. Try again!"
             };
         }
 

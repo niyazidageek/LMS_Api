@@ -10,6 +10,8 @@ namespace Utils
         LoginError,
         UserError,
         RoleError,
-        InvalidToken
+        InvalidToken,
+        ConfirmationError,
+        ResetPasswordError
     }
 }

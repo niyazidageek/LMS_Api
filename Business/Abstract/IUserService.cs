@@ -12,11 +12,11 @@ namespace Business.Abstract
 
         Task<ResponseDTO> AddRoleAsync(AddRoleDTO request);
 
-        //Task<bool> ConfirmEmailAsync(string userId, string token);
+        Task<ResponseDTO> ConfirmEmailAsync(string userId, string token);
 
-        //Task<bool> ForgetPasswordAsync(string email);
+        Task<ResponseDTO> ForgetPasswordAsync(ForgetPasswordDTO request);
 
-        //Task<bool> ResetPasswordAsync(TokenRequestDTO model);
+        Task<ResponseDTO> ResetPasswordAsync(ResetPasswordDTO request);
 
         //Task<AuthenticationModel> RefreshTokenAsync(TokenRequestDTO model);
     }

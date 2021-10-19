@@ -41,7 +41,9 @@ namespace LMS_Api
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<AppUser, IdentityRole>(options=> {
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -87,6 +89,7 @@ namespace LMS_Api
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
 
@@ -108,6 +111,8 @@ namespace LMS_Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseCors(x => x
                 .AllowAnyMethod()

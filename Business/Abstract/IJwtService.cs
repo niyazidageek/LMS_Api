@@ -10,8 +10,6 @@ namespace Business.Abstract
     {
         ClaimsPrincipal GetPrincipalFromToken(string token);
 
-        bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken);
-
         Task<JWT> CreateJwtTokenAsync(AppUser user);
     }
 }

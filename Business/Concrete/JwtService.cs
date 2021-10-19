@@ -67,7 +67,7 @@ namespace Business.Concrete
 
         }
 
-        public bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
+        private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
         {
             return (validatedToken is JwtSecurityToken jwtSecurityToken) &&
                 jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,

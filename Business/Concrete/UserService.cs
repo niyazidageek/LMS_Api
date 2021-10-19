@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,9 @@ using DataAccess.Concrete;
 using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Utils;
@@ -23,14 +27,17 @@ namespace Business.Concrete
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
         private readonly IJwtService _jwtService;
+        private readonly IEmailService _emailService;
 
         public UserService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
-            IJwtService jwtService,AppDbContext context)
+            IJwtService jwtService,AppDbContext context
+            ,IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
             _jwtService = jwtService;
+            _emailService = emailService;
         }
 
         public async Task<ResponseDTO> RegisterAsync(RegisterDTO request)
@@ -64,6 +71,14 @@ namespace Business.Concrete
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Roles.Student.ToString());
+
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
+                var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+                string url = $"https://localhost:5001/api/user/confirmemail?userid={user.Id}&token={validEmailToken}";
+
+                _emailService.SendMailToOneUser(user.Email, "Confirm your email", url);
 
                 return new ResponseDTO
                 {
@@ -100,7 +115,7 @@ namespace Business.Concrete
                 return new LoginResponseDTO
                 {
                     Status = StatusTypes.Success.ToString(),
-                    Message = $"User with the username {user.UserName} has successfully logged in",
+                    Message = $"User with the username {user.UserName} has successfully logged in!",
                     Token = token.Token
                 };
             }
@@ -112,20 +127,10 @@ namespace Business.Concrete
                     Message = "Invalid password or email"
                 };
             }
-
         }
 
         public async Task<ResponseDTO> AddRoleAsync(AddRoleDTO request)
         {
-            var validatedToken = _jwtService.GetPrincipalFromToken(request.Token);
-
-            if (validatedToken == null) return new ResponseDTO
-            {
-                Status = StatusTypes.InvalidToken.ToString(),
-                Message="Token is invalid"
-            };
-            
-
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user is null) return new ResponseDTO
@@ -151,5 +156,82 @@ namespace Business.Concrete
                 Message = "There is no such role"
             };
         }
+
+        public async Task<ResponseDTO> ConfirmEmailAsync(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) return new ResponseDTO
+            {
+                Status = StatusTypes.UsernameError.ToString(),
+                Message = "There is no such user"
+            };
+
+            var decodedToken = WebEncoders.Base64UrlDecode(token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+            if (result.Succeeded)
+            {
+                return new ResponseDTO
+                {
+                    Status = StatusTypes.Success.ToString(),
+                    Message = "Email confirmed!"
+                };
+            }
+            return new ResponseDTO
+            {
+                Status=StatusTypes.ConfirmationError.ToString(),
+                Message = "Confirmation has failed!"
+            };
+        }
+
+        public async Task<ResponseDTO> ForgetPasswordAsync(ForgetPasswordDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user is null) return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.UserError),
+                Message = "There is no such user!"
+            };
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            _emailService.SendMailToOneUser(user.Email, "Reset password", token);
+
+            return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Mail for resetting the password has been sent!"
+            };
+        }
+
+        public async Task<ResponseDTO> ResetPasswordAsync(ResetPasswordDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user is null) return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.UserError),
+                Message = "There is no such user!"
+            }; 
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+
+            if (result.Succeeded) return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Password has been changed successfully"
+            };
+
+            return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.ResetPasswordError),
+                Message = "Failed to change the password"
+            };
+        }
+
+        
     }
 }

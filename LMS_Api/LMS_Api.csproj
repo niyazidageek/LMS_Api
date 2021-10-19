@@ -17,9 +17,11 @@
     <None Remove="Swashbuckle.AspNetCore.SwaggerGen" />
     <None Remove="Swashbuckle.AspNetCore.SwaggerUI" />
     <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />

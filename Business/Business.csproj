@@ -7,6 +7,9 @@
   <ItemGroup>
     <None Remove="Abstratc\" />
     <None Remove="Concrete\" />
+    <None Remove="System.Text.Encodings.Web" />
+    <None Remove="Microsoft.AspNetCore.WebUtilities" />
+    <None Remove="Microsoft.AspNetCore.Hosting" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />
@@ -16,5 +19,9 @@
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
   </ItemGroup>
 </Project>

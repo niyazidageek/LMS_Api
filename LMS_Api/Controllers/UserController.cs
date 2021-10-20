@@ -64,10 +64,10 @@ namespace LMS_Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> ConfirmEmail(string userId, string token)
+        [HttpPost]
+        public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailDTO confirmEmailRequest)
         {
-            var result = await _userService.ConfirmEmailAsync(userId, token);
+            var result = await _userService.ConfirmEmailAsync(confirmEmailRequest);
 
             if (result.Status == nameof(StatusTypes.ConfirmationError))
                 return BadRequest(result);
@@ -79,9 +79,10 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordRequest)
+        public async Task<ActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordRequest)
         {
             var result = await _userService.ForgetPasswordAsync(forgetPasswordRequest);
+
             if (result.Status == nameof(StatusTypes.UserError))
                 return NotFound(result);
 
@@ -89,9 +90,26 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordRequest)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordRequest)
         {
             var result = await _userService.ResetPasswordAsync(resetPasswordRequest);
+
+            if (result.Status == nameof(StatusTypes.UserError))
+                return NotFound(result);
+
+            if (result.Status == nameof(StatusTypes.Success))
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SendConfirmationEmail([FromBody] SendConfirmEmailDTO sendConfirmEmailRequest)
+        {
+            var result = await _userService.SendConfirmationEmailAsync(sendConfirmEmailRequest);
+
+            if (result.Status == nameof(StatusTypes.ConfirmationError))
+                return BadRequest(result);
 
             if (result.Status == nameof(StatusTypes.UserError))
                 return NotFound(result);

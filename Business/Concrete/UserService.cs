@@ -72,14 +72,7 @@ namespace Business.Concrete
             {
                 await _userManager.AddToRoleAsync(user, Roles.Student.ToString());
 
-                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
-                var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
-
-                //string url = $"https://localhost:5001/api/user/confirmemail?userid={user.Id}&token={validEmailToken}";
-                string url = $"http://localhost:3000/ConfirmationSuccess/{user.Id}/{validEmailToken}";
-
-                _emailService.SendMailToOneUser(user.Email, "Confirm your email", "", url);
+                await SendConfirmationEmailAsync(user);
 
                 return new ResponseDTO
                 {
@@ -93,6 +86,64 @@ namespace Business.Concrete
                 {
                     Status = StatusTypes.RegistrationError.ToString(),
                     Message = "Unexpected error occured"
+                };
+            }
+        }
+
+        public async Task<ResponseDTO> SendConfirmationEmailAsync(AppUser user)
+        {
+            try
+            {
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
+                var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+                string url = $"http://localhost:3000/ConfirmEmail/{user.Id}/{validEmailToken}";
+                _emailService.SendMailToOneUser(user.Email, "Confirm your email", "", url);
+                return new ResponseDTO()
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Success"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.ConfirmationError),
+                    Message = ex.Message 
+                };
+            }
+        }
+
+        public async Task<ResponseDTO> SendConfirmationEmailAsync(SendConfirmEmailDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user is null) return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.UserError),
+                Message = "There is no such user!"
+            };
+
+            try
+            {
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
+                var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+                string url = $"http://localhost:3000/ConfirmEmail/{user.Id}/{validEmailToken}";
+                _emailService.SendMailToOneUser(user.Email, "Confirm your email", "", url);
+                return new ResponseDTO()
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Confirmation email has been sent!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.ConfirmationError),
+                    Message = ex.Message
                 };
             }
         }
@@ -158,16 +209,22 @@ namespace Business.Concrete
             };
         }
 
-        public async Task<ResponseDTO> ConfirmEmailAsync(string userId, string token)
+        public async Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO request) 
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
             if (user is null) return new ResponseDTO
             {
-                Status = StatusTypes.UsernameError.ToString(),
+                Status = nameof(StatusTypes.UsernameError),
                 Message = "There is no such user"
             };
 
-            var decodedToken = WebEncoders.Base64UrlDecode(token);
+            if (user.EmailConfirmed is true) return new ResponseDTO
+            {
+                Status = nameof(StatusTypes.ConfirmationError),
+                Message = "Your email has already been confirmed!"
+            };
+
+            var decodedToken = WebEncoders.Base64UrlDecode(request.Token);
             string normalToken = Encoding.UTF8.GetString(decodedToken);
 
             var result = await _userManager.ConfirmEmailAsync(user, normalToken);

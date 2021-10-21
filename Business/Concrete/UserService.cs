@@ -154,7 +154,7 @@ namespace Business.Concrete
 
             if (user is null) return new LoginResponseDTO
             {
-                Status = StatusTypes.LoginError.ToString(),
+                Status = nameof(StatusTypes.LoginError),
                 Message = "Invalid password or email"
             };
 
@@ -166,16 +166,17 @@ namespace Business.Concrete
 
                 return new LoginResponseDTO
                 {
-                    Status = StatusTypes.Success.ToString(),
+                    Status = nameof(StatusTypes.Success),
                     Message = $"User with the username {user.UserName} has successfully logged in!",
-                    Token = token.Token
+                    Token = token.Token,
+                    ExpiryDate = token.ExpiryDate
                 };
             }
             else
             {
                 return new LoginResponseDTO
                 {
-                    Status = StatusTypes.LoginError.ToString(),
+                    Status = nameof(StatusTypes.LoginError),
                     Message = "Invalid password or email"
                 };
             }
@@ -187,7 +188,7 @@ namespace Business.Concrete
 
             if (user is null) return new ResponseDTO
             {
-                Status = StatusTypes.UserError.ToString(),
+                Status = nameof(StatusTypes.UserError),
                 Message = "There is no such user"
             };
 
@@ -198,13 +199,13 @@ namespace Business.Concrete
                 await _userManager.AddToRoleAsync(user, validRole.ToString());
                 return new ResponseDTO
                 {
-                    Status = StatusTypes.Success.ToString(),
+                    Status = nameof(StatusTypes.Success),
                     Message = $"Role '{validRole}' added to {user.UserName}"
                 };
             }
             return new ResponseDTO
             {
-                Status = StatusTypes.RoleError.ToString(),
+                Status = nameof(StatusTypes.RoleError),
                 Message = "There is no such role"
             };
         }

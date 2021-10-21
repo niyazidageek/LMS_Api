@@ -49,19 +49,24 @@ namespace Business.Concrete
             .Union(userClaims)
             .Union(roleClaims);
 
+            var expiryDate = DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes);
+
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
+
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
             var jwtSecurityToken = new JwtSecurityToken(
                 issuer: _jwtConfig.Issuer,
                 audience: _jwtConfig.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes),
+                expires: expiryDate,
                 signingCredentials: signingCredentials);
 
 
             return new JWT
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                ExpiryDate = expiryDate
             };
 
 

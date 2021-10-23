@@ -93,6 +93,9 @@ namespace LMS_Api
 
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<ISubjectDal, EFSubjectDal>();
+
+            services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<ILessonDal, EFLessonDal>();
         }
 
 
@@ -115,8 +118,6 @@ namespace LMS_Api
 
             app.UseRouting();
 
-            app.UseStaticFiles();
-
             app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
@@ -126,6 +127,8 @@ namespace LMS_Api
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

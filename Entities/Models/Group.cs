@@ -24,5 +24,7 @@ namespace Entities.Models
         public Subject Subject { get; set; }
 
         public List<AppUserGroup> AppUserGroups { get; set; }
+
+        public List<Lesson> Lessons { get; set; }
     }
 }

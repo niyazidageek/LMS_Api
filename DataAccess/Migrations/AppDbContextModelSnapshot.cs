@@ -295,7 +295,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
                 {
                     b.HasOne("Entities.Models.AppUser", "AppUser")
-                        .WithMany("AppUserGroups")
+                        .WithMany()
                         .HasForeignKey("AppUserId");
 
                     b.HasOne("Entities.Models.Group", "Group")
@@ -367,11 +367,6 @@ namespace DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.AppUser", b =>
-                {
-                    b.Navigation("AppUserGroups");
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>

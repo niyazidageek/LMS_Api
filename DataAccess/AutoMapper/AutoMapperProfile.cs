@@ -18,6 +18,8 @@ namespace DataAccess.AutoMapper
             CreateMap<Subject, SubjectDTO>().ReverseMap();
 
             CreateMap<AppUser, AppUserDTO>().ReverseMap();
+
+            CreateMap<Lesson, LessonDTO>().ReverseMap();
         }
     }
 }

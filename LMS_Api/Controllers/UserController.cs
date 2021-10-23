@@ -12,6 +12,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Utils;
+using Microsoft.AspNetCore.Identity;
+using DataAccess.Concrete;
+using Entities.Models;
+using LMS_Api.Utils;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LMS_Api.Controllers
 {
@@ -19,105 +29,317 @@ namespace LMS_Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly JWTConfig _jwtConfig;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly AppDbContext _context;
 
-        public UserController(IUserService userService)
+        public UserController(UserManager<AppUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IOptions<JWTConfig> jwtConfig,
+            TokenValidationParameters tokenValidationParameters,
+            AppDbContext context)
         {
-            _userService = userService;
+            _tokenValidationParameters = tokenValidationParameters;
+            _jwtConfig = jwtConfig.Value;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _context = context;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register([FromBody] RegisterDTO registerRequest)
+        public async Task<ActionResult> Register([FromBody] RegisterDTO registerDto)
         {
-            var result = await _userService.RegisterAsync(registerRequest);
+            var userWithSameEmail = await _userManager.FindByEmailAsync(registerDto.Email);
 
-            if (result.Status == nameof(StatusTypes.EmailError) ||
-                result.Status == nameof(StatusTypes.UsernameError))
-                return Conflict(result);
+            if (userWithSameEmail is not null)
+                return Conflict(new ResponseDTO
+                {
+                    Status = StatusTypes.EmailError.ToString(),
+                    Message = "This email already exists"
+                });
 
-            if (result.Status == nameof(StatusTypes.RegistrationError))
-                return Unauthorized(result);
+            var userWithSameUsername = await _userManager.FindByNameAsync(registerDto.Username);
 
-            return Ok(result);
+            if (userWithSameUsername is not null)
+                return Conflict(new ResponseDTO
+                {
+                    Status = StatusTypes.UsernameError.ToString(),
+                    Message = "This username already exists"
+                });
+
+            var user = new AppUser
+            {
+                UserName = registerDto.Username,
+                Email = registerDto.Email,
+                Name = registerDto.Name,
+                Surname = registerDto.Surname
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, Roles.Student.ToString());
+
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var suceeded = EmailHelper.SendConfirmationEmail(confirmationToken, user.Email, user.Id);
+
+                if(suceeded)
+                    return Ok(new ResponseDTO
+                    {
+                        Status = StatusTypes.Success.ToString(),
+                        Message = $"Student with the username {user.UserName} has succesfully registered"
+                    });
+
+                return BadRequest(new ResponseDTO
+                {
+                    Status = StatusTypes.ConfirmationError.ToString(),
+                    Message = "Confirmation message can't be sent!"
+                });
+            }
+            else
+            {
+                return Unauthorized(new ResponseDTO
+                {
+                    Status = StatusTypes.RegistrationError.ToString(),
+                    Message = "Unexpected error occured!"
+                });
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
+        public async Task<ActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            var result = await _userService.LoginAsync(loginRequest);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if (result.Status == nameof(StatusTypes.LoginError))
-                return Unauthorized(result);
+            if (user is null)
+                return NotFound(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.LoginError),
+                    Message = "Invalid password or email!"
+                });
 
-            return Ok(result);
+            var succeeded = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (succeeded)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var roleClaims = new List<Claim>();
+
+                for (int i = 0; i < roles.Count; i++)
+                {
+                    roleClaims.Add(new Claim("roles", roles[i]));
+                }
+
+                var claims = new[]
+                {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("uid", user.Id)
+            }
+                .Union(userClaims)
+                .Union(roleClaims);
+
+                var expiryDate = DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes);
+
+                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
+
+                var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+                var jwtSecurityToken = new JwtSecurityToken(
+                    issuer: _jwtConfig.Issuer,
+                    audience: _jwtConfig.Audience,
+                    claims: claims,
+                    expires: expiryDate,
+                    signingCredentials: signingCredentials);
+
+
+                return Ok(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = $"User with the username {user.UserName} has successfully logged in!",
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                    ExpiryDate = expiryDate
+                });
+            }
+            else
+            {
+                return Unauthorized(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.LoginError),
+                    Message = "Invalid password or email!"
+                });
+            }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
-        public async Task<ActionResult> AddRole([FromBody] AddRoleDTO addRoleRequest)
+        public async Task<ActionResult> AddRole([FromBody] AddRoleDTO addRoleDto)
         {
-            var result = await _userService.AddRoleAsync(addRoleRequest);
+            var user = await _userManager.FindByEmailAsync(addRoleDto.Email);
 
-            if (result.Status == nameof(StatusTypes.RoleError))
-                return NotFound(result);
+            if (user is null)
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.UserError),
+                    Message = "There is no such user"
+                });
 
-            return Ok(result);
+            var roleExists = Enum.GetNames(typeof(Roles)).Any(x => x.ToLower() == addRoleDto.Role.ToLower());
+
+            if (roleExists)
+            {
+                var validRole = Enum.GetValues(typeof(Roles)).Cast<Roles>().Where(x => x.ToString().ToLower() == addRoleDto.Role.ToLower()).FirstOrDefault();
+                await _userManager.AddToRoleAsync(user, validRole.ToString());
+                return Ok(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = $"Role '{validRole}' added to {user.UserName}"
+                });
+            }
+            return NotFound(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.RoleError),
+                Message = "There is no such role"
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailDTO confirmEmailRequest)
+        public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailDTO confirmEmailDto)
         {
-            var result = await _userService.ConfirmEmailAsync(confirmEmailRequest);
+            var user = await _userManager.FindByIdAsync(confirmEmailDto.UserId);
 
-            if (result.Status == nameof(StatusTypes.ConfirmationError))
-                return BadRequest(result);
+            if (user is null)
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.UsernameError),
+                    Message = "There is no such user"
+                });
 
-            if (result.Status == nameof(StatusTypes.UserError))
-                return NotFound(result);
+            if (user.EmailConfirmed is true)
+                return Conflict(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.ConfirmationError),
+                    Message = "Your email has already been confirmed!"
+                });
 
-            return Ok(result);
+            var decodedToken = WebEncoders.Base64UrlDecode(confirmEmailDto.Token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+            if (result.Succeeded)
+            {
+                return Ok(new ResponseDTO
+                {
+                    Status = StatusTypes.Success.ToString(),
+                    Message = "Email confirmed!"
+                });
+            }
+
+            return BadRequest(new ResponseDTO
+            {
+                Status = StatusTypes.ConfirmationError.ToString(),
+                Message = "Confirmation has failed!"
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordRequest)
+        public async Task<ActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordDto)
         {
-            var result = await _userService.ForgetPasswordAsync(forgetPasswordRequest);
+            var user = await _userManager.FindByEmailAsync(forgetPasswordDto.Email);
 
-            if (result.Status == nameof(StatusTypes.UserError))
-                return NotFound(result);
+            if (user is null)
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.UserError),
+                    Message = "There is no such user!"
+                });
 
-            return Ok(result);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var url = $"http://localhost:3000/resetpassword";
+
+            var suceeded = EmailHelper.SendMailToOneUser(user.Email, "Reset password", token, url);
+
+            if (suceeded)
+                return Ok(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Mail for resetting the password has been sent!"
+                });
+
+            return BadRequest(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.EmailError),
+                Message = "Email can't be sent!"
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordRequest)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDto)
         {
-            var result = await _userService.ResetPasswordAsync(resetPasswordRequest);
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
 
-            if (result.Status == nameof(StatusTypes.UserError))
-                return NotFound(result);
+            if (user is null)
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.UserError),
+                    Message = "There is no such user!"
+                });
 
-            if (result.Status == nameof(StatusTypes.Success))
-                return Ok(result);
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
 
-            return BadRequest(result);
+            if (result.Succeeded)
+                return Ok(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Password has been changed successfully!"
+                });
+
+            return BadRequest(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.ResetPasswordError),
+                Message = "Failed to change the password. Try again!"
+            });
         }
 
         [HttpPost]
-        public async Task<ActionResult> SendConfirmationEmail([FromBody] SendConfirmEmailDTO sendConfirmEmailRequest)
+        public async Task<ActionResult> SendConfirmationEmail([FromBody] SendConfirmEmailDTO sendConfirmEmailDto)
         {
-            var result = await _userService.SendConfirmationEmailAsync(sendConfirmEmailRequest);
+            var user = await _userManager.FindByEmailAsync(sendConfirmEmailDto.Email);
 
-            if (result.Status == nameof(StatusTypes.ConfirmationError))
-                return BadRequest(result);
+            if (user is null)
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.UserError),
+                    Message = "There is no such user!"
+                });
 
-            if (result.Status == nameof(StatusTypes.UserError))
-                return NotFound(result);
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(confirmationToken);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+            string url = $"http://localhost:3000/ConfirmEmail/{user.Id}/{validEmailToken}";
 
-            if (result.Status == nameof(StatusTypes.Success))
-                return Ok(result);
+            var succeeded = EmailHelper.SendMailToOneUser(user.Email, "Confirm your email", "", url);
 
-            return BadRequest(result);
+            if (succeeded)
+                return Ok(new ResponseDTO()
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Confirmation email has been sent!"
+                });
+
+            return BadRequest(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.ConfirmationError),
+                Message = "Email can't be sent!"
+            });
         }
     }
 }

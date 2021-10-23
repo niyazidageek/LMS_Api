@@ -88,10 +88,6 @@ namespace LMS_Api
                     o.TokenValidationParameters = tokenValidationParameters;
                 });
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IEmailService, EmailService>();
-
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IGroupDal, EFGroupDal>();
 

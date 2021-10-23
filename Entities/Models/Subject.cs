@@ -12,7 +12,7 @@ namespace Entities.Models
         [Required, StringLength(255)]
         public string Name { get; set; }
 
-        public ICollection<AppUser> Users { get; set; }
-
+        //public List<Group> Groups { get; set; }
     }
 }
+

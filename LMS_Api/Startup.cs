@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Concrete;
+using DataAccess.Abstract;
 using DataAccess.AutoMapper;
 using DataAccess.Concrete;
 using Entities.Models;
@@ -90,6 +91,12 @@ namespace LMS_Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IEmailService, EmailService>();
+
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IGroupDal, EFGroupDal>();
+
+            services.AddScoped<ISubjectService, SubjectService>();
+            services.AddScoped<ISubjectDal, EFSubjectDal>();
         }
 
 

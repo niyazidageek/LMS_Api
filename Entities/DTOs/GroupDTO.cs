@@ -13,7 +13,7 @@ namespace Entities.DTOs
         public string Name { get; set; }
 
         [Required]
-        public Subject Subject { get; set; }
+        public SubjectDTO Subject { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -21,10 +21,8 @@ namespace Entities.DTOs
         [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
-        public AppUser Teacher { get; set; }
+        public int AppUsersCount { get; set; }
 
-        [Required]
-        public ICollection<AppUser> Students { get; set; }
+        public List<AppUserDTO> AppUsers { get; set; }
     }
 }

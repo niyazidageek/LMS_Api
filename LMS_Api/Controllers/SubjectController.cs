@@ -48,6 +48,7 @@ namespace LMS_Api.Controllers
 
             var subjectDto = _mapper.Map<SubjectDTO>(subjectDb);
 
+
             return Ok(subjectDto);
         }
 

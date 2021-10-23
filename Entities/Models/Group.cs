@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models
 {
@@ -13,18 +15,14 @@ namespace Entities.Models
         public string Name { get; set; }
 
         [Required]
-        public Subject Subject { get; set; }
-
-        [Required]
         public DateTime StartDate { get; set; }
 
         [Required]
         public DateTime EndDate { get; set; }
 
         [Required]
-        public AppUser Teacher { get; set; }
+        public Subject Subject { get; set; }
 
-        [Required]
-        public ICollection<AppUser> Students { get; set; }
+        public List<AppUserGroup> AppUserGroups { get; set; }
     }
 }

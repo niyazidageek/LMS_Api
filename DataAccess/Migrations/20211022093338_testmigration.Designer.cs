@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211021065704_groupsandsubjectadded")]
-    partial class groupsandsubjectadded
+    [Migration("20211022093338_testmigration")]
+    partial class testmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,19 +21,19 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AppUserSubject", b =>
+            modelBuilder.Entity("AppUserGroup", b =>
                 {
-                    b.Property<int>("SubjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
+                    b.Property<string>("AppUsersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("SubjectsId", "UsersId");
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("UsersId");
+                    b.HasKey("AppUsersId", "GroupsId");
 
-                    b.ToTable("AppUserSubject");
+                    b.HasIndex("GroupsId");
+
+                    b.ToTable("AppUserGroup");
                 });
 
             modelBuilder.Entity("Entities.Models.AppUser", b =>
@@ -54,9 +54,6 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -103,8 +100,6 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -137,14 +132,9 @@ namespace DataAccess.Migrations
                     b.Property<int?>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
                 });
@@ -297,41 +287,28 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AppUserSubject", b =>
+            modelBuilder.Entity("AppUserGroup", b =>
                 {
-                    b.HasOne("Entities.Models.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Entities.Models.AppUser", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("AppUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Entities.Models.AppUser", b =>
-                {
                     b.HasOne("Entities.Models.Group", null)
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId");
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>
                 {
                     b.HasOne("Entities.Models.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("Groups")
                         .HasForeignKey("SubjectId");
 
-                    b.HasOne("Entities.Models.AppUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
-
                     b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -385,9 +362,9 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Group", b =>
+            modelBuilder.Entity("Entities.Models.Subject", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }

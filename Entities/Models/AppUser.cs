@@ -8,12 +8,13 @@ namespace Entities.Models
 {
     public class AppUser: IdentityUser
     {
+
         [Required, StringLength(255)]
         public string Name { get; set; }
 
         [Required, StringLength(255)]
         public string Surname { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; }
+        public List<AppUserGroup> AppUserGroups { get; set; }
     }
 }

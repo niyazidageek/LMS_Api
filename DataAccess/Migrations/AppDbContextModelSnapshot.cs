@@ -19,21 +19,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AppUserSubject", b =>
-                {
-                    b.Property<int>("SubjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("SubjectsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("AppUserSubject");
-                });
-
             modelBuilder.Entity("Entities.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -52,9 +37,6 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -101,8 +83,6 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -112,6 +92,28 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("AppUserGroups");
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>
@@ -135,14 +137,9 @@ namespace DataAccess.Migrations
                     b.Property<int?>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
                 });
@@ -295,26 +292,21 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AppUserSubject", b =>
+            modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
                 {
-                    b.HasOne("Entities.Models.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectsId")
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany("AppUserGroups")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Entities.Models.Group", "Group")
+                        .WithMany("AppUserGroups")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Navigation("AppUser");
 
-            modelBuilder.Entity("Entities.Models.AppUser", b =>
-                {
-                    b.HasOne("Entities.Models.Group", null)
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId");
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>
@@ -323,13 +315,7 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("SubjectId");
 
-                    b.HasOne("Entities.Models.AppUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
-
                     b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -383,9 +369,14 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUser", b =>
+                {
+                    b.Navigation("AppUserGroups");
+                });
+
             modelBuilder.Entity("Entities.Models.Group", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("AppUserGroups");
                 });
 #pragma warning restore 612, 618
         }

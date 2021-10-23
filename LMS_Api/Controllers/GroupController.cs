@@ -4,24 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
+using DataAccess.Concrete;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class GroupController : ControllerBase
     {
         private readonly IGroupService _groupService;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public GroupController(IGroupService groupService, IMapper mapper)
+        public GroupController(IGroupService groupService, IMapper mapper,
+            UserManager<AppUser> userManager, AppDbContext context)
         {
             _groupService = groupService;
             _mapper = mapper;
+            _userManager = userManager;
+            _context = context;
         }
 
         [HttpGet]
@@ -34,19 +42,55 @@ namespace LMS_Api.Controllers
 
             var groupsDto = _mapper.Map<List<GroupDTO>>(groupsDb);
 
+            for (int i = 0; i < groupsDto.Count; i++)
+            {
+                groupsDto[i].AppUsersCount = groupsDb[i].AppUserGroups.Count;
+            }
+
+            return Ok(groupsDto);
+        }
+
+        [HttpGet]
+        [Route("{skip}/{take}")]
+        public async Task<ActionResult> GetGroupsByCountAsync(int skip, int take)
+        {
+            var groupsDb = await _groupService.GetGroupsByCountAsync(skip, take);
+
+            if (groupsDb is null)
+                return NotFound();
+
+            var groupsDto = _mapper.Map<List<GroupDTO>>(groupsDb);
+
+            for (int i = 0; i < groupsDto.Count; i++)
+            {
+                groupsDto[i].AppUsersCount = groupsDb[i].AppUserGroups.Count;
+            }
+
             return Ok(groupsDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult> GetGroupsById(int id)
+        public async Task<ActionResult> GetGroupById(int id)
         {
-            var groupDb = await _groupService.GetGroupByIdAsync(id);
+            var groupDb = await _groupService.GetGroupDetailsByIdAsync(id);
 
             if (groupDb is null)
                 return NotFound();
 
             var groupDto = _mapper.Map<GroupDTO>(groupDb);
+
+            List<AppUserDTO> appUsers = new();
+
+            foreach (var appUserGroup in groupDb.AppUserGroups)
+            {
+                AppUserDTO appUserDto = new();
+                _mapper.Map(appUserGroup.AppUser, appUserDto);
+                appUsers.Add(appUserDto);
+            }
+
+            groupDto.AppUsers = appUsers;
+            groupDto.AppUsersCount = appUsers.Count; 
 
             return Ok(groupDto);
         }
@@ -56,7 +100,28 @@ namespace LMS_Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var groupDb = _mapper.Map<Group>(groupDto);
+           
+            var groupDb = _mapper.Map<GroupDTO, Group>(groupDto);
+
+            var subjectDb = await _context.Subjects.FirstOrDefaultAsync(s => s.Id == groupDto.Subject.Id);
+
+            groupDb.Subject = subjectDb;
+
+            if (subjectDb is null)
+                return NotFound();
+
+            List<AppUserGroup> AppUserGroups = new();
+
+            foreach (var appUserDto in groupDto.AppUsers)
+            {
+                var appUserGroup = new AppUserGroup(); 
+                appUserGroup.AppUserId = appUserDto.Id;
+                appUserGroup.GroupId = groupDb.Id;
+
+                AppUserGroups.Add(appUserGroup);
+            }
+
+            groupDb.AppUserGroups = AppUserGroups;
 
             await _groupService.AddGroupAsync(groupDb);
 
@@ -74,9 +139,28 @@ namespace LMS_Api.Controllers
             if (groupDb is null)
                 return NotFound();
 
+            var subjectDb = await _context.Subjects.FirstOrDefaultAsync(s => s.Id == groupDto.Subject.Id);
+
+            if (subjectDb is null)
+                return NotFound();
+
             groupDto.Id = groupDb.Id;
 
             _mapper.Map(groupDto, groupDb);
+
+            List<AppUserGroup> AppUserGroups = new();
+
+            foreach (var appUserDto in groupDto.AppUsers)
+            {
+                var appUserGroup = new AppUserGroup();
+                appUserGroup.AppUserId = appUserDto.Id;
+                appUserGroup.GroupId = groupDb.Id;
+
+                AppUserGroups.Add(appUserGroup);
+            }
+
+            groupDb.Subject = subjectDb;
+            groupDb.AppUserGroups = AppUserGroups;
 
             await _groupService.EditGroupAsync(groupDb);
 

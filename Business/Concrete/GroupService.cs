@@ -32,9 +32,14 @@ namespace Business.Concrete
 
         public async Task<bool> EditGroupAsync(Group group)
         {
-            await _context.UpdateAsync(group);
+            await _context.RelationalUpdateAsync(group);
 
             return true;
+        }
+
+        public async Task<Group> GetGroupDetailsByIdAsync(int id)
+        {
+            return await _context.GetAsync(id);
         }
 
         public async Task<Group> GetGroupByIdAsync(int id)
@@ -45,6 +50,11 @@ namespace Business.Concrete
         public async Task<List<Group>> GetGroupsAsync()
         {
             return await _context.GetAllAsync();
+        }
+
+        public async Task<List<Group>> GetGroupsByCountAsync(int skipCount, int takeCount)
+        {
+            return await _context.GetByCountAsync(skipCount, takeCount);
         }
     }
 }

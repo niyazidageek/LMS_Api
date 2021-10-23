@@ -9,6 +9,10 @@ namespace Business.Abstract
     {
         Task<List<Group>> GetGroupsAsync();
 
+        Task<List<Group>> GetGroupsByCountAsync(int skipCount, int takeCount);
+
+        Task<Group> GetGroupDetailsByIdAsync(int id);
+
         Task<Group> GetGroupByIdAsync(int id);
 
         Task<bool> AddGroupAsync(Group group);

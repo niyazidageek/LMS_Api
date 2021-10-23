@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Entities.DTOs;
 using Entities.Models;
@@ -9,9 +12,12 @@ namespace DataAccess.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Group, GroupDTO>().ReverseMap();
+
+            CreateMap<GroupDTO, Group>().ReverseMap();
 
             CreateMap<Subject, SubjectDTO>().ReverseMap();
+
+            CreateMap<AppUser, AppUserDTO>().ReverseMap();
         }
     }
 }

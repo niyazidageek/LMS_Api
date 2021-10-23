@@ -12,7 +12,7 @@ namespace Entities.DTOs
 
         public DateTime StartDate { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime EndDate { get; set; }
 
         public int GroupId { get; set; }
 

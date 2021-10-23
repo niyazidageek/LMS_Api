@@ -18,8 +18,8 @@ namespace Entities.Models
         [Required]
         public DateTime EndDate { get; set; }
 
-        public List<Material> Meaterials { get; set; }
-
         public Group Group { get; set; }
+
+        public List<LessonMaterial> LessonMaterials { get; set; }
     }
 }

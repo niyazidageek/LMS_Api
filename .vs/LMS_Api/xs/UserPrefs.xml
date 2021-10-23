@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Utils/FileHelper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/LessonController.cs">
     <Files>
-      <File FileName="Entities/Models/Material.cs" Line="7" Column="18" />
-      <File FileName="Business/Abstract/ILessonService.cs" Line="1" Column="14" />
-      <File FileName="Business/Concrete/LessonService.cs" Line="47" Column="48" />
-      <File FileName="Business/Concrete/SubjectService.cs" Line="42" Column="58" />
-      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="80" Column="6" />
-      <File FileName="Entities/Models/Lesson.cs" Line="23" Column="41" />
-      <File FileName="Entities/DTOs/LessonDTO.cs" Line="17" Column="1" />
-      <File FileName="LMS_Api/Startup.cs" Line="98" Column="59" />
-      <File FileName="LMS_Api/Utils/FileHelper.cs" Line="1" Column="1" />
+      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="75" Column="21" />
+      <File FileName="Entities/DTOs/LessonDTO.cs" Line="9" Column="36" />
+      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="16" Column="41" />
+      <File FileName="Core/Repository/EFRepository/EFRepositoryBase.cs" Line="25" Column="14" />
+      <File FileName="Entities/Models/LessonMaterial.cs" Line="12" Column="47" />
+      <File FileName="Entities/Models/Material.cs" Line="10" Column="36" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="1" Column="1" />
+      <File FileName="DataAccess/Abstract/ILessonDal.cs" Line="11" Column="37" />
+      <File FileName="Business/Concrete/LessonService.cs" Line="21" Column="40" />
+      <File FileName="Business/Abstract/ILessonService.cs" Line="14" Column="48" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,6 +19,11 @@
             <Node name="Business" expanded="True">
               <Node name="Abstract" expanded="True" />
               <Node name="Concrete" expanded="True" />
+            </Node>
+            <Node name="Core" expanded="True">
+              <Node name="Repository" expanded="True">
+                <Node name="EFRepository" expanded="True" />
+              </Node>
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
@@ -29,10 +35,10 @@
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Utils" expanded="True">
-                <Node name="FileHelper.cs" selected="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="LessonController.cs" selected="True" />
               </Node>
+              <Node name="Utils" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -43,7 +49,10 @@
   <MonoDevelop.Ide.ItemProperties.LMS__Api PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/LessonController.cs" relfile="LMS_Api/Controllers/LessonController.cs" line="65" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFLessonDal.cs" relfile="DataAccess/Concrete/EFLessonDal.cs" line="17" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

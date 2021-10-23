@@ -23,6 +23,13 @@ namespace Business.Concrete
             return true;
         }
 
+        public async Task<bool> AddLessonAsync(Lesson lesson, List<string> fileNames)
+        {
+            await _conext.AddWithFilesAsync(lesson, fileNames);
+
+            return true;
+        }
+
         public async Task<bool> DeleteLessonAsync(int id)
         {
             await _conext.DeleteAsync(new Lesson { Id = id });

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Core.Entities;
 
@@ -11,6 +12,6 @@ namespace Entities.Models
         [Required, StringLength(255)]
         public string FileName { get; set; }
 
-        public Lesson Lesson { get; set; }
+        public List<LessonMaterial> LessonMaterials { get; set; }
     }
 }

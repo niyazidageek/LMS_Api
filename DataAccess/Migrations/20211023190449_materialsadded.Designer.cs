@@ -4,14 +4,16 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211023190449_materialsadded")]
+    partial class materialsadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,28 +174,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("MaterialId");
-
-                    b.ToTable("LessonMaterial");
-                });
-
             modelBuilder.Entity("Entities.Models.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -206,7 +186,12 @@ namespace DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int?>("LessonId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
 
                     b.ToTable("Materials");
                 });
@@ -394,23 +379,13 @@ namespace DataAccess.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
+            modelBuilder.Entity("Entities.Models.Material", b =>
                 {
                     b.HasOne("Entities.Models.Lesson", "Lesson")
-                        .WithMany("LessonMaterials")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Material", "Material")
-                        .WithMany("LessonMaterials")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Meaterials")
+                        .HasForeignKey("LessonId");
 
                     b.Navigation("Lesson");
-
-                    b.Navigation("Material");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -478,12 +453,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Lesson", b =>
                 {
-                    b.Navigation("LessonMaterials");
-                });
-
-            modelBuilder.Entity("Entities.Models.Material", b =>
-                {
-                    b.Navigation("LessonMaterials");
+                    b.Navigation("Meaterials");
                 });
 #pragma warning restore 612, 618
         }

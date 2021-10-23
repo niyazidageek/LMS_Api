@@ -5,12 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
+using DataAccess.Concrete;
 using Entities.DTOs;
 using Entities.Models;
 using LMS_Api.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS_Api.Controllers
 {
@@ -20,11 +22,14 @@ namespace LMS_Api.Controllers
     {
         private readonly ILessonService _lessonService;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
 
-        public LessonController(ILessonService lessonService, IMapper mapper)
+        public LessonController(ILessonService lessonService, IMapper mapper,
+            AppDbContext context)
         {
             _lessonService = lessonService;
             _mapper = mapper;
+            _context = context;
         }
 
         [HttpGet]
@@ -62,23 +67,40 @@ namespace LMS_Api.Controllers
 
             var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            try
+            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.GroupId);
+
+            if (groupDb is null)
+                return NotFound();
+
+            lessonDb.Group = groupDb;
+
+            List<string> fileNames = new();
+
+            if(lessonDto.Files is not null)
             {
-                foreach (var file in lessonDto.Files)
+                try
                 {
-                    var fileName = FileHelper.AddFile(file);
-                    if (fileName is null)
-                        return BadRequest("smth went wrong");
+                    foreach (var file in lessonDto.Files)
+                    {
+                        var fileName = FileHelper.AddFile(file);
+                        if (fileName is null)
+                            return BadRequest();
+                        fileNames.Add(fileName);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
+                await _lessonService.AddLessonAsync(lessonDb, fileNames);
+
+                return Ok();
             }
 
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _lessonService.AddLessonAsync(lessonDb);
 
-            return Ok("file created");
-            
+            return Ok();
         }
 
         [HttpPut]

@@ -13,6 +13,8 @@ namespace Business.Abstract
 
         Task<bool> AddLessonAsync(Lesson lesson);
 
+        Task<bool> AddLessonAsync(Lesson lesson, List<string> fileNames);
+
         Task<bool> EditLessonAsync(Lesson lesson);
 
         Task<bool> DeleteLessonAsync(int id);

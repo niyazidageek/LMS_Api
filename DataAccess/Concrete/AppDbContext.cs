@@ -33,5 +33,7 @@ namespace DataAccess.Concrete
         public DbSet<AppUserGroup> AppUserGroups { get; set; }
 
         public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<Material> Materials { get; set; }
     }
 }

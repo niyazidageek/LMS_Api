@@ -1,14 +1,22 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Business/Concrete/GroupService.cs">
+    <Files>
+      <File FileName="LMS_Api/Controllers/GroupController.cs" Line="1" Column="1" />
+      <File FileName="Core/Repository/EFRepository/EFRepositoryBase.cs" Line="64" Column="10" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="27" Column="53" />
+      <File FileName="DataAccess/Abstract/IGroupDal.cs" Line="17" Column="41" />
+      <File FileName="Business/Abstract/IGroupService.cs" Line="1" Column="1" />
+      <File FileName="Business/Concrete/GroupService.cs" Line="18" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="LMS_Api" expanded="True">
             <Node name="Business" expanded="True">
-              <Node name="Abstract" expanded="True">
-                <Node name="ILessonService.cs" selected="True" />
+              <Node name="Abstract" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="GroupService.cs" selected="True" />
               </Node>
-              <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Core" expanded="True">
               <Node name="Repository" expanded="True">
@@ -17,17 +25,11 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="AutoMapper" expanded="True" />
               <Node name="Concrete" expanded="True" />
-            </Node>
-            <Node name="Entities" expanded="True">
-              <Node name="DTOs" expanded="True" />
-              <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Controllers" expanded="True" />
             </Node>
-            <Node name="Utils" expanded="True" />
           </Node>
         </State>
       </Pad>

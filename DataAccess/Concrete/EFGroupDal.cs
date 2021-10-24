@@ -24,6 +24,13 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
+        public async Task<List<Group>> GetAllAsync()
+        {
+            return await Context.Groups.AsNoTracking().Include(g => g.Subject)
+                .Include(g => g.AppUserGroups)
+                .ToListAsync();
+        }
+
         public async Task<List<Group>> GetByCountAsync(int skipCount, int takeCount)
         {
             return await Context.Groups.Include(g => g.Subject)

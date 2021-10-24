@@ -5,6 +5,8 @@ namespace Entities.DTOs
 {
     public class MaterialDTO
     {
-        public IFormFile File { get; set; }
+        public int Id { get; set; }
+
+        public string FileName { get; set; }
     }
 }

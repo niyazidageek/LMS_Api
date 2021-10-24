@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using Entities.Models;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace LMS_Api.Utils

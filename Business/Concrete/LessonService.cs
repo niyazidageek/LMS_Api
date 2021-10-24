@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
 {
@@ -23,9 +24,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<bool> AddLessonAsync(Lesson lesson, List<string> fileNames)
+        public async Task<bool> AddLessonAsync(Lesson lesson, List<IFormFile> files)
         {
-            await _conext.AddWithFilesAsync(lesson, fileNames);
+            await _conext.AddWithFilesAsync(lesson, files);
 
             return true;
         }
@@ -40,6 +41,13 @@ namespace Business.Concrete
         public async Task<bool> EditLessonAsync(Lesson lesson)
         {
             await _conext.UpdateAsync(lesson);
+
+            return true;
+        }
+
+        public async Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames)
+        {
+            await _conext.EditWithFilesAsync(lesson, files, existingFileNames);
 
             return true;
         }

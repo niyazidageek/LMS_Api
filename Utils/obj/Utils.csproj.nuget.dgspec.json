@@ -14,7 +14,7 @@
         "outputPath": "/Users/niyazibabayev/Projects/LMS_Api/Utils/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/niyazibabayev/.config/NuGet/NuGet.Config"
+          "/Users/niyazibabayev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -37,6 +37,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

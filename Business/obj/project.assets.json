@@ -1839,7 +1839,8 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.1",
           "Entities": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.11",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11"
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11",
+          "Utils": "1.0.0"
         },
         "compile": {
           "bin/placeholder/DataAccess.dll": {}
@@ -1866,6 +1867,9 @@
       "Utils/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.2"
+        },
         "compile": {
           "bin/placeholder/Utils.dll": {}
         },

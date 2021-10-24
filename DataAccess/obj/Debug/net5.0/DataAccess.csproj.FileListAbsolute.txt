@@ -17,4 +17,6 @@
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/ref/DataAccess.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.genruntimeconfig.cache
+/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.dll
+/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.csproj.CopyComplete

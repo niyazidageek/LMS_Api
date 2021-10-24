@@ -1,7 +1,9 @@
 ﻿using System;
+using Core.Entities;
+
 namespace Entities.Models
 {
-    public class LessonMaterial
+    public class LessonMaterial:IEntity
     {
         public int Id { get; set; }
 

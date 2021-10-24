@@ -12,7 +12,8 @@
           "Entities": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.11",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11",
-          "Microsoft.EntityFrameworkCore.Tools": "5.0.11"
+          "Microsoft.EntityFrameworkCore.Tools": "5.0.11",
+          "Utils": "1.0.0"
         },
         "runtime": {
           "DataAccess.dll": {}
@@ -1232,6 +1233,14 @@
         "runtime": {
           "Entities.dll": {}
         }
+      },
+      "Utils/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.2"
+        },
+        "runtime": {
+          "Utils.dll": {}
+        }
       }
     }
   },
@@ -2031,6 +2040,11 @@
       "sha512": ""
     },
     "Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Utils/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

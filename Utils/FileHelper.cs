@@ -20,7 +20,7 @@ namespace LMS_Api.Utils
             if (file.Length > 0)
             {
                 string _fileName = uniqueId + file.FileName;
-                using (FileStream fileStream = System.IO.File.Create(path + _fileName))
+                using (FileStream fileStream = File.Create(path + _fileName))
                 {
                     file.CopyTo(fileStream);
                     fileStream.Flush();
@@ -32,6 +32,12 @@ namespace LMS_Api.Utils
             {
                 return null;
             }
+        }
+
+        public static void DeleteFile(string fileName)
+        {
+            string _deletePath = Path.Combine(path + fileName);
+            File.Delete(_deletePath);
         }
     }
 }

@@ -158,6 +158,9 @@
             "projectReferences": {
               "/Users/niyazibabayev/Projects/LMS_Api/Entities/Entities.csproj": {
                 "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Entities/Entities.csproj"
+              },
+              "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj": {
+                "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj"
               }
             }
           }
@@ -422,6 +425,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

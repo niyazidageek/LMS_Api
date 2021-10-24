@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entities.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstract
 {
@@ -13,9 +14,11 @@ namespace Business.Abstract
 
         Task<bool> AddLessonAsync(Lesson lesson);
 
-        Task<bool> AddLessonAsync(Lesson lesson, List<string> fileNames);
+        Task<bool> AddLessonAsync(Lesson lesson, List<IFormFile> files);
 
         Task<bool> EditLessonAsync(Lesson lesson);
+
+        Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames);
 
         Task<bool> DeleteLessonAsync(int id);
     }

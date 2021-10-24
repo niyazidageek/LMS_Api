@@ -35,5 +35,7 @@ namespace DataAccess.Concrete
         public DbSet<Lesson> Lessons { get; set; }
 
         public DbSet<Material> Materials { get; set; }
+
+        public DbSet<LessonMaterial> LessonMaterials { get; set; }
     }
 }

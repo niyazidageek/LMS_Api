@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace LMS_Api.Controllers
 {
@@ -61,39 +62,24 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateLesson([FromForm] LessonDTO lessonDto)
+        public async Task<ActionResult> CreateLesson([FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            //if (!ModelState.IsValid) return BadRequest();
+
+            LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
             var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.GroupId);
+            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.Group.Id);
 
             if (groupDb is null)
                 return NotFound();
 
             lessonDb.Group = groupDb;
 
-            List<string> fileNames = new();
-
-            if(lessonDto.Files is not null)
-            {
-                try
-                {
-                    foreach (var file in lessonDto.Files)
-                    {
-                        var fileName = FileHelper.AddFile(file);
-                        if (fileName is null)
-                            return BadRequest();
-                        fileNames.Add(fileName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                await _lessonService.AddLessonAsync(lessonDb, fileNames);
+            if(lessonAttachmentDto.Files is not null)
+            {           
+                await _lessonService.AddLessonAsync(lessonDb, lessonAttachmentDto.Files);
 
                 return Ok();
             }
@@ -105,22 +91,46 @@ namespace LMS_Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> EditLesson(int id, [FromBody] LessonDTO lessonDto)
+        public async Task<IActionResult> EditLesson(int id, [FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
-            //if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
-            //var subjectDb = await _subjectService.GetSubjectByIdAsync(id);
+            LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
-            //if (subjectDb is null)
-            //    return NotFound();
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
 
-            //subjectDto.Id = subjectDb.Id;
+            if (lessonDb is null)
+                return NotFound();
 
-            //_mapper.Map(subjectDto, subjectDb);
+            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.Group.Id);
 
-            //await _subjectService.EditSubjectAsync(subjectDb);
+            if (groupDb is null)
+                return NotFound();
 
-            //return Ok();
+            lessonDto.Id = lessonDb.Id;
+
+            _mapper.Map(lessonDto, lessonDb);
+
+            lessonDb.Group = groupDb;
+
+            //if (lessonDto.Files is not null)
+            //{
+
+
+            //    return Ok();
+            //}
+
+            List<string> fileNames = new();
+
+            foreach (var materialDto in lessonDto.Materials)
+            {
+                fileNames.Add(materialDto.FileName);
+            }
+            
+            await _lessonService.EditLessonAsync(lessonDb, lessonAttachmentDto.Files, fileNames);
+            
+
+            //await _lessonService.EditLessonAsync(lessonDb);
 
             return Ok();
         }

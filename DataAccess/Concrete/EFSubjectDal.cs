@@ -9,7 +9,6 @@ namespace DataAccess.Concrete
     {
         public EFSubjectDal(AppDbContext context) : base(context)
         {
-
         }
     }
 }

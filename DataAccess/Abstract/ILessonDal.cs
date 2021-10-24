@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Repository;
 using Entities.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DataAccess.Abstract
 {
     public interface ILessonDal:IRepository<Lesson>
     {
-        Task<bool> AddWithFilesAsync(Lesson lesson, List<string> fileNames);
+        Task<bool> AddWithFilesAsync(Lesson lesson, List<IFormFile> files);
+
+        Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames);
     }
 }

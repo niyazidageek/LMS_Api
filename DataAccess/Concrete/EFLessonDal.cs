@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Repository.EFRepository;
 using DataAccess.Abstract;
+using Entities.DTOs;
 using Entities.Models;
 using LMS_Api.Utils;
 using Microsoft.AspNetCore.Http;
@@ -57,21 +58,62 @@ namespace DataAccess.Concrete
             }
         }
 
-        public async Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames)
+        public async Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var existingFileName in existingFileNames)
+                if (existingMaterialsDto is null || existingMaterialsDto.Count == 0)
+                {
+                    var lessonMaterials = await Context.LessonMaterials.Where(lm => lm.LessonId == lesson.Id)
+                        .Include(lm=>lm.Material).ToListAsync();
+
+                    foreach (var lessonMaterial in lessonMaterials)
+                    {
+                        FileHelper.DeleteFile(lessonMaterial.Material.FileName);
+                        Context.Materials.Remove(lessonMaterial.Material);
+                    }
+
+                }
+                    
+
+                foreach (var existingMaterialDto in existingMaterialsDto)
                 {
                     var lessonMaterial = await Context.LessonMaterials
                         .Include(lm => lm.Material)
                         .FirstOrDefaultAsync(lm => lm.LessonId == lesson.Id &&
-                        lm.Material.FileName != existingFileName);
+                        lm.Material.FileName != existingMaterialDto.FileName);
 
                     var materialDb = await Context.Materials.FirstOrDefaultAsync(m => m.Id == lessonMaterial.Material.Id);
+                    FileHelper.DeleteFile(materialDb.FileName);
 
                     Context.Materials.Remove(materialDb);
+                }
+
+                if(files is not null)
+                {
+                    List<LessonMaterial> lessonMaterials = new();
+
+                    foreach (var file in files)
+                    {
+                        var lessonMaterial = new LessonMaterial();
+
+                        var materialDb = new Material();
+
+                        var fileName = FileHelper.AddFile(file);
+
+                        materialDb.FileName = fileName;
+                        await Context.Materials.AddAsync(materialDb);
+                        await Context.SaveChangesAsync();
+
+                        lessonMaterial.Material = materialDb;
+                        lessonMaterial.Lesson = lesson;
+
+                        lessonMaterials.Add(lessonMaterial);
+                    }
+
+                    lesson.LessonMaterials = lessonMaterials;
+
                 }
 
                 Context.Update(lesson);

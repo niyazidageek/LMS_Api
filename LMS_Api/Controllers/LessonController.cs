@@ -64,7 +64,7 @@ namespace LMS_Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateLesson([FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
-            //if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
             LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
@@ -112,26 +112,9 @@ namespace LMS_Api.Controllers
             _mapper.Map(lessonDto, lessonDb);
 
             lessonDb.Group = groupDb;
-
-            //if (lessonDto.Files is not null)
-            //{
-
-
-            //    return Ok();
-            //}
-
-            List<string> fileNames = new();
-
-            foreach (var materialDto in lessonDto.Materials)
-            {
-                fileNames.Add(materialDto.FileName);
-            }
+           
+            await _lessonService.EditLessonAsync(lessonDb, lessonAttachmentDto.Files,  lessonDto.Materials);
             
-            await _lessonService.EditLessonAsync(lessonDb, lessonAttachmentDto.Files, fileNames);
-            
-
-            //await _lessonService.EditLessonAsync(lessonDb);
-
             return Ok();
         }
 

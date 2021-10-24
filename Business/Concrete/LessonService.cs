@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstract;
 using DataAccess.Abstract;
+using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -38,16 +39,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<bool> EditLessonAsync(Lesson lesson)
+        public async Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto)
         {
-            await _conext.UpdateAsync(lesson);
-
-            return true;
-        }
-
-        public async Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames)
-        {
-            await _conext.EditWithFilesAsync(lesson, files, existingFileNames);
+            await _conext.EditWithFilesAsync(lesson, files, existingMaterialsDto);
 
             return true;
         }

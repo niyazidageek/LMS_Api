@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -16,9 +17,7 @@ namespace Business.Abstract
 
         Task<bool> AddLessonAsync(Lesson lesson, List<IFormFile> files);
 
-        Task<bool> EditLessonAsync(Lesson lesson);
-
-        Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<string> existingFileNames);
+        Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto);
 
         Task<bool> DeleteLessonAsync(int id);
     }

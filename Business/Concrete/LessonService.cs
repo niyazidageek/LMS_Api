@@ -34,7 +34,7 @@ namespace Business.Concrete
 
         public async Task<bool> DeleteLessonAsync(int id)
         {
-            await _conext.DeleteAsync(new Lesson { Id = id });
+            await _conext.DeleteWithFilesAsync(new Lesson { Id = id });
 
             return true;
         }

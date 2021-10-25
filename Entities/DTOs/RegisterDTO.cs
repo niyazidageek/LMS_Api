@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Entities.DTOs
@@ -19,5 +20,7 @@ namespace Entities.DTOs
 
         [Required, StringLength(155)]
         public string Password { get; set; }
+
+        public List<string> Roles { get; set; }
     }
 }

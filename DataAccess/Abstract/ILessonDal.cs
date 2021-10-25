@@ -13,5 +13,7 @@ namespace DataAccess.Abstract
         Task<bool> AddWithFilesAsync(Lesson lesson, List<IFormFile> files);
 
         Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto);
+
+        Task<bool> DeleteWithFilesAsync(Lesson lesson);
     }
 }

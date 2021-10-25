@@ -58,6 +58,35 @@ namespace DataAccess.Concrete
             }
         }
 
+        public async Task<bool> DeleteWithFilesAsync(Lesson lesson)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                var lessonMaterialsDb = await Context.LessonMaterials.Where(lm => lm.LessonId == lesson.Id)
+                    .Include(lm => lm.Material)
+                    .ToListAsync();
+
+                foreach (var lessonMaterial in lessonMaterialsDb)
+                {
+                    Context.Materials.Remove(lessonMaterial.Material);
+                    FileHelper.DeleteFile(lessonMaterial.Material.FileName);
+                }
+
+
+                Context.Lessons.Remove(lesson);
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
+        }
+
         public async Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
@@ -75,8 +104,7 @@ namespace DataAccess.Concrete
                     }
 
                 }
-                    
-
+                   
                 foreach (var existingMaterialDto in existingMaterialsDto)
                 {
                     var lessonMaterial = await Context.LessonMaterials

@@ -81,13 +81,79 @@ namespace LMS_Api.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Roles.Student.ToString());
+                await _userManager.AddToRoleAsync(user, nameof(Roles.Student));
 
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 var suceeded = EmailHelper.SendConfirmationEmail(confirmationToken, user.Email, user.Id);
 
                 if(suceeded)
+                    return Ok(new ResponseDTO
+                    {
+                        Status = StatusTypes.Success.ToString(),
+                        Message = $"Student with the username {user.UserName} has succesfully registered"
+                    });
+
+                return BadRequest(new ResponseDTO
+                {
+                    Status = StatusTypes.ConfirmationError.ToString(),
+                    Message = "Confirmation message can't be sent!"
+                });
+            }
+            else
+            {
+                return Unauthorized(new ResponseDTO
+                {
+                    Status = StatusTypes.RegistrationError.ToString(),
+                    Message = "Unexpected error occured!"
+                });
+            }
+        }
+
+        [Authorize(Roles=nameof(Roles.SuperAdmin))]
+        [HttpPost]
+        public async Task<ActionResult> RegisterAdmin([FromBody] RegisterDTO registerDto)
+        {
+            var userWithSameEmail = await _userManager.FindByEmailAsync(registerDto.Email);
+
+            if (userWithSameEmail is not null)
+                return Conflict(new ResponseDTO
+                {
+                    Status = StatusTypes.EmailError.ToString(),
+                    Message = "This email already exists"
+                });
+
+            var userWithSameUsername = await _userManager.FindByNameAsync(registerDto.Username);
+
+            if (userWithSameUsername is not null)
+                return Conflict(new ResponseDTO
+                {
+                    Status = StatusTypes.UsernameError.ToString(),
+                    Message = "This username already exists"
+                });
+
+            var user = new AppUser
+            {
+                UserName = registerDto.Username,
+                Email = registerDto.Email,
+                Name = registerDto.Name,
+                Surname = registerDto.Surname
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if (result.Succeeded)
+            {
+                foreach (var role in registerDto.Roles)
+                {
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var suceeded = EmailHelper.SendConfirmationEmail(confirmationToken, user.Email, user.Id);
+
+                if (suceeded)
                     return Ok(new ResponseDTO
                     {
                         Status = StatusTypes.Success.ToString(),
@@ -142,7 +208,7 @@ namespace LMS_Api.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("uid", user.Id)
-            }
+                }
                 .Union(userClaims)
                 .Union(roleClaims);
 
@@ -165,7 +231,93 @@ namespace LMS_Api.Controllers
                     Status = nameof(StatusTypes.Success),
                     Message = $"User with the username {user.UserName} has successfully logged in!",
                     Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                    ExpiryDate = expiryDate
+                    ExpiryDate = expiryDate,
+                    Roles = (List<string>)roles,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Username = user.UserName
+                });
+            }
+            else
+            {
+                return Unauthorized(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.LoginError),
+                    Message = "Invalid password or email!"
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoginAdmin([FromBody] LoginDTO loginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+            if (user is null)
+                return NotFound(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.LoginError),
+                    Message = "Invalid password or email!"
+                });
+
+            var succeeded = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (succeeded)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var isAdmin = roles.Any(x => x.ToLower() == nameof(Roles.Admin).ToLower()
+                || x.ToLower() == nameof(Roles.SuperAdmin).ToLower());
+
+                if (isAdmin is false)
+                    return Unauthorized(new LoginResponseDTO
+                    {
+                        Status = nameof(StatusTypes.LoginError),
+                        Message = "Invalid password or email!"
+                    });
+
+                var roleClaims = new List<Claim>();
+
+                for (int i = 0; i < roles.Count; i++)
+                {
+                    roleClaims.Add(new Claim("roles", roles[i]));
+                }
+
+                var claims = new[]
+                {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("uid", user.Id)
+                }
+                .Union(userClaims)
+                .Union(roleClaims);
+
+                var expiryDate = DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes);
+
+                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
+
+                var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+                var jwtSecurityToken = new JwtSecurityToken(
+                    issuer: _jwtConfig.Issuer,
+                    audience: _jwtConfig.Audience,
+                    claims: claims,
+                    expires: expiryDate,
+                    signingCredentials: signingCredentials);
+
+
+                return Ok(new LoginResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = $"User with the username {user.UserName} has successfully logged in!",
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                    ExpiryDate = expiryDate,
+                    Roles = (List<string>)roles,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Username = user.UserName
                 });
             }
             else

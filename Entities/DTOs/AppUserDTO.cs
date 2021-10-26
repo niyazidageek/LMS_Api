@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Entities.DTOs
@@ -20,5 +21,7 @@ namespace Entities.DTOs
 
         [Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public List<string> Roles { get; set; }
     }
 }

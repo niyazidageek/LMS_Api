@@ -22,6 +22,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 
 namespace LMS_Api.Controllers
 {
@@ -34,18 +35,30 @@ namespace LMS_Api.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
         public UserController(UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<JWTConfig> jwtConfig,
             TokenValidationParameters tokenValidationParameters,
-            AppDbContext context)
+            AppDbContext context, IMapper mapper)
         {
             _tokenValidationParameters = tokenValidationParameters;
             _jwtConfig = jwtConfig.Value;
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllStudents()
+        {
+            var students = await _userManager.GetUsersInRoleAsync(nameof(Roles.Student));
+
+            var studentsDto = _mapper.Map<List<AppUserDTO>>(students);
+
+            return Ok(studentsDto);
         }
 
         [HttpPost]
@@ -322,6 +335,8 @@ namespace LMS_Api.Controllers
             }
             else
             {
+                string a = "aaa";
+                a.ToLower();
                 return Unauthorized(new LoginResponseDTO
                 {
                     Status = nameof(StatusTypes.LoginError),

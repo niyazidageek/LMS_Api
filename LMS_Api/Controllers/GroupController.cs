@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
 using DataAccess.Concrete;
+using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
@@ -85,8 +86,21 @@ namespace LMS_Api.Controllers
             foreach (var appUserGroup in groupDb.AppUserGroups)
             {
                 AppUserDTO appUserDto = new();
+                var user = await _userManager.FindByIdAsync(appUserGroup.AppUser.Id);
+                var roles = await _userManager.GetRolesAsync(user);
                 _mapper.Map(appUserGroup.AppUser, appUserDto);
-                appUsers.Add(appUserDto);
+                var isTeacher = roles.Any(role => role.ToLower() == nameof(Roles.Teacher).ToLower());
+                appUserDto.Roles = (List<string>)roles;
+
+                if (isTeacher)
+                {
+                    groupDto.Teacher = appUserDto;
+                    continue;
+                }
+                else
+                {
+                    appUsers.Add(appUserDto);
+                }
             }
 
             groupDto.AppUsers = appUsers;

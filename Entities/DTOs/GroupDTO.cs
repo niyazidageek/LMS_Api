@@ -24,5 +24,7 @@ namespace Entities.DTOs
         public int AppUsersCount { get; set; }
 
         public List<AppUserDTO> AppUsers { get; set; }
+
+        public AppUserDTO Teacher { get; set; }
     }
 }

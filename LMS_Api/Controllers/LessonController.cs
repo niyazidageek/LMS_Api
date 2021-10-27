@@ -23,14 +23,15 @@ namespace LMS_Api.Controllers
     {
         private readonly ILessonService _lessonService;
         private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
+        private readonly IGroupService _groupService;
 
-        public LessonController(ILessonService lessonService, IMapper mapper,
-            AppDbContext context)
+        public LessonController(ILessonService lessonService,
+            IMapper mapper,
+            IGroupService groupService)
         {
             _lessonService = lessonService;
             _mapper = mapper;
-            _context = context;
+            _groupService = groupService;
         }
 
         [HttpGet]
@@ -70,7 +71,7 @@ namespace LMS_Api.Controllers
 
             var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.Group.Id);
+            var groupDb = await _groupService.GetGroupByIdAsync(lessonDto.Group.Id);
 
             if (groupDb is null)
                 return NotFound();
@@ -78,8 +79,9 @@ namespace LMS_Api.Controllers
             lessonDb.Group = groupDb;
 
             if(lessonAttachmentDto.Files is not null)
-            {           
-                await _lessonService.AddLessonAsync(lessonDb, lessonAttachmentDto.Files);
+            {
+                lessonDb.Files = lessonAttachmentDto.Files;
+                await _lessonService.AddLessonWithFilesAsync(lessonDb);
 
                 return Ok();
             }
@@ -102,7 +104,7 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
-            var groupDb = await _context.Groups.FirstOrDefaultAsync(g => g.Id == lessonDto.Group.Id);
+            var groupDb = await _groupService.GetGroupByIdAsync(lessonDto.Group.Id);
 
             if (groupDb is null)
                 return NotFound();
@@ -112,8 +114,30 @@ namespace LMS_Api.Controllers
             _mapper.Map(lessonDto, lessonDb);
 
             lessonDb.Group = groupDb;
-           
-            await _lessonService.EditLessonAsync(lessonDb, lessonAttachmentDto.Files,  lessonDto.Materials);
+
+            if (lessonDto.Materials.Count is not 0)
+            {
+                var existingFileNames = new List<string>();
+
+                foreach (var materialDto in lessonDto.Materials)
+                {
+                    existingFileNames.Add(materialDto.FileName); 
+                }
+
+                lessonDb.ExistingFileNames = existingFileNames;
+            }
+
+            if(lessonAttachmentDto.Files is not null)
+            {
+                lessonDb.Files = lessonAttachmentDto.Files;
+
+                 await _lessonService.EditLessonWithFilesAsync(lessonDb);
+
+                return Ok();
+            }
+
+
+            await _lessonService.EditLessonAsync(lessonDb);
             
             return Ok();
         }

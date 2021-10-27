@@ -25,9 +25,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<bool> AddLessonAsync(Lesson lesson, List<IFormFile> files)
+        public async Task<bool> AddLessonWithFilesAsync(Lesson lesson)
         {
-            await _conext.AddWithFilesAsync(lesson, files);
+            await _conext.AddWithFilesAsync(lesson);
 
             return true;
         }
@@ -39,9 +39,16 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<bool> EditLessonAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto)
+        public async Task<bool> EditLessonWithFilesAsync(Lesson lesson)
         {
-            await _conext.EditWithFilesAsync(lesson, files, existingMaterialsDto);
+            await _conext.EditWithFilesAsync(lesson);
+
+            return true;
+        }
+
+        public async Task<bool> EditLessonAsync(Lesson lesson)
+        {
+            await _conext.EditAsync(lesson);
 
             return true;
         }

@@ -22,16 +22,16 @@ namespace LMS_Api.Controllers
     {
         private readonly IGroupService _groupService;
         private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
+        private readonly ISubjectService _subjectService;
         private readonly UserManager<AppUser> _userManager;
 
         public GroupController(IGroupService groupService, IMapper mapper,
-            UserManager<AppUser> userManager, AppDbContext context)
+            UserManager<AppUser> userManager, ISubjectService subjectService)
         {
             _groupService = groupService;
             _mapper = mapper;
+            _subjectService = subjectService;
             _userManager = userManager;
-            _context = context;
         }
 
         [HttpGet]
@@ -118,7 +118,7 @@ namespace LMS_Api.Controllers
            
             var groupDb = _mapper.Map<GroupDTO, Group>(groupDto);
 
-            var subjectDb = await _context.Subjects.FirstOrDefaultAsync(s => s.Id == groupDto.Subject.Id);
+            var subjectDb = await _subjectService.GetSubjectByIdAsync(groupDto.Subject.Id);
 
             groupDb.Subject = subjectDb;
 
@@ -157,7 +157,7 @@ namespace LMS_Api.Controllers
             if (groupDb is null)
                 return NotFound();
 
-            var subjectDb = await _context.Subjects.FirstOrDefaultAsync(s => s.Id == groupDto.Subject.Id);
+            var subjectDb = await _subjectService.GetSubjectByIdAsync(groupDto.Subject.Id);
 
             if (subjectDb is null)
                 return NotFound();

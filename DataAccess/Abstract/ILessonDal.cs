@@ -10,9 +10,11 @@ namespace DataAccess.Abstract
 {
     public interface ILessonDal:IRepository<Lesson>
     {
-        Task<bool> AddWithFilesAsync(Lesson lesson, List<IFormFile> files);
+        Task<bool> AddWithFilesAsync(Lesson lesson);
 
-        Task<bool> EditWithFilesAsync(Lesson lesson, List<IFormFile> files, List<MaterialDTO> existingMaterialsDto);
+        Task<bool> EditWithFilesAsync(Lesson lesson);
+
+        Task<bool> EditAsync(Lesson lesson);
 
         Task<bool> DeleteWithFilesAsync(Lesson lesson);
     }

@@ -34,20 +34,18 @@ namespace LMS_Api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
         public UserController(UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<JWTConfig> jwtConfig,
             TokenValidationParameters tokenValidationParameters,
-            AppDbContext context, IMapper mapper)
+            IMapper mapper)
         {
             _tokenValidationParameters = tokenValidationParameters;
             _jwtConfig = jwtConfig.Value;
             _userManager = userManager;
             _roleManager = roleManager;
-            _context = context;
             _mapper = mapper;
         }
 

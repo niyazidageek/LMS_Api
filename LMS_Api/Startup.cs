@@ -55,8 +55,8 @@ namespace LMS_Api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Book API",
-                    Description = "Book API"
+                    Title = "LMS API",
+                    Description = "API for a Learning Management System"
                 });
             });
 

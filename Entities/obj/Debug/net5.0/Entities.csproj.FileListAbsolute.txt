@@ -12,3 +12,4 @@
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.dll
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/ref/Entities.dll
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.csproj.CopyComplete

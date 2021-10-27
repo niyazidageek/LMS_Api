@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Repository.EFRepository;
 using DataAccess.Abstract;
@@ -47,6 +48,41 @@ namespace DataAccess.Concrete
                 }
 
                 await Context.Questions.AddAsync(question);
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteWithAsync(Question question)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                var optionsDb = await Context.Options.Where(o => o.Question.Id == question.Id)
+                    .Include(o=>o.Material)
+                    .ToListAsync();
+
+                if (optionsDb is not null)
+                {
+                    foreach (var optionDb in optionsDb)
+                    {
+                        //var fileDb = await Context.Materials
+                        //    .FirstOrDefaultAsync(m=>m.FileName == optionDb.Material.FileName);
+                        Context.Options.Remove(optionDb);
+                    }
+                }
+
+                var questionDb = await Context.Questions.Include(q => q.Material)
+                    .FirstOrDefaultAsync(q=>q.Id == question.Id);
+
+                Context.Questions.Remove(questionDb);
                 await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
 

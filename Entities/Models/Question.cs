@@ -1,10 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Core.Entities;
+using Microsoft.AspNetCore.Http;
+
 namespace Entities.Models
 {
-    public class Question
+    public class Question : IEntity
     {
-        public Question()
-        {
-        }
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public decimal Point { get; set; }
+
+        public Quiz Quiz { get; set; }
+
+        public Material Material { get; set; }
+
+        public List<Option> Options { get; set; }
+
+        [NotMapped]
+        public IFormFile File { get; set; }
+
+        [NotMapped]
+        public string ExistingFileName { get; set; }
     }
 }

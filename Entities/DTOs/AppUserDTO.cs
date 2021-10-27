@@ -10,16 +10,16 @@ namespace Entities.DTOs
         [Required]
         public string Id { get; set; }
 
-        [Required, StringLength(255)]
+        //[Required, StringLength(255)]
         public string Name { get; set; }
 
-        [Required, StringLength(255)]
+        //[Required, StringLength(255)]
         public string Surname { get; set; }
 
-        [Required, StringLength(255)]
+        //[Required, StringLength(255)]
         public string Username { get; set; }
 
-        [Required, DataType(DataType.EmailAddress)]
+        //[Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public List<string> Roles { get; set; }

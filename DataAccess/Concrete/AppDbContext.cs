@@ -37,5 +37,13 @@ namespace DataAccess.Concrete
         public DbSet<Material> Materials { get; set; }
 
         public DbSet<LessonMaterial> LessonMaterials { get; set; }
+
+        public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Quiz> Quizzes { get; set; }
+
+        public DbSet<Option> Options { get; set; }
+
+        public AppUserQuiz AppUserQuizzes { get; set; }
     }
 }

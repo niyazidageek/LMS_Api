@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -149,7 +150,7 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> EditGroup(int id, [FromBody] GroupDTO groupDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            //if (!ModelState.IsValid) return BadRequest();
 
             var groupDb = await _groupService.GetGroupByIdAsync(id);
 
@@ -162,9 +163,10 @@ namespace LMS_Api.Controllers
                 return NotFound();
 
             groupDto.Id = groupDb.Id;
+            _mapper.Map(groupDto, groupDb);
             groupDb.Subject = subjectDb;
 
-            _mapper.Map(groupDto, groupDb);
+           
 
             if(groupDto.AppUsers is not null)
             {
@@ -184,7 +186,11 @@ namespace LMS_Api.Controllers
 
             await _groupService.EditGroupAsync(groupDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message = "Group has been successfully edited!"
+            });
         }
 
         [HttpDelete]

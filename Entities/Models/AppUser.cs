@@ -16,5 +16,7 @@ namespace Entities.Models
         public string Surname { get; set; }
 
         public List<AppUserGroup> AppUserGroups { get; set; }
+
+        public List<AppUserQuiz> AppUserQuizzes { get; set; }
     }
 }

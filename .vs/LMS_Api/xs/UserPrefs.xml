@@ -1,20 +1,24 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Business/Abstract/IQuestionService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/QuestionController.cs">
     <Files>
-      <File FileName="DataAccess/Abstract/IQuestionDal.cs" Line="15" Column="1" />
-      <File FileName="DataAccess/Concrete/EFQuestionDal.cs" Line="66" Column="32" />
-      <File FileName="Business/Concrete/QuestionService.cs" Line="1" Column="1" />
-      <File FileName="Business/Abstract/IQuestionService.cs" Line="1" Column="1" />
-      <File FileName="Core/Repository/EFRepository/EFRepositoryBase.cs" Line="53" Column="14" />
+      <File FileName="DataAccess/Abstract/IQuestionDal.cs" Line="13" Column="67" />
+      <File FileName="DataAccess/Concrete/EFQuestionDal.cs" Line="84" Column="38" />
+      <File FileName="Business/Concrete/QuestionService.cs" Line="61" Column="66" />
+      <File FileName="Business/Abstract/IQuestionService.cs" Line="16" Column="56" />
+      <File FileName="LMS_Api/Controllers/QuestionController.cs" Line="50" Column="1" />
+      <File FileName="Core/Repository/EFRepository/EFRepositoryBase.cs" Line="62" Column="1" />
+      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="36" Column="1" />
+      <File FileName="Entities/Models/Question.cs" Line="9" Column="29" />
+      <File FileName="Entities/Models/Option.cs" />
+      <File FileName="Entities/DTOs/OptionDTO.cs" Line="1" Column="1" />
+      <File FileName="Entities/DTOs/QuestionDTO.cs" Line="14" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="LMS_Api" expanded="True">
             <Node name="Business" expanded="True">
-              <Node name="Abstract" expanded="True">
-                <Node name="IQuestionService.cs" selected="True" />
-              </Node>
+              <Node name="Abstract" expanded="True" />
               <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Core" expanded="True">
@@ -24,6 +28,7 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
+              <Node name="AutoMapper" expanded="True" />
               <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
@@ -31,7 +36,9 @@
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="QuestionController.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

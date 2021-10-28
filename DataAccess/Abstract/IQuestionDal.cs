@@ -8,9 +8,16 @@ namespace DataAccess.Abstract
 {
     public interface IQuestionDal: IRepository<Question>
     {
-        public Task<bool> AddAsync(Question question, List<Option> options);
+        public Task<List<Question>> GetQuestionsWithOptionsAsync();
 
-        public Task<bool> UpdateAsync(Question question, List<Option> options);
+        public Task<Question> GetQuestionWithOptionsAsync(int id);
 
+        public Task<bool> AddWithFileAsync(Question question);
+
+        public Task<bool> UpdateWithFileAsync(Question question);
+
+        public Task<bool> UpdateWithoutFileAsync(Question question);
+
+        public Task<bool> DeleteWithOptionsAsync(Question question);
     }
 }

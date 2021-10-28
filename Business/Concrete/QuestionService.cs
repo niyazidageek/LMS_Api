@@ -16,31 +16,52 @@ namespace Business.Concrete
             _context = context;
         }
 
-        public async Task<bool> AddQuestionAsync(Question question, List<Option> options)
+        public async Task<bool> AddQuestionWihtFileAsync(Question question)
         {
-            await _context.AddAsync(question, options);
+            await _context.AddWithFileAsync(question);
+
+            return true;
+        }
+
+        public async Task<bool> AddQuestionAsync(Question question)
+        {
+            await _context.AddAsync(question);
 
             return true;
         }
 
         public async Task<bool> DeleteQuestionAsync(int id)
         {
-            throw new NotImplementedException();
+            await _context.DeleteWithOptionsAsync(new Question { Id = id });
+
+            return true;
         }
 
-        public async Task<bool> EditQuestionAsync(Question question, List<Option> options)
+        public async Task<bool> EditQuestionWithFileAsync(Question question)
         {
-            await _context.UpdateAsync(question, options);
+            await _context.UpdateAsync(question);
+
+            return true;
+        }
+
+        public async Task<bool> EditQuestionWithoutFileAsync(Question question)
+        {
+            await _context.UpdateWithoutFileAsync(question);
 
             return true;
         }
 
         public async Task<Question> GetQuestionByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.GetQuestionWithOptionsAsync(id);
         }
 
-        public Task<List<Question>> GetQuestionsAsync()
+        public async Task<List<Question>> GetQuestionsAsync()
+        {
+            return await _context.GetQuestionsWithOptionsAsync();
+        }
+
+        public Task<bool> AddQuestionWithFileAsync(Question question)
         {
             throw new NotImplementedException();
         }

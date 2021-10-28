@@ -11,9 +11,13 @@ namespace Business.Abstract
 
         Task<Question> GetQuestionByIdAsync(int id);
 
-        Task<bool> AddQuestionAsync(Question question, List<Option> options);
+        Task<bool> AddQuestionWithFileAsync(Question question);
 
-        Task<bool> EditQuestionAsync(Question question, List<Option> options);
+        Task<bool> AddQuestionAsync(Question question);
+
+        Task<bool> EditQuestionWithFileAsync(Question question);
+
+        Task<bool> EditQuestionWithoutFileAsync(Question question);
 
         Task<bool> DeleteQuestionAsync(int id);
     }

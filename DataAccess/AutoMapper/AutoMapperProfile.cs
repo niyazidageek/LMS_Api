@@ -12,7 +12,6 @@ namespace DataAccess.AutoMapper
     {
         public AutoMapperProfile()
         {
-
             CreateMap<GroupDTO, Group>().ReverseMap();
 
             CreateMap<Subject, SubjectDTO>().ReverseMap();
@@ -20,6 +19,12 @@ namespace DataAccess.AutoMapper
             CreateMap<AppUser, AppUserDTO>().ReverseMap();
 
             CreateMap<Lesson, LessonDTO>().ReverseMap();
+
+            CreateMap<Question, QuestionDTO>().ReverseMap();
+
+            CreateMap<Option, OptionDTO>().ReverseMap();
+
+            CreateMap<Material, MaterialDTO>().ReverseMap();
         }
     }
 }

@@ -16,37 +16,20 @@ namespace DataAccess.Concrete
         {
         }
 
-        public async Task<bool> AddAsync(Question question, List<Option> options)
+        public async Task<bool> AddWithFileAsync(Question question)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                if(question.File is not null)
-                {
-                    var materialDb = new Material();
+                var materialDb = new Material();
 
-                    var fileName = FileHelper.AddFile(question.File);
-                    materialDb.FileName = fileName;
+                var fileName = FileHelper.AddFile(question.File);
+                materialDb.FileName = fileName;
 
-                    await Context.Materials.AddAsync(materialDb);
+                await Context.Materials.AddAsync(materialDb);
 
-                    question.Material = materialDb;
-                }
-
-                foreach (var option in options)
-                {
-                    var materialDb = new Material();
-
-                    var fileName = FileHelper.AddFile(option.File);
-                    materialDb.FileName = fileName;
-
-                    await Context.Materials.AddAsync(materialDb);
-
-                    option.Material = materialDb;
-
-                    await Context.Options.AddAsync(option);
-                }
-
+                question.Material = materialDb;
+               
                 await Context.Questions.AddAsync(question);
                 await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
@@ -60,7 +43,7 @@ namespace DataAccess.Concrete
             }
         }
 
-        public async Task<bool> DeleteWithAsync(Question question)
+        public async Task<bool> DeleteWithOptionsAsync(Question question)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
@@ -95,61 +78,66 @@ namespace DataAccess.Concrete
             }
         }
 
-        public async Task<bool> UpdateAsync(Question question, List<Option> options)
+        public async Task<List<Question>> GetQuestionsWithOptionsAsync()
+        {
+            return await Context.Questions.Include(q => q.Material)
+                .Include(q => q.Options)
+                .ThenInclude(o => o.Material)
+                .ToListAsync();
+        }
+
+        public async Task<Question> GetQuestionWithOptionsAsync(int id)
+        {
+            return await Context.Questions.Include(q => q.Material)
+                .Include(q => q.Options)
+                .ThenInclude(o => o.Material)
+                .FirstOrDefaultAsync(q => q.Id == id);
+        }
+
+        public async Task<bool> UpdateWithFileAsync(Question question)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
+                var materialDb = new Material();
 
-                if(question.File is not null)
-                {
-                    var materialDb = new Material();
-                    var fileName = FileHelper.AddFile(question.File);
-                    materialDb.FileName = fileName;
+                var fileName = FileHelper.AddFile(question.File);
+                materialDb.FileName = fileName;
 
+                var existingMaterialDb = await Context.Materials
+                    .FirstOrDefaultAsync(m => m.FileName == question.ExistingFileName);
 
-                    Context.Materials.Remove(question.Material);
-                    await Context.Materials.AddAsync(materialDb);
+                Context.Materials.Remove(existingMaterialDb);
+                FileHelper.DeleteFile(existingMaterialDb.FileName);
 
-                    question.Material = materialDb;
-                }
+                await Context.Materials.AddAsync(materialDb);
 
-                if(question.ExistingFileName is null)
-                {
-                    var materialDb = await Context.Materials
-                        .FirstOrDefaultAsync(m => m.Id == question.Material.Id);
+                question.Material = materialDb;
+              
+                Context.Questions.Update(question);
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
 
-                    if(materialDb is not null)
-                    {
-                        FileHelper.DeleteFile(materialDb.FileName);
-                        Context.Materials.Remove(materialDb);
-                    }
-                }
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
+        }
 
-                foreach (var option in options)
-                {
-                    if(option.File is not null)
-                    {
-                        var materialDb = new Material();
-                        var fileName = FileHelper.AddFile(option.File);
-                        materialDb.FileName = fileName;
+        public async Task<bool> UpdateWithoutFileAsync(Question question)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+              
+               var existingMaterialDb = await Context.Materials
+                    .FirstOrDefaultAsync(m => m.FileName == question.ExistingFileName);
 
-                        Context.Materials.Remove(option.Material);
-                        await Context.Materials.AddAsync(materialDb);
-                    }
-
-                    if(option.ExistingFileName is null)
-                    {
-                        var materialDb = await Context.Materials
-                            .FirstOrDefaultAsync(m => m.Id == option.Material.Id);
-
-                        if(materialDb is not null)
-                        {
-                            FileHelper.DeleteFile(materialDb.FileName);
-                            Context.Materials.Remove(materialDb);
-                        }
-                    }
-                }
+                Context.Materials.Remove(existingMaterialDb);
+                FileHelper.DeleteFile(existingMaterialDb.FileName);
 
                 Context.Questions.Update(question);
                 await Context.SaveChangesAsync();

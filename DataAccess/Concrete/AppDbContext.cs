@@ -44,6 +44,6 @@ namespace DataAccess.Concrete
 
         public DbSet<Option> Options { get; set; }
 
-        public AppUserQuiz AppUserQuizzes { get; set; }
+        public DbSet<AppUserQuiz> AppUserQuizzes { get; set; }
     }
 }

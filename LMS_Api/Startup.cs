@@ -96,6 +96,9 @@ namespace LMS_Api
 
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<ILessonDal, EFLessonDal>();
+
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IQuestionDal, EFQuestionDal>();
         }
 
 

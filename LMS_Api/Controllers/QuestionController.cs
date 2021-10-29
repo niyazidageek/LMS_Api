@@ -38,6 +38,20 @@ namespace LMS_Api.Controllers
             return Ok(questionsDto);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetQuestionById(int id)
+        {
+            var questionDb = await _questionService.GetQuestionByIdAsync(id);
+
+            if (questionDb is null)
+                return NotFound();
+
+            var questionDto = _mapper.Map<QuestionDTO>(questionDb);
+
+            return Ok(questionDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateQuestion([FromForm] QuestionAttachmentDTO questionAttachmentDto)
         {
@@ -72,12 +86,11 @@ namespace LMS_Api.Controllers
 
             questionDto.Id = questionDb.Id;
 
-            var materialDb = questionDb.Material;
+            var fileName = questionDb.FileName;
 
             _mapper.Map(questionDto, questionDb);
 
-            questionDb.Material = materialDb;
-
+            questionDb.FileName = fileName;
 
             if (questionAttachmentDto.QuestionFile is not null)
             {
@@ -87,7 +100,7 @@ namespace LMS_Api.Controllers
 
                 return Ok();
             }
-            else if (questionDto.Material is not null)
+            else if (questionDto.FileName is not null)
             {
                 await _questionService.EditQuestionAsync(questionDb);
 
@@ -95,7 +108,7 @@ namespace LMS_Api.Controllers
             }
             else
             {
-                if (questionDb.Material is not null)
+                if (questionDb.FileName is not null)
                 {
                     await _questionService.EditQuestionWithoutFileAsync(questionDb);
 

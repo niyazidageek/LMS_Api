@@ -11,6 +11,8 @@ namespace Entities.DTOs
 
         public decimal Point { get; set; }
 
-        public MaterialDTO Material { get; set; }
+        public List<OptionDTO> Options { get; set; }
+
+        public string FileName { get; set; }
     }
 }

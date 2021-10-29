@@ -13,15 +13,11 @@ namespace Entities.Models
 
         public bool IsCorrect { get; set; }
 
-        public Material Material { get; set; }
+        public string FileName { get; set; }
 
         public Question Question { get; set; }
 
         [NotMapped]
         public IFormFile File { get; set; }
-
-        [NotMapped]
-
-        public string ExistingFileName { get; set; }
     }
 }

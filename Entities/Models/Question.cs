@@ -16,7 +16,7 @@ namespace Entities.Models
 
         public Quiz Quiz { get; set; }
 
-        public Material Material { get; set; }
+        public string FileName { get; set; }
 
         public List<Option> Options { get; set; }
 

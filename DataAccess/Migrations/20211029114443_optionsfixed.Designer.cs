@@ -4,14 +4,16 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211029114443_optionsfixed")]
+    partial class optionsfixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,11 +245,11 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("MaterialId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -256,6 +258,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
 
                     b.HasIndex("QuestionId");
 
@@ -269,8 +273,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("MaterialId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -282,6 +286,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
 
                     b.HasIndex("QuizId");
 
@@ -529,18 +535,30 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Option", b =>
                 {
+                    b.HasOne("Entities.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId");
+
                     b.HasOne("Entities.Models.Question", "Question")
                         .WithMany("Options")
                         .HasForeignKey("QuestionId");
+
+                    b.Navigation("Material");
 
                     b.Navigation("Question");
                 });
 
             modelBuilder.Entity("Entities.Models.Question", b =>
                 {
+                    b.HasOne("Entities.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId");
+
                     b.HasOne("Entities.Models.Quiz", "Quiz")
                         .WithMany()
                         .HasForeignKey("QuizId");
+
+                    b.Navigation("Material");
 
                     b.Navigation("Quiz");
                 });

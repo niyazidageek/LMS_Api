@@ -62,10 +62,16 @@ namespace DataAccess.Concrete
                     }
                 }
 
-                var questionDb = await Context.Questions.Include(q => q.Material)
-                    .FirstOrDefaultAsync(q=>q.Id == question.Id);
+                //var questionDb = await Context.Questions.Include(q => q.Material)
+                //    .FirstOrDefaultAsync(q=>q.Id == question.Id);
 
-                Context.Questions.Remove(questionDb);
+                if (question.Material is not null)
+                {
+                    FileHelper.DeleteFile(question.Material.FileName);
+                    Context.Materials.Remove(question.Material);
+                }
+
+                Context.Questions.Remove(question);
                 await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
 

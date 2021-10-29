@@ -43,11 +43,11 @@ namespace LMS_Api.Controllers
         {
             QuestionDTO questionDto = JsonConvert.DeserializeObject<QuestionDTO>(questionAttachmentDto.Values);
 
-            var questionDb =  _mapper.Map<Question>(questionDto);
+            var questionDb = _mapper.Map<Question>(questionDto);
 
             questionDb.File = questionAttachmentDto.QuestionFile;
 
-            if(questionAttachmentDto.QuestionFile is not null)
+            if (questionAttachmentDto.QuestionFile is not null)
             {
                 await _questionService.AddQuestionWithFileAsync(questionDb);
 
@@ -73,7 +73,7 @@ namespace LMS_Api.Controllers
             questionDto.Id = questionDb.Id;
 
             var materialDb = questionDb.Material;
-           
+
             _mapper.Map(questionDto, questionDb);
 
             questionDb.Material = materialDb;
@@ -107,30 +107,22 @@ namespace LMS_Api.Controllers
 
                     return Ok();
                 }
-                
+
             }
+        }
 
-            //if (questionDto.Material is not null)
-            //{
-            //    await _questionService.EditQuestionAsync(questionDb);
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> DeleteQuestion(int id)
+        {
+            var questionDb = await _questionService.GetQuestionByIdAsync(id);
 
-            //    return Ok();
-            //}
+            if (questionDb is null)
+                return NotFound();
 
-            //questionDb.Material = materialDb;
+            await _questionService.DeleteQuestionAsync(questionDb);
 
-            
-
-            //if(questionDb.Material is not null)
-            //{
-            //    await _questionService.EditQuestionWithoutFileAsync(questionDb);
-
-            //    return Ok();
-            //}
-            
-            //await _questionService.EditQuestionAsync(questionDb);
-
-            //return Ok();
+            return Ok();
         }
     }
 }

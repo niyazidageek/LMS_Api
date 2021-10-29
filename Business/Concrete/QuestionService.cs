@@ -30,9 +30,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<bool> DeleteQuestionAsync(int id)
+        public async Task<bool> DeleteQuestionAsync(Question question)
         {
-            await _context.DeleteWithOptionsAsync(new Question { Id = id });
+            await _context.DeleteWithOptionsAsync(question);
 
             return true;
         }

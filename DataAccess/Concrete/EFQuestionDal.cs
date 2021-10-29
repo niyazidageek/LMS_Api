@@ -104,11 +104,15 @@ namespace DataAccess.Concrete
                 var fileName = FileHelper.AddFile(question.File);
                 materialDb.FileName = fileName;
 
-                var existingMaterialDb = await Context.Materials
-                    .FirstOrDefaultAsync(m => m.FileName == question.ExistingFileName);
 
-                Context.Materials.Remove(existingMaterialDb);
-                FileHelper.DeleteFile(existingMaterialDb.FileName);
+                if (question.Material is not null)
+                {
+                    var existingMaterialDb = await Context.Materials
+                    .FirstOrDefaultAsync(m => m.FileName == question.Material.FileName);
+
+                    Context.Materials.Remove(existingMaterialDb);
+                    FileHelper.DeleteFile(existingMaterialDb.FileName);
+                }
 
                 await Context.Materials.AddAsync(materialDb);
 
@@ -132,11 +136,12 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-              
-               var existingMaterialDb = await Context.Materials
-                    .FirstOrDefaultAsync(m => m.FileName == question.ExistingFileName);
+                
+                var existingMaterialDb = await Context.Materials
+                            .FirstOrDefaultAsync(m => m.FileName == question.Material.FileName);
 
                 Context.Materials.Remove(existingMaterialDb);
+                await Context.SaveChangesAsync();
                 FileHelper.DeleteFile(existingMaterialDb.FileName);
 
                 Context.Questions.Update(question);

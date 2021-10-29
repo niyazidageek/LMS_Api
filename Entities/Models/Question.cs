@@ -22,8 +22,5 @@ namespace Entities.Models
 
         [NotMapped]
         public IFormFile File { get; set; }
-
-        [NotMapped]
-        public string ExistingFileName { get; set; }
     }
 }

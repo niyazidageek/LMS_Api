@@ -16,7 +16,7 @@ namespace Business.Concrete
             _context = context;
         }
 
-        public async Task<bool> AddQuestionWihtFileAsync(Question question)
+        public async Task<bool> AddQuestionWithFileAsync(Question question)
         {
             await _context.AddWithFileAsync(question);
 
@@ -39,7 +39,7 @@ namespace Business.Concrete
 
         public async Task<bool> EditQuestionWithFileAsync(Question question)
         {
-            await _context.UpdateAsync(question);
+            await _context.UpdateWithFileAsync(question);
 
             return true;
         }
@@ -61,9 +61,11 @@ namespace Business.Concrete
             return await _context.GetQuestionsWithOptionsAsync();
         }
 
-        public Task<bool> AddQuestionWithFileAsync(Question question)
+        public async Task<bool> EditQuestionAsync(Question question)
         {
-            throw new NotImplementedException();
+            await _context.UpdateAsync(question);
+
+            return true;
         }
     }
 }

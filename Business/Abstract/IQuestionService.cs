@@ -20,5 +20,7 @@ namespace Business.Abstract
         Task<bool> EditQuestionWithoutFileAsync(Question question);
 
         Task<bool> DeleteQuestionAsync(int id);
+
+        Task<bool> EditQuestionAsync(Question question);
     }
 }

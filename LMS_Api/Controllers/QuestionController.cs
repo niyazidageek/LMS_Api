@@ -45,6 +45,8 @@ namespace LMS_Api.Controllers
 
             var questionDb =  _mapper.Map<Question>(questionDto);
 
+            questionDb.File = questionAttachmentDto.QuestionFile;
+
             if(questionAttachmentDto.QuestionFile is not null)
             {
                 await _questionService.AddQuestionWithFileAsync(questionDb);
@@ -54,7 +56,81 @@ namespace LMS_Api.Controllers
 
             await _questionService.AddQuestionAsync(questionDb);
 
-            return Ok(questionDb);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult> EditQuestion([FromForm] QuestionAttachmentDTO questionAttachmentDto, int id)
+        {
+            QuestionDTO questionDto = JsonConvert.DeserializeObject<QuestionDTO>(questionAttachmentDto.Values);
+
+            var questionDb = await _questionService.GetQuestionByIdAsync(id);
+
+            if (questionDb is null)
+                return NotFound();
+
+            questionDto.Id = questionDb.Id;
+
+            var materialDb = questionDb.Material;
+           
+            _mapper.Map(questionDto, questionDb);
+
+            questionDb.Material = materialDb;
+
+
+            if (questionAttachmentDto.QuestionFile is not null)
+            {
+                questionDb.File = questionAttachmentDto.QuestionFile;
+
+                await _questionService.EditQuestionWithFileAsync(questionDb);
+
+                return Ok();
+            }
+            else if (questionDto.Material is not null)
+            {
+                await _questionService.EditQuestionAsync(questionDb);
+
+                return Ok();
+            }
+            else
+            {
+                if (questionDb.Material is not null)
+                {
+                    await _questionService.EditQuestionWithoutFileAsync(questionDb);
+
+                    return Ok();
+                }
+                else
+                {
+                    await _questionService.EditQuestionAsync(questionDb);
+
+                    return Ok();
+                }
+                
+            }
+
+            //if (questionDto.Material is not null)
+            //{
+            //    await _questionService.EditQuestionAsync(questionDb);
+
+            //    return Ok();
+            //}
+
+            //questionDb.Material = materialDb;
+
+            
+
+            //if(questionDb.Material is not null)
+            //{
+            //    await _questionService.EditQuestionWithoutFileAsync(questionDb);
+
+            //    return Ok();
+            //}
+            
+            //await _questionService.EditQuestionAsync(questionDb);
+
+            //return Ok();
         }
     }
 }

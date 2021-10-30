@@ -42,13 +42,11 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                var optionsDb = await Context.Options
-                    .Where(o => o.Question.Id == question.Id)
-                    .ToListAsync();
+                
 
-                if (optionsDb is not null)
+                if (question.Options is not null)
                 {
-                    foreach (var optionDb in optionsDb)
+                    foreach (var optionDb in question.Options)
                     {
                         
                         if(optionDb.FileName is not null)

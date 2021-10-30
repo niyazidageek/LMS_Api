@@ -1,10 +1,20 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/OptionController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Startup.cs">
     <Files>
-      <File FileName="Entities/Models/Option.cs" Line="8" Column="18" />
-      <File FileName="LMS_Api/Controllers/OptionController.cs" Line="57" Column="18" />
-      <File FileName="DataAccess/Concrete/EFOptionDal.cs" Line="108" Column="72" />
-      <File FileName="DataAccess/Concrete/EFQuestionDal.cs" Line="139" Column="18" />
+      <File FileName="DataAccess/Abstract/IQuizDal.cs" Line="9" Column="6" />
+      <File FileName="DataAccess/Abstract/IQuestionDal.cs" Line="9" Column="57" />
+      <File FileName="DataAccess/Concrete/EFQuizDal.cs" Line="12" Column="72" />
+      <File FileName="DataAccess/Concrete/EFQuestionDal.cs" Line="11" Column="30" />
+      <File FileName="Business/Abstract/IQuizService.cs" Line="19" Column="1" />
+      <File FileName="Business/Concrete/QuizService.cs" Line="38" Column="10" />
+      <File FileName="Business/Concrete/SubjectService.cs" Line="10" Column="43" />
+      <File FileName="Business/Abstract/ISubjectService.cs" Line="18" Column="47" />
+      <File FileName="LMS_Api/Controllers/QuizController.cs" Line="42" Column="52" />
+      <File FileName="Entities/DTOs/QuizDTO.cs" Line="1" Column="1" />
+      <File FileName="LMS_Api/Controllers/SubjectController.cs" Line="68" Column="24" />
+      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="1" Column="1" />
+      <File FileName="DataAccess/AutoMapper/AutoMapperProfile.cs" Line="1" Column="1" />
+      <File FileName="LMS_Api/Startup.cs" Line="106" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -29,9 +39,8 @@
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="OptionController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Startup.cs" selected="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>

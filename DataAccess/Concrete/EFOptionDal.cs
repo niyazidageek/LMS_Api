@@ -69,7 +69,6 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-
                 if (option.FileName is not null)
                 {
                     FileHelper.DeleteFile(option.FileName);
@@ -79,7 +78,6 @@ namespace DataAccess.Concrete
 
                 option.FileName = fileName;
 
-                
                 Context.Options.Update(option);
                 await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
@@ -98,8 +96,18 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                FileHelper.DeleteFile(option.FileName);
-                option.FileName = null;
+                var existingOption = await Context.Options
+                     .AsNoTracking()
+                     .FirstOrDefaultAsync(o => o.Id == option.Id);
+
+
+                if (option.FileName is null)
+                {
+                    if (existingOption.FileName is not null)
+                    {
+                        FileHelper.DeleteFile(existingOption.FileName);
+                    }
+                }
 
                 Context.Options.Update(option);
                 await Context.SaveChangesAsync();

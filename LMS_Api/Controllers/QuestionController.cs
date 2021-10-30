@@ -86,11 +86,11 @@ namespace LMS_Api.Controllers
 
             questionDto.Id = questionDb.Id;
 
-            var fileName = questionDb.FileName;
+            //var fileName = questionDb.FileName;
 
             _mapper.Map(questionDto, questionDb);
 
-            questionDb.FileName = fileName;
+            //questionDb.FileName = fileName;
 
             if (questionAttachmentDto.QuestionFile is not null)
             {
@@ -100,28 +100,13 @@ namespace LMS_Api.Controllers
 
                 return Ok();
             }
-            else if (questionDto.FileName is not null)
+            else 
             {
-                await _questionService.EditQuestionAsync(questionDb);
+                await _questionService.EditQuestionWithoutFileAsync(questionDb);
 
                 return Ok();
             }
-            else
-            {
-                if (questionDb.FileName is not null)
-                {
-                    await _questionService.EditQuestionWithoutFileAsync(questionDb);
-
-                    return Ok();
-                }
-                else
-                {
-                    await _questionService.EditQuestionAsync(questionDb);
-
-                    return Ok();
-                }
-
-            }
+           
         }
 
         [HttpDelete]

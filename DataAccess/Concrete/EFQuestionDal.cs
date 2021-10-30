@@ -22,7 +22,6 @@ namespace DataAccess.Concrete
             try
             {
                 var fileName = FileHelper.AddFile(question.File);
-
                 question.FileName = fileName;
                
                 await Context.Questions.AddAsync(question);
@@ -99,7 +98,6 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-
                 if (question.FileName is not null)
                 {           
                     FileHelper.DeleteFile(question.FileName);
@@ -127,8 +125,18 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                FileHelper.DeleteFile(question.FileName);
-                question.FileName = null;
+                var existingQuestion = await Context.Questions
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(q => q.Id == question.Id);
+
+
+                if(question.FileName is null)
+                {
+                    if (existingQuestion.FileName is not null)
+                    {
+                        FileHelper.DeleteFile(existingQuestion.FileName);
+                    }
+                }
 
                 Context.Questions.Update(question);
                 await Context.SaveChangesAsync();

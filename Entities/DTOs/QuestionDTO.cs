@@ -11,6 +11,10 @@ namespace Entities.DTOs
 
         public decimal Point { get; set; }
 
+        public int QuizId { get; set; }
+
+        public QuizDTO Quiz { get; set; }
+
         public List<OptionDTO> Options { get; set; }
 
         public string FileName { get; set; }

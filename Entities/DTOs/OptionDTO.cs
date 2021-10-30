@@ -9,6 +9,8 @@ namespace Entities.DTOs
 
         public bool IsCorrect { get; set; }
 
+        public int QuestionId { get; set; }
+
         public QuestionDTO Question { get; set; }
 
         public string FileName { get; set; }

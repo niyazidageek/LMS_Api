@@ -12,8 +12,9 @@ namespace Entities.DTOs
         [Required, StringLength(10)]
         public string Name { get; set; }
 
-        [Required]
         public SubjectDTO Subject { get; set; }
+
+        public int SubjectId { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211022093338_testmigration")]
-    partial class testmigration
+    [Migration("20211030094943_relationshipsfixed")]
+    partial class relationshipsfixed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,21 +20,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AppUserGroup", b =>
-                {
-                    b.Property<string>("AppUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppUsersId", "GroupsId");
-
-                    b.HasIndex("GroupsId");
-
-                    b.ToTable("AppUserGroup");
-                });
 
             modelBuilder.Entity("Entities.Models.AppUser", b =>
                 {
@@ -111,6 +96,53 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("AppUserGroups");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Result")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("AppUserQuizzes");
+                });
+
             modelBuilder.Entity("Entities.Models.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -129,7 +161,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SubjectId")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -137,6 +169,126 @@ namespace DataAccess.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("Entities.Models.Lesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.ToTable("LessonMaterials");
+                });
+
+            modelBuilder.Entity("Entities.Models.Option", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Options");
+                });
+
+            modelBuilder.Entity("Entities.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Point")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Entities.Models.Quiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("Entities.Models.Subject", b =>
@@ -287,26 +439,102 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AppUserGroup", b =>
+            modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
                 {
-                    b.HasOne("Entities.Models.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("AppUsersId")
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany("AppUserGroups")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Entities.Models.Group", "Group")
+                        .WithMany("AppUserGroups")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
+                {
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany("AppUserQuizzes")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Entities.Models.Quiz", "Quiz")
+                        .WithMany("AppUserQuizzes")
+                        .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("Entities.Models.Group", b =>
                 {
                     b.HasOne("Entities.Models.Subject", "Subject")
-                        .WithMany("Groups")
-                        .HasForeignKey("SubjectId");
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Entities.Models.Lesson", b =>
+                {
+                    b.HasOne("Entities.Models.Group", "Group")
+                        .WithMany("Lessons")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
+                {
+                    b.HasOne("Entities.Models.Lesson", "Lesson")
+                        .WithMany("LessonMaterials")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("Entities.Models.Option", b =>
+                {
+                    b.HasOne("Entities.Models.Question", "Question")
+                        .WithMany("Options")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("Entities.Models.Question", b =>
+                {
+                    b.HasOne("Entities.Models.Quiz", "Quiz")
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("Entities.Models.Quiz", b =>
+                {
+                    b.HasOne("Entities.Models.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Subject");
                 });
@@ -362,9 +590,33 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Subject", b =>
+            modelBuilder.Entity("Entities.Models.AppUser", b =>
                 {
-                    b.Navigation("Groups");
+                    b.Navigation("AppUserGroups");
+
+                    b.Navigation("AppUserQuizzes");
+                });
+
+            modelBuilder.Entity("Entities.Models.Group", b =>
+                {
+                    b.Navigation("AppUserGroups");
+
+                    b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("Entities.Models.Lesson", b =>
+                {
+                    b.Navigation("LessonMaterials");
+                });
+
+            modelBuilder.Entity("Entities.Models.Question", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Entities.Models.Quiz", b =>
+                {
+                    b.Navigation("AppUserQuizzes");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,9 +12,9 @@ namespace DataAccess.Abstract
     {
         Task<bool> AddWithFilesAsync(Lesson lesson);
 
-        Task<bool> EditWithFilesAsync(Lesson lesson);
+        Task<bool> UpdateWithFilesAsync(Lesson lesson);
 
-        Task<bool> EditAsync(Lesson lesson);
+        Task<bool> UpdateWithoutFilesAsync(Lesson lesson);
 
         Task<bool> DeleteWithFilesAsync(Lesson lesson);
     }

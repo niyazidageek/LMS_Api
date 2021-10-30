@@ -15,6 +15,8 @@ namespace Entities.Models
 
         public string FileName { get; set; }
 
+        public int QuestionId { get; set; }
+
         public Question Question { get; set; }
 
         [NotMapped]

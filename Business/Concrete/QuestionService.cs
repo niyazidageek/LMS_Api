@@ -51,9 +51,14 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<Question> GetQuestionByIdAsync(int id)
+        public async Task<Question> GetQuestionWithOptionsByIdAsync(int id)
         {
             return await _context.GetQuestionWithOptionsAsync(id);
+        }
+
+        public async Task<Question> GetQuestionByIdAsync(int id)
+        {
+            return await _context.GetAsync(q => q.Id == id);
         }
 
         public async Task<List<Question>> GetQuestionsAsync()

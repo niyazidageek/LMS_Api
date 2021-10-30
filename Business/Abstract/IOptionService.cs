@@ -9,6 +9,8 @@ namespace Business.Abstract
     {
         Task<List<Option>> GetOptionsAsync();
 
+        Task<List<Option>> GetOptionsByQuestionAsync(int id);
+
         Task<Option> GetOptionByIdAsync(int id);
 
         Task<bool> AddOptionAsync(Option option);
@@ -18,5 +20,11 @@ namespace Business.Abstract
         Task<bool> EditOptionAsync(Option option);
 
         Task<bool> DeleteOptionAsync(Option option);
+
+        Task<bool> EditQuestionWithFileAsync(Option option);
+
+        Task<bool> EditQuestionWithoutFileAsync(Option option);
+
+        Task<bool> DeleteQuestionWithFileAsync(Option option);
     }
 }

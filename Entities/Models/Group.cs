@@ -21,6 +21,8 @@ namespace Entities.Models
         public DateTime EndDate { get; set; }
 
         [Required]
+        public int SubjectId { get; set; }
+
         public Subject Subject { get; set; }
 
         public List<AppUserGroup> AppUserGroups { get; set; }

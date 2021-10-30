@@ -89,6 +89,7 @@ namespace DataAccess.Concrete
         public async Task<Question> GetQuestionWithOptionsAsync(int id)
         {
             return await Context.Questions
+                .AsNoTracking()
                 .Include(q => q.Options)
                 .FirstOrDefaultAsync(q => q.Id == id);
         }

@@ -30,24 +30,54 @@ namespace Business.Concrete
             return true;
         }
 
-        public Task<bool> DeleteOptionAsync(Option option)
+        public async Task<bool> DeleteOptionAsync(Option option)
         {
-            throw new NotImplementedException();
+            await _context.DeleteAsync(option);
+
+            return true;
         }
 
-        public Task<bool> EditOptionAsync(Option option)
+        public async Task<bool> DeleteQuestionWithFileAsync(Option option)
         {
-            throw new NotImplementedException();
+            await _context.DeleteWithFileAsync(option);
+
+            return true;
         }
 
-        public Task<Option> GetOptionByIdAsync(int id)
+        public async Task<bool> EditOptionAsync(Option option)
         {
-            throw new NotImplementedException();
+            await _context.UpdateAsync(option);
+
+            return true;
         }
 
-        public Task<List<Option>> GetOptionsAsync()
+        public async Task<bool> EditQuestionWithFileAsync(Option option)
         {
-            throw new NotImplementedException();
+            await _context.UpdateWithFileAsync(option);
+
+            return true;
+        }
+
+        public async Task<bool> EditQuestionWithoutFileAsync(Option option)
+        {
+            await _context.UpdateWithoutFileAsync(option);
+
+            return true;
+        }
+
+        public async Task<Option> GetOptionByIdAsync(int id)
+        {
+            return await _context.GetAsync(o=>o.Id == id);
+        }
+
+        public async Task<List<Option>> GetOptionsAsync()
+        {
+            return await _context.GetAllAsync();
+        }
+
+        public async Task<List<Option>> GetOptionsByQuestionAsync(int id)
+        {
+            return await _context.GetOptionsByQuestion(id);
         }
     }
 }

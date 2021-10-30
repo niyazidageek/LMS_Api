@@ -14,8 +14,10 @@ namespace Entities.DTOs
 
         public DateTime EndDate { get; set; }
 
+        public int GroupId { get; set; }
+
         public GroupDTO Group { get; set; }
 
-        public List<MaterialDTO> Materials { get; set; }
+        public List<LessonMaterialDTO> LessonMaterials { get; set; }
     }
 }

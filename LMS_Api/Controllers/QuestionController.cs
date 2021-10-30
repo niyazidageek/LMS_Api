@@ -42,7 +42,7 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<ActionResult> GetQuestionById(int id)
         {
-            var questionDb = await _questionService.GetQuestionByIdAsync(id);
+            var questionDb = await _questionService.GetQuestionWithOptionsByIdAsync(id);
 
             if (questionDb is null)
                 return NotFound();
@@ -79,7 +79,7 @@ namespace LMS_Api.Controllers
         {
             QuestionDTO questionDto = JsonConvert.DeserializeObject<QuestionDTO>(questionAttachmentDto.Values);
 
-            var questionDb = await _questionService.GetQuestionByIdAsync(id);
+            var questionDb = await _questionService.GetQuestionWithOptionsByIdAsync(id);
 
             if (questionDb is null)
                 return NotFound();
@@ -128,7 +128,7 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<ActionResult> DeleteQuestion(int id)
         {
-            var questionDb = await _questionService.GetQuestionByIdAsync(id);
+            var questionDb = await _questionService.GetQuestionWithOptionsByIdAsync(id);
 
             if (questionDb is null)
                 return NotFound();

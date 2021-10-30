@@ -71,13 +71,6 @@ namespace LMS_Api.Controllers
 
             var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            var groupDb = await _groupService.GetGroupByIdAsync(lessonDto.Group.Id);
-
-            if (groupDb is null)
-                return NotFound();
-
-            lessonDb.Group = groupDb;
-
             if(lessonAttachmentDto.Files is not null)
             {
                 lessonDb.Files = lessonAttachmentDto.Files;
@@ -104,42 +97,26 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
-            var groupDb = await _groupService.GetGroupByIdAsync(lessonDto.Group.Id);
-
-            if (groupDb is null)
-                return NotFound();
-
             lessonDto.Id = lessonDb.Id;
 
             _mapper.Map(lessonDto, lessonDb);
-
-            lessonDb.Group = groupDb;
-
-            if (lessonDto.Materials.Count is not 0)
-            {
-                var existingFileNames = new List<string>();
-
-                foreach (var materialDto in lessonDto.Materials)
-                {
-                    existingFileNames.Add(materialDto.FileName); 
-                }
-
-                lessonDb.ExistingFileNames = existingFileNames;
-            }
 
             if(lessonAttachmentDto.Files is not null)
             {
                 lessonDb.Files = lessonAttachmentDto.Files;
 
-                 await _lessonService.EditLessonWithFilesAsync(lessonDb);
+                await _lessonService.EditLessonWithFilesAsync(lessonDb);
+
+                return Ok();
+            }
+            else
+            {
+                await _lessonService.EditLessonAsync(lessonDb);
 
                 return Ok();
             }
 
-
-            await _lessonService.EditLessonAsync(lessonDb);
-            
-            return Ok();
+           
         }
 
         [HttpDelete]

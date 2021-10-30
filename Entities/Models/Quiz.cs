@@ -10,6 +10,8 @@ namespace Entities.Models
 
         public string Name { get; set; }
 
+        public int SubjectId { get; set; }
+
         public Subject Subject { get; set; }
 
         public List<AppUserQuiz> AppUserQuizzes { get; set; }

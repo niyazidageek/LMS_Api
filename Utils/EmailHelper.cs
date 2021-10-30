@@ -36,7 +36,7 @@ namespace LMS_Api.Utils
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

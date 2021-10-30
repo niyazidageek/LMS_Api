@@ -11,6 +11,8 @@ namespace Business.Abstract
 
         Task<Question> GetQuestionByIdAsync(int id);
 
+        Task<Question> GetQuestionWithOptionsByIdAsync(int id);
+
         Task<bool> AddQuestionWithFileAsync(Question question);
 
         Task<bool> AddQuestionAsync(Question question);

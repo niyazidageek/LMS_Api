@@ -24,7 +24,7 @@ namespace DataAccess.AutoMapper
 
             CreateMap<Option, OptionDTO>().ReverseMap();
 
-            CreateMap<Material, MaterialDTO>().ReverseMap();
+            CreateMap<LessonMaterial, LessonMaterialDTO>().ReverseMap();
         }
     }
 }

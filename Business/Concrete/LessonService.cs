@@ -41,14 +41,14 @@ namespace Business.Concrete
 
         public async Task<bool> EditLessonWithFilesAsync(Lesson lesson)
         {
-            await _conext.EditWithFilesAsync(lesson);
+            await _conext.UpdateWithFilesAsync(lesson);
 
             return true;
         }
 
         public async Task<bool> EditLessonAsync(Lesson lesson)
         {
-            await _conext.EditAsync(lesson);
+            await _conext.UpdateWithoutFilesAsync(lesson);
 
             return true;
         }

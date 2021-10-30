@@ -115,17 +115,11 @@ namespace LMS_Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-           
             var groupDb = _mapper.Map<GroupDTO, Group>(groupDto);
 
-            var subjectDb = await _subjectService.GetSubjectByIdAsync(groupDto.Subject.Id);
+            groupDb.SubjectId = groupDto.SubjectId;
 
-            groupDb.Subject = subjectDb;
-
-            if (subjectDb is null)
-                return NotFound();
-
-            if(groupDto.AppUsers is not null)
+            if (groupDto.AppUsers is not null)
             {
                 List<AppUserGroup> AppUserGroups = new();
 
@@ -140,7 +134,7 @@ namespace LMS_Api.Controllers
 
                 groupDb.AppUserGroups = AppUserGroups;
             }
-
+           
             await _groupService.AddGroupAsync(groupDb);
 
             return Ok();
@@ -157,15 +151,8 @@ namespace LMS_Api.Controllers
             if (groupDb is null)
                 return NotFound();
 
-            var subjectDb = await _subjectService.GetSubjectByIdAsync(groupDto.Subject.Id);
-
-            if (subjectDb is null)
-                return NotFound();
-
             groupDto.Id = groupDb.Id;
             _mapper.Map(groupDto, groupDb);
-            groupDb.Subject = subjectDb;
-
            
 
             if(groupDto.AppUsers is not null)

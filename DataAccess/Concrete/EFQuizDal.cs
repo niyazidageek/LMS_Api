@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Repository.EFRepository;
@@ -58,6 +59,20 @@ namespace DataAccess.Concrete
                 await dbContextTransaction.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<List<Quiz>> GetAllAsync()
+        {
+            return await Context.Quizzes.AsNoTracking()
+                .Include(q => q.Subject)
+                .ToListAsync();
+        }
+
+        public async Task<Quiz> GetAsync(int id)
+        {
+            return await Context.Quizzes.AsNoTracking()
+                .Include(q => q.Subject)
+                .FirstOrDefaultAsync(q => q.Id == id);
         }
     }
 }

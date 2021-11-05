@@ -29,10 +29,10 @@ namespace DataAccess.Concrete
                 {
                     var lessonMaterial = new LessonMaterial();
 
-                    var fileName = FileHelper.AddFile(file);
+                    var fileName = await FileHelper.AddFile(file);
 
                     lessonMaterial.FileName = fileName;
-                    lessonMaterial.Lesson = lesson;
+                    lessonMaterial.LessonId = lesson.Id;
 
                     lessonMaterials.Add(lessonMaterial);
                 }
@@ -155,10 +155,10 @@ namespace DataAccess.Concrete
                 {
                     var lessonMaterial = new LessonMaterial();
 
-                    var fileName = FileHelper.AddFile(file);
+                    var fileName = await FileHelper.AddFile(file);
 
                     lessonMaterial.FileName = fileName;
-                    lessonMaterial.Lesson = lesson;
+                    lessonMaterial.LessonId = lesson.Id;
 
                     lessonMaterials.Add(lessonMaterial);
                 }
@@ -176,6 +176,21 @@ namespace DataAccess.Concrete
                 await dbContextTransaction.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<List<Lesson>> GetAllAsync()
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Include(l => l.Group)
+                .ToListAsync();
+        }
+
+        public async Task<Lesson> GetAsync(int id)
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Include(l=>l.LessonMaterials)
+                .Include(l => l.Group)
+                .FirstOrDefaultAsync(l => l.Id == id);
         }
     }
 }

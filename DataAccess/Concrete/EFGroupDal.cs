@@ -26,7 +26,8 @@ namespace DataAccess.Concrete
 
         public async Task<List<Group>> GetAllAsync()
         {
-            return await Context.Groups.AsNoTracking().Include(g => g.Subject)
+            return await Context.Groups.AsNoTracking()
+                .Include(g => g.Subject)
                 .Include(g => g.AppUserGroups)
                 .ToListAsync();
         }

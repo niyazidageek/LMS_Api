@@ -90,18 +90,10 @@ namespace LMS_Api.Controllers
                 var user = await _userManager.FindByIdAsync(appUserGroup.AppUser.Id);
                 var roles = await _userManager.GetRolesAsync(user);
                 _mapper.Map(appUserGroup.AppUser, appUserDto);
-                var isTeacher = roles.Any(role => role.ToLower() == nameof(Roles.Teacher).ToLower());
+                //var isTeacher = roles.Any(role => role.ToLower() == nameof(Roles.Teacher).ToLower());
                 appUserDto.Roles = (List<string>)roles;
 
-                if (isTeacher)
-                {
-                    groupDto.Teacher = appUserDto;
-                    continue;
-                }
-                else
-                {
-                    appUsers.Add(appUserDto);
-                }
+                appUsers.Add(appUserDto);
             }
 
             groupDto.AppUsers = appUsers;
@@ -113,20 +105,20 @@ namespace LMS_Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateGroup([FromBody] GroupDTO groupDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            //if (!ModelState.IsValid) return BadRequest();
 
             var groupDb = _mapper.Map<GroupDTO, Group>(groupDto);
 
             groupDb.SubjectId = groupDto.SubjectId;
 
-            if (groupDto.AppUsers is not null)
+            if (groupDto.AppUserIds is not null)
             {
                 List<AppUserGroup> AppUserGroups = new();
 
-                foreach (var appUserDto in groupDto.AppUsers)
+                foreach (var appUserId in groupDto.AppUserIds)
                 {
                     var appUserGroup = new AppUserGroup();
-                    appUserGroup.AppUserId = appUserDto.Id;
+                    appUserGroup.AppUserId = appUserId;
                     appUserGroup.GroupId = groupDb.Id;
 
                     AppUserGroups.Add(appUserGroup);
@@ -137,7 +129,11 @@ namespace LMS_Api.Controllers
            
             await _groupService.AddGroupAsync(groupDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Group has been successfully created!"
+            });
         }
 
         [HttpPut]

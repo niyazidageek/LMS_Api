@@ -55,7 +55,7 @@ namespace Business.Concrete
 
         public async Task<Lesson> GetLessonByIdAsync(int id)
         {
-            return await _conext.GetAsync(l => l.Id == id);
+            return await _conext.GetAsync(id);
         }
 
         public async Task<List<Lesson>> GetLessonsAsync()

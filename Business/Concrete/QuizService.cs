@@ -46,7 +46,7 @@ namespace Business.Concrete
 
         public async Task<Quiz> GetQuizByIdAsync(int id)
         {
-            return await _context.GetAsync(q => q.Id == id);
+            return await _context.GetAsync(id);
         }
 
         public async Task<List<Quiz>> GetQuizzesAsync()

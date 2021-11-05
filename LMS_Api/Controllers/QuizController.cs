@@ -26,6 +26,21 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetQuizById(int id)
+        {
+            var quizDb = await _quizService.GetQuizByIdAsync(id);
+
+            if (quizDb is null)
+                return NotFound();
+
+            var quizDto = _mapper.Map<QuizDTO>(quizDb);
+
+
+            return Ok(quizDto);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetQuizzes()
         {
             var quizzesDb = await _quizService.GetQuizzesAsync();

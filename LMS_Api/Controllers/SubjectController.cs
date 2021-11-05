@@ -8,6 +8,7 @@ using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -61,7 +62,11 @@ namespace LMS_Api.Controllers
 
             await _subjectService.AddSubjectAsync(subjectDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Subject has been successfully created!"
+            });
         }
 
         [HttpPut]
@@ -81,7 +86,11 @@ namespace LMS_Api.Controllers
 
             await _subjectService.EditSubjectAsync(subjectDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Subject has been successfully edited!"
+            });
         }
 
         [HttpDelete]

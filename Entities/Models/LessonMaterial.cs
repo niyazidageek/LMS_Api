@@ -8,7 +8,6 @@ namespace Entities.Models
         public int Id { get; set; }
 
         public int LessonId { get; set; }
-        public Lesson Lesson { get; set; }
 
         public string FileName { get; set; }
     }

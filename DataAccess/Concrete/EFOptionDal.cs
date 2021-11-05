@@ -21,7 +21,7 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                var fileName = FileHelper.AddFile(option.File);
+                var fileName = await FileHelper.AddFile(option.File);
                 option.FileName = fileName;
 
                 await Context.Options.AddAsync(option);
@@ -74,7 +74,7 @@ namespace DataAccess.Concrete
                     FileHelper.DeleteFile(option.FileName);
                 }
 
-                var fileName = FileHelper.AddFile(option.File);
+                var fileName = await FileHelper.AddFile(option.File);
 
                 option.FileName = fileName;
 

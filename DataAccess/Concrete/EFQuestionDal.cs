@@ -21,7 +21,7 @@ namespace DataAccess.Concrete
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                var fileName = FileHelper.AddFile(question.File);
+                var fileName = await FileHelper.AddFile(question.File);
                 question.FileName = fileName;
                
                 await Context.Questions.AddAsync(question);
@@ -79,6 +79,8 @@ namespace DataAccess.Concrete
         public async Task<List<Question>> GetQuestionsWithOptionsAsync()
         {
             return await Context.Questions
+                .AsNoTracking()
+                .Include(q=>q.Quiz)
                 .Include(q => q.Options)
                 .ToListAsync();
         }
@@ -87,6 +89,7 @@ namespace DataAccess.Concrete
         {
             return await Context.Questions
                 .AsNoTracking()
+                .Include(q=>q.Quiz)
                 .Include(q => q.Options)
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
@@ -101,7 +104,7 @@ namespace DataAccess.Concrete
                     FileHelper.DeleteFile(question.FileName);
                 }
 
-                var fileName = FileHelper.AddFile(question.File);
+                var fileName = await FileHelper.AddFile(question.File);
 
                 question.FileName = fileName;
               

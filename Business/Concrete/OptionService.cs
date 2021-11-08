@@ -67,7 +67,7 @@ namespace Business.Concrete
 
         public async Task<Option> GetOptionByIdAsync(int id)
         {
-            return await _context.GetAsync(o=>o.Id == id);
+            return await _context.GetAsync(id);
         }
 
         public async Task<List<Option>> GetOptionsAsync()

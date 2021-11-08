@@ -197,6 +197,24 @@ namespace DataAccess.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("Entities.Models.LessonAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LessonAssignments");
+                });
+
             modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
                 {
                     b.Property<int>("Id")
@@ -495,13 +513,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.LessonMaterial", b =>
                 {
-                    b.HasOne("Entities.Models.Lesson", "Lesson")
+                    b.HasOne("Entities.Models.Lesson", null)
                         .WithMany("LessonMaterials")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("Entities.Models.Option", b =>

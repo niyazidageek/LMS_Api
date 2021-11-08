@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "m8ijA0CfdYfTg7noS/+d2Hq9jviKJ9V2Ut6sjoNw69h43a7cCGeiU8tsqneHagjQulTckENLCLEbWfE21kRwdw==",
+  "dgSpecHash": "4CtcbnufzZeiPToBA7tBHL72P3QQH8oPLINdOKIVpwfji+V2YgB0XYPV9Rh2sILNh5rmNw8k+v+2TM1TfXoehg==",
   "success": true,
   "projectFilePath": "/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/LMS_Api.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,8 @@
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.http.extensions/2.2.0/microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.http.features/2.2.0/microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/5.0.11/microsoft.aspnetcore.identity.entityframeworkcore.5.0.11.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.jsonpatch/5.0.11/microsoft.aspnetcore.jsonpatch.5.0.11.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/5.0.11/microsoft.aspnetcore.mvc.newtonsoftjson.5.0.11.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.razor/2.2.0/microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.razor.language/5.0.0/microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.aspnetcore.razor.runtime/2.2.0/microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
@@ -80,7 +82,8 @@
     "/Users/niyazibabayev/.nuget/packages/microsoft.visualstudio.web.codegenerators.mvc/5.0.2/microsoft.visualstudio.web.codegenerators.mvc.5.0.2.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.systemevents/4.7.0/microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "/Users/niyazibabayev/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/newtonsoft.json/12.0.2/newtonsoft.json.12.0.2.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",

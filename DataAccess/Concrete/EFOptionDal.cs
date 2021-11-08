@@ -60,8 +60,27 @@ namespace DataAccess.Concrete
 
         public async Task<List<Option>> GetOptionsByQuestion(int id)
         {
-            return await Context.Options.Where(o => o.Question.Id == id)
+            return await Context.Options
+                .AsNoTracking()
+                .Where(o => o.Question.Id == id)
+                .Include(o=>o.Question)
                 .ToListAsync();
+        }
+
+        public async Task<List<Option>> GetAllAsync()
+        {
+            return await Context.Options
+                .AsNoTracking()
+                .Include(o => o.Question)
+                .ToListAsync();
+        }
+
+        public async Task<Option> GetAsync(int id)
+        {
+            return await Context.Options
+                .AsNoTracking()
+                .Include(o => o.Question)
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<bool> UpdateWithFileAsync(Option option)

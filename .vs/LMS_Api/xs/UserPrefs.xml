@@ -1,15 +1,18 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Entities/DTOs/OptionDTO.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/Concrete/AppDbContext.cs">
     <Files>
-      <File FileName="Entities/DTOs/QuizDTO.cs" Line="15" Column="1" IsPinned="True" />
-      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="16" Column="6" />
-      <File FileName="DataAccess/Concrete/EFGroupDal.cs" />
-      <File FileName="Business/Concrete/GroupService.cs" />
-      <File FileName="Entities/Models/Lesson.cs" />
-      <File FileName="Entities/Models/LessonMaterial.cs" />
-      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="80" Column="14" />
-      <File FileName="Entities/DTOs/LessonMaterialDTO.cs" />
-      <File FileName="Entities/DTOs/OptionDTO.cs" Line="4" Column="18" />
+      <File FileName="LMS_Api/Controllers/OptionController.cs" Line="44" Column="1" />
+      <File FileName="Entities/Models/Option.cs" />
+      <File FileName="LMS_Api/Controllers/QuestionController.cs" />
+      <File FileName="DataAccess/Concrete/EFOptionDal.cs" />
+      <File FileName="Entities/DTOs/QuestionDTO.cs" />
+      <File FileName="Entities/Models/Quiz.cs" Line="15" Column="25" />
+      <File FileName="Entities/Models/Assignment.cs" Line="16" Column="20" />
+      <File FileName="Entities/Models/LessonMaterial.cs" Line="12" Column="45" />
+      <File FileName="DataAccess/Concrete/EfLessonAssignmentDal.cs" Line="20" Column="10" />
+      <File FileName="DataAccess/Abstract/ILessonAssignmentDal.cs" Line="15" Column="91" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="12" Column="18" />
+      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="17" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,17 +29,13 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="Concrete" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="AppDbContext.cs" selected="True" />
+              </Node>
             </Node>
             <Node name="Entities" expanded="True">
-              <Node name="DTOs" expanded="True">
-                <Node name="OptionDTO.cs" selected="True" />
-              </Node>
+              <Node name="DTOs" expanded="True" />
               <Node name="Models" expanded="True" />
-            </Node>
-            <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="wwwroot" expanded="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>
@@ -45,15 +44,17 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>auelibrary/auelibrary.csproj</String>
+  </DisabledProjects>
   <MonoDevelop.Ide.ItemProperties.LMS__Api PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="20" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/QuestionController.cs" relfile="LMS_Api/Controllers/QuestionController.cs" line="57" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="56" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="95" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/GroupController.cs" relfile="LMS_Api/Controllers/GroupController.cs" line="107" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/GroupController.cs" relfile="LMS_Api/Controllers/GroupController.cs" line="39" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

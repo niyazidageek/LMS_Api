@@ -12,10 +12,14 @@ namespace DataAccess.Abstract
 
         Task<bool> AddWithFileAsync(Option option);
 
+        Task<List<Option>> GetAllAsync();
+
         Task<bool> UpdateWithFileAsync(Option option);
 
         Task<bool> UpdateWithoutFileAsync(Option option);
 
         Task<bool> DeleteWithFileAsync(Option option);
+
+        Task<Option> GetAsync(int id);
     }
 }

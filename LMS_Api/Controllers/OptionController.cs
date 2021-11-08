@@ -27,6 +27,34 @@ namespace LMS_Api.Controllers
             _optionService = optionService;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetOptionById(int id)
+        {
+            var optionDb = await _optionService.GetOptionByIdAsync(id);
+
+            if (optionDb is null)
+                return NotFound();
+
+            var optionDto = _mapper.Map<OptionDTO>(optionDb);
+
+
+            return Ok(optionDto);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetOptions()
+        {
+            var optionsDb = await _optionService.GetOptionsAsync();
+
+            if (optionsDb is null)
+                return NotFound();
+
+            var optionsDto = _mapper.Map<List<OptionDTO>>(optionsDb);
+
+            return Ok(optionsDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateOption([FromForm] OptionAttachmentDTO optionAttachmentDto)
         {

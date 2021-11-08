@@ -150,3 +150,6 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/ref/LMS_Api.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.genruntimeconfig.cache
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll

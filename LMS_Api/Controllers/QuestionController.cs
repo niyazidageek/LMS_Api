@@ -35,6 +35,12 @@ namespace LMS_Api.Controllers
 
             var questionsDto = _mapper.Map<List<QuestionDTO>>(questionsDb);
 
+            for (int i = 0; i < questionsDto.Count; i++)
+            {
+                questionsDto[i].OptionsCount = questionsDb[i].Options.Count;
+            }
+
+
             return Ok(questionsDto);
         }
 
@@ -60,6 +66,7 @@ namespace LMS_Api.Controllers
             var questionDb = _mapper.Map<Question>(questionDto);
 
             questionDb.File = questionAttachmentDto.QuestionFile;
+
 
             if (questionAttachmentDto.QuestionFile is not null)
             {

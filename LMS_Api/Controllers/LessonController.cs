@@ -216,6 +216,17 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteLesson(int id)
         {
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+
+            List<LessonMaterial> lessonMaterials = new();
+
+            foreach (var lessonMaterial in lessonDb.LessonMaterials)
+            {
+                lessonMaterials.Add(lessonMaterial);
+            }
+
+            await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
+
             await _lessonService.DeleteLessonAsync(id);
 
             return Ok();

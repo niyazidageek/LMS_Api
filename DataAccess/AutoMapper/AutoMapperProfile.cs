@@ -20,11 +20,11 @@ namespace DataAccess.AutoMapper
 
             CreateMap<Lesson, LessonDTO>().ReverseMap();
 
+            CreateMap<LessonMaterial, LessonMaterialDTO>().ReverseMap();
+
             CreateMap<Question, QuestionDTO>().ReverseMap();
 
             CreateMap<Option, OptionDTO>().ReverseMap();
-
-            CreateMap<LessonMaterial, LessonMaterialDTO>().ReverseMap();
 
             CreateMap<Quiz, QuizDTO>().ReverseMap();
         }

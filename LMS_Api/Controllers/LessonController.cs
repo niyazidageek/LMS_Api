@@ -24,11 +24,17 @@ namespace LMS_Api.Controllers
         private readonly ILessonService _lessonService;
         private readonly IMapper _mapper;
         private readonly IGroupService _groupService;
+        private readonly ILessonMaterialService _lessonMaterialService;
+        private readonly ILessonAssignmentService _lessonAssignmentService;
 
         public LessonController(ILessonService lessonService,
             IMapper mapper,
-            IGroupService groupService)
+            IGroupService groupService,
+            ILessonMaterialService lessonMaterialService,
+            ILessonAssignmentService lessonAssignmentService)
         {
+            _lessonAssignmentService = lessonAssignmentService;
+            _lessonMaterialService = lessonMaterialService;
             _lessonService = lessonService;
             _mapper = mapper;
             _groupService = groupService;
@@ -62,26 +68,66 @@ namespace LMS_Api.Controllers
             return Ok(lessonDto);
         }
 
+        [HttpGet]
+        [Route("{groupId}/{skip}/{take}")]
+        public async Task<ActionResult> GetLessonsByGroupId(int groupId, int skip, int take)
+        {
+            var lessonsDb = await _lessonService.GetLessonsByGroupIdAsync(groupId, skip, take);
+
+            if (lessonsDb is null)
+                return NotFound();
+
+            var lessonsDto = _mapper.Map<LessonDTO>(lessonsDb);
+
+            return Ok(lessonsDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateLesson([FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
+
             if (!ModelState.IsValid) return BadRequest();
 
             LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
             var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            if(lessonAttachmentDto.Files is not null)
-            {
-                lessonDb.Files = lessonAttachmentDto.Files;
-                await _lessonService.AddLessonWithFilesAsync(lessonDb);
-
-                return Ok();
-            }
-
             await _lessonService.AddLessonAsync(lessonDb);
 
+            if (lessonAttachmentDto.Files is not null)
+            {
+                List<LessonMaterial> lessonMaterials = new();
+
+                foreach (var file in lessonAttachmentDto.Files)
+                {
+                    LessonMaterial lessonMaterial = new();
+                    lessonMaterial.LessonId = lessonDb.Id;
+                    lessonMaterial.File = file;
+                    lessonMaterials.Add(lessonMaterial);
+                }
+
+                await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
+            }
+
             return Ok();
+
+            //if (!ModelState.IsValid) return BadRequest();
+
+            //LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
+
+            //var lessonDb = _mapper.Map<Lesson>(lessonDto);
+
+            //if(lessonAttachmentDto.Files is not null)
+            //{
+            //    lessonDb.Files = lessonAttachmentDto.Files;
+            //    await _lessonService.AddLessonWithFilesAsync(lessonDb);
+
+            //    return Ok();
+            //}
+
+            //await _lessonService.AddLessonAsync(lessonDb);
+
+            //return Ok();
         }
 
         [HttpPut]
@@ -97,24 +143,71 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
-            lessonDto.Id = lessonDb.Id;
+            var existingFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
 
-            _mapper.Map(lessonDto, lessonDb);
+            var deleteableFiles = existingFiles
+                    .Where(ef => !lessonDto.LessonMaterials.Any(lm => lm.FileName == ef))
+                    .ToList();
+
+            if (deleteableFiles is not null || deleteableFiles.Count is not 0)
+            {
+                List<LessonMaterial> lessonMaterials = new();
+
+                foreach (var file in deleteableFiles)
+                {
+                    LessonMaterial lessonMaterial = new();
+                    lessonMaterial.FileName = file;
+                    lessonMaterial.LessonId = lessonDb.Id;
+                    lessonMaterials.Add(lessonMaterial);
+                }
+
+                await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
+            }
 
             if(lessonAttachmentDto.Files is not null)
             {
-                lessonDb.Files = lessonAttachmentDto.Files;
+                List<LessonMaterial> lessonMaterials = new();
 
-                await _lessonService.EditLessonWithFilesAsync(lessonDb);
+                foreach (var file in lessonAttachmentDto.Files)
+                {
+                    LessonMaterial lessonMaterial = new();
+                    lessonMaterial.LessonId = lessonDb.Id;
+                    lessonMaterial.File = file;
+                    lessonMaterials.Add(lessonMaterial);
+                }
 
-                return Ok();
+                await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
             }
-            else
+
+
+            lessonDto.Id = lessonDb.Id;
+            foreach (var lessonMaterialDto in lessonDto.LessonMaterials)
             {
-                await _lessonService.EditLessonAsync(lessonDb);
-
-                return Ok();
+                lessonMaterialDto.Id = lessonDb.LessonMaterials
+                    .FirstOrDefault(lm => lm.FileName == lessonMaterialDto.FileName).Id;
             }
+
+            _mapper.Map(lessonDto, lessonDb);
+
+            await _lessonService.EditLessonAsync(lessonDb);
+
+            return Ok();
+
+            //if(lessonAttachmentDto.Files is not null)
+            //{
+            //    lessonDb.Files = lessonAttachmentDto.Files;
+
+            //    await _lessonService.EditLessonWithFilesAsync(lessonDb);
+
+            //    return Ok();
+            //}
+            //else
+            //{
+            //    await _lessonService.EditLessonAsync(lessonDb);
+
+            //    return Ok();
+            //}
+         
 
            
         }

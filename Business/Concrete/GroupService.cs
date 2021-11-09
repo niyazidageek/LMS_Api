@@ -56,5 +56,10 @@ namespace Business.Concrete
         {
             return await _context.GetByCountAsync(skipCount, takeCount);
         }
+
+        public async Task<List<Group>> GetGroupsByUserIdAsync(string userId)
+        {
+            return await _context.GetGroupsByUserIdAsync(userId);
+        }
     }
 }

@@ -15,5 +15,7 @@ namespace DataAccess.Abstract
         Task<bool> RelationalUpdateAsync(Group group);
 
         Task<List<Group>> GetAllAsync();
+
+        Task<List<Group>> GetGroupsByUserIdAsync(string userId);
     }
 }

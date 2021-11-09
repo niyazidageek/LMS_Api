@@ -20,5 +20,7 @@ namespace Business.Abstract
         Task<bool> EditGroupAsync(Group group);
 
         Task<bool> DeleteGroupAsync(int id);
+
+        Task<List<Group>> GetGroupsByUserIdAsync(string userId);
     }
 }

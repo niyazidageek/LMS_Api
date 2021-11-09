@@ -68,6 +68,16 @@ namespace DataAccess.Concrete
                 throw;
             }
         }
-        
+
+        public async Task<List<Group>> GetGroupsByUserIdAsync(string userId)
+        {
+            var groups = await Context.Groups.AsNoTracking()
+                .Include(g => g.AppUserGroups)
+                .ThenInclude(g => g.AppUser)
+                .Where(g => g.AppUserGroups.All(ag => ag.AppUserId == userId))
+                .ToListAsync();
+
+            return groups;
+        }
     }
 }

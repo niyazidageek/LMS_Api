@@ -8256,7 +8256,7 @@
     "net5.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.1",
       "Business >= 1.0.0",
-      "DataAccess >= 1.0.0",
+      "Entities >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.11",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.11",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 5.0.11",
@@ -8299,8 +8299,8 @@
             "/Users/niyazibabayev/Projects/LMS_Api/Business/Business.csproj": {
               "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Business/Business.csproj"
             },
-            "/Users/niyazibabayev/Projects/LMS_Api/DataAccess/DataAccess.csproj": {
-              "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/DataAccess/DataAccess.csproj"
+            "/Users/niyazibabayev/Projects/LMS_Api/Entities/Entities.csproj": {
+              "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Entities/Entities.csproj"
             },
             "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj": {
               "projectPath": "/Users/niyazibabayev/Projects/LMS_Api/Utils/Utils.csproj"

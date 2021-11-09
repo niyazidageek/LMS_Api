@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstract;
+using DataAccess.Abstract;
 using Entities.Models;
 
 namespace Business.Concrete
 {
     public class LessonAssignmentService:ILessonAssignmentService
     {
-        private readonly ILessonAssignmentService _conext;
+        private readonly ILessonAssignmentDal _conext;
 
-        public LessonAssignmentService(ILessonAssignmentService context)
+        public LessonAssignmentService(ILessonAssignmentDal context)
         {
             _conext = context;
         }
 
         public async Task<List<LessonAssignment>> GetLessonAssignmentsByLessonId(int lessonId)
         {
-            return await _conext.GetLessonAssignmentsByLessonId(lessonId);
+            return await _conext.GetAllByLessonIdAsync(lessonId);
         }
 
         public async Task<bool> CreateLessonAssignments(List<LessonAssignment> lessonAssignments)
         {
-            await _conext.CreateLessonAssignments(lessonAssignments);
+            await _conext.CreateLessonAssignmentsAsync(lessonAssignments);
 
             return true;
         }
@@ -30,7 +31,7 @@ namespace Business.Concrete
         
         public async Task<bool> DeleteLessonAssignments(List<LessonAssignment> lessonAssignments)
         {
-            await _conext.DeleteLessonAssignments(lessonAssignments);
+            await _conext.DeleteLessonAssignmentsAsync(lessonAssignments);
 
             return true;
         }

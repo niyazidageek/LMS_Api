@@ -7,10 +7,10 @@ namespace Business.Abstract
 {
     public interface ILessonAssignmentService
     {
-        Task<List<LessonAssignment>> GetLessonAssignmentsByLessonId(int lessonId);
+        Task<List<LessonAssignment>> GetLessonAssignmentsByLessonIdAsync(int lessonId);
 
-        Task<bool> CreateLessonAssignments(List<LessonAssignment> lessonAssignments);
+        Task<bool> CreateLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments);
 
-        Task<bool> DeleteLessonAssignments(List<LessonAssignment> lessonAssignments);
+        Task<bool> DeleteLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments);
     }
 }

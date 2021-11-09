@@ -13,6 +13,8 @@ namespace Entities.Models
 
         public string FileName { get; set; }
 
+        //public DateTime DeadLine { get; set; }
+
         [NotMapped]
         public IFormFile File { get; set; }
     }

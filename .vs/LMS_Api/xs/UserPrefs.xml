@@ -1,17 +1,18 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/Concrete/EFLessonDal.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/Concrete/EfLessonAssignmentDal.cs">
     <Files>
       <File FileName="DataAccess/Abstract/ILessonDal.cs" Line="21" Column="11" />
-      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="221" Column="1" />
-      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="73" Column="10" />
-      <File FileName="LMS_Api/Controllers/GroupController.cs" Line="124" Column="8" />
-      <File FileName="DataAccess/Abstract/ILessonAssignmentDal.cs" Line="10" Column="6" />
-      <File FileName="DataAccess/Concrete/EfLessonAssignmentDal.cs" Line="24" Column="32" />
+      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="201" Column="1" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" />
+      <File FileName="LMS_Api/Controllers/GroupController.cs" />
+      <File FileName="DataAccess/Abstract/ILessonAssignmentDal.cs" />
       <File FileName="LMS_Api/Program.cs" Line="20" Column="1" />
-      <File FileName="DataAccess/Concrete/EfLessonMaterialDal.cs" Line="50" Column="1" />
+      <File FileName="DataAccess/Concrete/EfLessonAssignmentDal.cs" Line="65" Column="35" />
       <File FileName="Business/Concrete/LessonMaterialService.cs" Line="27" Column="1" />
-      <File FileName="DataAccess/AutoMapper/AutoMapperProfile.cs" Line="23" Column="73" />
-      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="17" Column="16" />
+      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="17" Column="16" />
+      <File FileName="Entities/Models/LessonAssignment.cs" Line="16" Column="49" />
+      <File FileName="Entities/DTOs/LessonAssignmentDTO.cs" Line="13" Column="49" />
+      <File FileName="Business/Concrete/LessonAssignmentService.cs" Line="37" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,7 +31,7 @@
               <Node name="Abstract" expanded="True" />
               <Node name="AutoMapper" expanded="True" />
               <Node name="Concrete" expanded="True">
-                <Node name="EFLessonDal.cs" selected="True" />
+                <Node name="EfLessonAssignmentDal.cs" selected="True" />
               </Node>
             </Node>
             <Node name="Entities" expanded="True">
@@ -58,8 +59,7 @@
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/GroupController.cs" relfile="LMS_Api/Controllers/GroupController.cs" line="39" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/LessonController.cs" relfile="LMS_Api/Controllers/LessonController.cs" line="136" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EfLessonMaterialDal.cs" relfile="DataAccess/Concrete/EfLessonMaterialDal.cs" line="50" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EfLessonAssignmentDal.cs" relfile="DataAccess/Concrete/EfLessonAssignmentDal.cs" line="61" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

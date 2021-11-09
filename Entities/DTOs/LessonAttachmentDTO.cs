@@ -6,7 +6,9 @@ namespace Entities.DTOs
 {
     public class LessonAttachmentDTO
     {
-        public List<IFormFile> Files { get; set; }
+        public List<IFormFile> Materials { get; set; }
+
+        public List<IFormFile> Assignments { get; set; }
 
         public string Values { get; set; }
     }

@@ -39,10 +39,10 @@ namespace DataAccess.Concrete
                         FileName = fileName
                     };
 
-                    await Context.LessonAssignments.AddAsync(lessonAssignmentDb);
-                    await Context.SaveChangesAsync();
+                    await Context.LessonAssignments.AddAsync(lessonAssignmentDb);                  
                 }
 
+                await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
 
                 return true;
@@ -62,10 +62,12 @@ namespace DataAccess.Concrete
                 foreach (var lessonAssignment in lessonAssignments)
                 {
                     FileHelper.DeleteFile(lessonAssignment.FileName);
-                    Context.LessonAssignments.Remove(lessonAssignment);
-                    await Context.SaveChangesAsync();
+                    var lessonAssignmentDb = await Context.LessonAssignments
+                        .FirstOrDefaultAsync(la => la.FileName == lessonAssignment.FileName);
+                    Context.LessonAssignments.Remove(lessonAssignmentDb);
                 }
 
+                await Context.SaveChangesAsync();
                 await dbContextTransaction.CommitAsync();
 
                 return true;

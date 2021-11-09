@@ -16,12 +16,12 @@ namespace Business.Concrete
             _conext = context;
         }
 
-        public async Task<List<LessonAssignment>> GetLessonAssignmentsByLessonId(int lessonId)
+        public async Task<List<LessonAssignment>> GetLessonAssignmentsByLessonIdAsync(int lessonId)
         {
             return await _conext.GetAllByLessonIdAsync(lessonId);
         }
 
-        public async Task<bool> CreateLessonAssignments(List<LessonAssignment> lessonAssignments)
+        public async Task<bool> CreateLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments)
         {
             await _conext.CreateLessonAssignmentsAsync(lessonAssignments);
 
@@ -29,7 +29,7 @@ namespace Business.Concrete
         }
 
         
-        public async Task<bool> DeleteLessonAssignments(List<LessonAssignment> lessonAssignments)
+        public async Task<bool> DeleteLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments)
         {
             await _conext.DeleteLessonAssignmentsAsync(lessonAssignments);
 

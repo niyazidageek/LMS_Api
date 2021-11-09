@@ -94,11 +94,11 @@ namespace LMS_Api.Controllers
 
             await _lessonService.AddLessonAsync(lessonDb);
 
-            if (lessonAttachmentDto.Files is not null)
+            if (lessonAttachmentDto.Materials is not null)
             {
                 List<LessonMaterial> lessonMaterials = new();
 
-                foreach (var file in lessonAttachmentDto.Files)
+                foreach (var file in lessonAttachmentDto.Materials)
                 {
                     LessonMaterial lessonMaterial = new();
                     lessonMaterial.LessonId = lessonDb.Id;
@@ -109,25 +109,22 @@ namespace LMS_Api.Controllers
                 await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
             }
 
+            if (lessonAttachmentDto.Assignments is not null)
+            {
+                List<LessonAssignment> lessonAssignments = new();
+
+                foreach (var file in lessonAttachmentDto.Assignments)
+                {
+                    LessonAssignment lessonAssignment = new();
+                    lessonAssignment.LessonId = lessonDb.Id;
+                    lessonAssignment.File = file;
+                    lessonAssignments.Add(lessonAssignment);
+                }
+
+                await _lessonAssignmentService.CreateLessonAssignmentsAsync(lessonAssignments);
+            }
+
             return Ok();
-
-            //if (!ModelState.IsValid) return BadRequest();
-
-            //LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
-
-            //var lessonDb = _mapper.Map<Lesson>(lessonDto);
-
-            //if(lessonAttachmentDto.Files is not null)
-            //{
-            //    lessonDb.Files = lessonAttachmentDto.Files;
-            //    await _lessonService.AddLessonWithFilesAsync(lessonDb);
-
-            //    return Ok();
-            //}
-
-            //await _lessonService.AddLessonAsync(lessonDb);
-
-            //return Ok();
         }
 
         [HttpPut]
@@ -143,17 +140,23 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
-            var existingFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
+            var existingMaterialFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
 
-            var deleteableFiles = existingFiles
+            var existingAssignmentFiles = lessonDb.LessonAssignments.Select(la => la.FileName).ToList();
+
+            var deleteableMaterialFiles = existingMaterialFiles
                     .Where(ef => !lessonDto.LessonMaterials.Any(lm => lm.FileName == ef))
                     .ToList();
 
-            if (deleteableFiles is not null || deleteableFiles.Count is not 0)
+            var deleteableAssignmentFiles = existingAssignmentFiles
+                    .Where(ef => !lessonDto.LessonAssignments.Any(la => la.FileName == ef))
+                    .ToList();
+
+            if (deleteableMaterialFiles is not null || deleteableMaterialFiles.Count is not 0)
             {
                 List<LessonMaterial> lessonMaterials = new();
 
-                foreach (var file in deleteableFiles)
+                foreach (var file in deleteableMaterialFiles)
                 {
                     LessonMaterial lessonMaterial = new();
                     lessonMaterial.FileName = file;
@@ -164,11 +167,11 @@ namespace LMS_Api.Controllers
                 await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
             }
 
-            if(lessonAttachmentDto.Files is not null)
+            if(lessonAttachmentDto.Materials is not null)
             {
                 List<LessonMaterial> lessonMaterials = new();
 
-                foreach (var file in lessonAttachmentDto.Files)
+                foreach (var file in lessonAttachmentDto.Materials)
                 {
                     LessonMaterial lessonMaterial = new();
                     lessonMaterial.LessonId = lessonDb.Id;
@@ -179,6 +182,36 @@ namespace LMS_Api.Controllers
                 await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
             }
 
+            if (deleteableAssignmentFiles is not null || deleteableAssignmentFiles.Count is not 0)
+            {
+                List<LessonAssignment> lessonAssignments = new();
+
+                foreach (var file in deleteableAssignmentFiles)
+                {
+                    LessonAssignment lessonAssignment = new();
+                    lessonAssignment.FileName = file;
+                    lessonAssignment.LessonId = lessonDb.Id;
+                    lessonAssignments.Add(lessonAssignment);
+                }
+
+                await _lessonAssignmentService.DeleteLessonAssignmentsAsync(lessonAssignments);
+            }
+
+            if (lessonAttachmentDto.Assignments is not null)
+            {
+                List<LessonAssignment> lessonAssignments = new();
+
+                foreach (var file in lessonAttachmentDto.Assignments)
+                {
+                    LessonAssignment lessonAssignment = new();
+                    lessonAssignment.LessonId = lessonDb.Id;
+                    lessonAssignment.File = file;
+                    lessonAssignments.Add(lessonAssignment);
+                }
+
+                await _lessonAssignmentService.CreateLessonAssignmentsAsync(lessonAssignments);
+            }
+
 
             lessonDto.Id = lessonDb.Id;
             foreach (var lessonMaterialDto in lessonDto.LessonMaterials)
@@ -187,29 +220,18 @@ namespace LMS_Api.Controllers
                     .FirstOrDefault(lm => lm.FileName == lessonMaterialDto.FileName).Id;
             }
 
+            foreach (var lessonAssignmentDto in lessonDto.LessonAssignments)
+            {
+                lessonAssignmentDto.Id = lessonDb.LessonAssignments
+                    .FirstOrDefault(la => la.FileName == lessonAssignmentDto.FileName).Id;
+            }
+
             _mapper.Map(lessonDto, lessonDb);
 
             await _lessonService.EditLessonAsync(lessonDb);
 
             return Ok();
 
-            //if(lessonAttachmentDto.Files is not null)
-            //{
-            //    lessonDb.Files = lessonAttachmentDto.Files;
-
-            //    await _lessonService.EditLessonWithFilesAsync(lessonDb);
-
-            //    return Ok();
-            //}
-            //else
-            //{
-            //    await _lessonService.EditLessonAsync(lessonDb);
-
-            //    return Ok();
-            //}
-         
-
-           
         }
 
         [HttpDelete]
@@ -220,12 +242,21 @@ namespace LMS_Api.Controllers
 
             List<LessonMaterial> lessonMaterials = new();
 
+            List<LessonAssignment> lessonAssignments = new();
+
             foreach (var lessonMaterial in lessonDb.LessonMaterials)
             {
                 lessonMaterials.Add(lessonMaterial);
             }
 
+            foreach (var lessonAssignment in lessonDb.LessonAssignments)
+            {
+                lessonAssignments.Add(lessonAssignment);
+            }
+
             await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
+
+            await _lessonAssignmentService.DeleteLessonAssignmentsAsync(lessonAssignments);
 
             await _lessonService.DeleteLessonAsync(id);
 

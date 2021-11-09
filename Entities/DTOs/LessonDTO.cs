@@ -19,5 +19,7 @@ namespace Entities.DTOs
         public GroupDTO Group { get; set; }
 
         public List<LessonMaterialDTO> LessonMaterials { get; set; }
+
+        public List<LessonAssignmentDTO> LessonAssignments { get; set; }
     }
 }

@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete
 {
-    public class EFAssingnmentAppUserMaterial : EFRepositoryBase<AssignmentAppUserMaterial, AppDbContext>, IAssignmentAppUserMaterialDal
+    public class EFAssingnmentAppUserMaterialDal : EFRepositoryBase<AssignmentAppUserMaterial, AppDbContext>, IAssignmentAppUserMaterialDal
     {
-        public EFAssingnmentAppUserMaterial(AppDbContext context) : base(context)
+        public EFAssingnmentAppUserMaterialDal(AppDbContext context) : base(context)
         {
         }
 

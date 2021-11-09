@@ -9,9 +9,9 @@ namespace Business.Concrete
 {
     public class AssignmentMaterialService: IAssignmentMaterialService
     {
-        private readonly IAssignmentAppUserMaterialDal _conext;
+        private readonly IAssignmentMaterialDal _conext;
 
-        public AssignmentMaterialService(IAssignmentAppUserMaterialDal context)
+        public AssignmentMaterialService(IAssignmentMaterialDal context)
         {
             _conext = context;
         }

@@ -17,6 +17,6 @@ namespace Business.Abstract
 
         Task<bool> DeleteAssignmentAsync(int id);
 
-        Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string userId)
+        Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string userId);
     }
 }

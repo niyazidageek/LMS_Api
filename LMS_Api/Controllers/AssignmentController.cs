@@ -82,7 +82,7 @@ namespace LMS_Api.Controllers
             if (userId is null)
                 return Unauthorized();
 
-            var assignmentsdDb = await _assignmentAppUserService.GetAssignmentsByLessonIdAndUserIdAsync(id, userId);
+            var assignmentsdDb = await _assignmentService.GetAssignmentsByLessonIdAndUserIdAsync(id, userId);
 
             var assignmentsDto = _mapper.Map<List<AssignmentDTO>>(assignmentsdDb);
 
@@ -124,9 +124,9 @@ namespace LMS_Api.Controllers
                     assignmentAppUserMaterials.Add(assignmentAppUserMaterial);
                 }
 
-                await _appusermate.crep(assignmentAppUserMaterials);
+                //await _appusermate.crep(assignmentAppUserMaterials);
             }
-
+            return Ok();
         }
     }
 }

@@ -9,6 +9,7 @@
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.AssemblyInfoInputs.cache
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.AssemblyInfo.cs
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.csproj.CoreCompileInputs.cache
+/Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.csproj.CopyComplete
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.dll
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/ref/Entities.dll
 /Users/niyazibabayev/Projects/LMS_Api/Entities/obj/Debug/net5.0/Entities.pdb

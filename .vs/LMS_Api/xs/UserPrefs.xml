@@ -1,19 +1,13 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/AssignmentController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/AutoMapper/AutoMapperProfile.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="95" Column="10" />
-      <File FileName="DataAccess/Abstract/IAssignmentAppUserMaterial.cs" Line="10" Column="6" />
-      <File FileName="DataAccess/Abstract/IAssignmentMaterialDal.cs" Line="9" Column="33" />
-      <File FileName="DataAccess/Concrete/EFAssignmentAppUserMaterialDal.cs" Line="28" Column="28" />
-      <File FileName="DataAccess/Concrete/EFAssignmentMaterialDal.cs" Line="54" Column="14" />
-      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="17" Column="16" />
-      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="12" Column="101" />
-      <File FileName="DataAccess/Abstract/IAssignmentDal.cs" Line="13" Column="102" />
-      <File FileName="Business/Concrete/AssignmentService.cs" Line="10" Column="50" />
-      <File FileName="DataAccess/Concrete/EFAssignmentDal.cs" Line="26" Column="83" />
-      <File FileName="Business/Abstract/IAssignmentService.cs" Line="20" Column="99" />
-      <File FileName="DataAccess/Abstract/IAssignmentAppUserDal.cs" Line="13" Column="117" />
-      <File FileName="Business/Concrete/AssignmentAppUserService.cs" Line="10" Column="55" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="129" Column="25" />
+      <File FileName="Business/Abstract/IAssignmentService.cs" Line="20" Column="100" />
+      <File FileName="Business/Concrete/AssignmentMaterialService.cs" Line="14" Column="64" />
+      <File FileName="LMS_Api/Startup.cs" Line="111" Column="1" />
+      <File FileName="Business/Abstract/IAssignmentAppUserMaterialService.cs" Line="13" Column="1" />
+      <File FileName="Business/Concrete/AssignmentAppUserMaterialService.cs" Line="14" Column="41" />
+      <File FileName="DataAccess/AutoMapper/AutoMapperProfile.cs" Line="13" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,7 +24,9 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="AutoMapper" expanded="True" />
+              <Node name="AutoMapper" expanded="True">
+                <Node name="AutoMapperProfile.cs" selected="True" />
+              </Node>
               <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
@@ -39,9 +35,7 @@
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Controllers" expanded="True">
-                <Node name="AssignmentController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>

@@ -30,6 +30,10 @@ namespace DataAccess.AutoMapper
 
             CreateMap<AssignmentMaterial, AssignmentMaterialDTO>().ReverseMap();
 
+            CreateMap<Assignment, AssignmentDTO>().ReverseMap();
+
+            CreateMap<AssignmentAppUser, AssignmentAppUserDto>().ReverseMap();
+
             CreateMap<AssignmentAppUserMaterial, AssignmentAppUserMaterialDTO>().ReverseMap();
         }
     }

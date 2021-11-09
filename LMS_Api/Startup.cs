@@ -113,7 +113,16 @@ namespace LMS_Api
             services.AddScoped<ILessonMaterialDal, EfLessonMaterialDal>();
 
             services.AddScoped<IAssignmentMaterialService, AssignmentMaterialService>();
-            services.AddScoped<IAssignmentAppUserMaterialDal, EFAssignmentMaterialDal>();
+            services.AddScoped<IAssignmentMaterialDal, EFAssignmentMaterialDal>();
+
+            services.AddScoped<IAssignmentService, AssignmentService>();
+            services.AddScoped<IAssignmentDal, EFAssignmentDal>();
+
+            services.AddScoped<IAssignmentAppUserService, AssignmentAppUserService>();
+            services.AddScoped<IAssignmentAppUserDal, EFAssignmentAppUserDal>();
+
+            services.AddScoped<IAssignmentAppUserMaterialService, AssignmentAppUserMaterialService>();
+            services.AddScoped<IAssignmentAppUserMaterialDal, EFAssingnmentAppUserMaterialDal>();
         }
 
 

@@ -1,19 +1,19 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/AssignmentController.cs">
     <Files>
-      <File FileName="Business/Abstract/IAssignmentAppUserService.cs" Line="12" Column="1" />
-      <File FileName="DataAccess/Abstract/IAssignmentDal.cs" Line="11" Column="66" />
-      <File FileName="DataAccess/Abstract/IAssignmentMaterialDal.cs" Line="9" Column="77" />
-      <File FileName="DataAccess/Concrete/EFAssignmentDal.cs" Line="12" Column="83" />
-      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" Line="38" Column="32" />
-      <File FileName="Business/Abstract/IAssignmentService.cs" Line="8" Column="22" />
-      <File FileName="Business/Concrete/AssignmentService.cs" Line="14" Column="57" />
-      <File FileName="DataAccess/Abstract/IAssignmentAppUserDal.cs" Line="7" Column="2" />
-      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="34" Column="58" />
-      <File FileName="Entities/Models/AssignmentAppUser.cs" Line="6" Column="2" />
-      <File FileName="LMS_Api/Startup.cs" Line="31" Column="16" />
-      <File FileName="Business/Concrete/AssignmentAppUserService.cs" Line="22" Column="25" />
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="14" Column="1" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="95" Column="10" />
+      <File FileName="DataAccess/Abstract/IAssignmentAppUserMaterial.cs" Line="10" Column="6" />
+      <File FileName="DataAccess/Abstract/IAssignmentMaterialDal.cs" Line="9" Column="33" />
+      <File FileName="DataAccess/Concrete/EFAssignmentAppUserMaterialDal.cs" Line="28" Column="28" />
+      <File FileName="DataAccess/Concrete/EFAssignmentMaterialDal.cs" Line="54" Column="14" />
+      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="17" Column="16" />
+      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="12" Column="101" />
+      <File FileName="DataAccess/Abstract/IAssignmentDal.cs" Line="13" Column="102" />
+      <File FileName="Business/Concrete/AssignmentService.cs" Line="10" Column="50" />
+      <File FileName="DataAccess/Concrete/EFAssignmentDal.cs" Line="26" Column="83" />
+      <File FileName="Business/Abstract/IAssignmentService.cs" Line="20" Column="99" />
+      <File FileName="DataAccess/Abstract/IAssignmentAppUserDal.cs" Line="13" Column="117" />
+      <File FileName="Business/Concrete/AssignmentAppUserService.cs" Line="10" Column="55" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

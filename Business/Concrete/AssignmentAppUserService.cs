@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstract;
 using DataAccess.Abstract;
@@ -13,6 +14,23 @@ namespace Business.Concrete
         public AssignmentAppUserService(IAssignmentAppUserDal context)
         {
             _context = context;
+        }
+
+        public async Task<bool> EditAssignmentAppUserAsync(AssignmentAppUser assignmentAppUser)
+        {
+            await _context.UpdateAsync(assignmentAppUser);
+
+            return true;
+        }
+
+        public async Task<AssignmentAppUser> GetAssignmentAppUserByIdAsync(int id)
+        {
+            return await _context.GetAsync(aa => aa.Id == id);
+        }
+
+        public async Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string appUserId)
+        {
+            return await _context.GetAssignmentsByLessonIdAndUserIdAsync(lessonId, appUserId);
         }
 
         public async Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId)

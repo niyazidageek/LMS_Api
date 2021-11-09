@@ -16,9 +16,40 @@ namespace Business.Concrete
             _context = context;
         }
 
+        public async Task<bool> AddAssignmentAsync(Assignment assignment)
+        {
+            await _context.AddAsync(assignment);
+
+            return true;
+        }
+
+        public async Task<bool> DeleteAssignmentAsync(int id)
+        {
+            await _context.DeleteAsync(new Assignment { Id = id });
+
+            return true;
+        }
+
+        public async Task<bool> EditAssignmentAsync(Assignment assignment)
+        {
+            await _context.UpdateAsync(assignment);
+
+            return true;
+        }
+
+        public async Task<Assignment> GetAssignmentByIdAsync(int id)
+        {
+            return await _context.GetAsync(a => a.Id == id);
+        }
+
         public async Task<List<Assignment>> GetAssignmentsByLessonIdAsync(int lessonId)
         {
             return await _context.GetAllByLessonIdAsync(lessonId);
+        }
+
+        public async Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string userId)
+        {
+            return await _context.GetAssignmentsByLessonIdAndUserIdAsync(lessonId, userId);
         }
     }
 }

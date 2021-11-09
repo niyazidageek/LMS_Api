@@ -9,5 +9,7 @@ namespace DataAccess.Abstract
     public interface IAssignmentDal:IRepository<Assignment>
     {
         Task<List<Assignment>> GetAllByLessonIdAsync(int lessonId);
+
+        Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string appUserId)
     }
 }

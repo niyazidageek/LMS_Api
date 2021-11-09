@@ -42,9 +42,12 @@ namespace LMS_Api.Controllers
 
             var lessons = await _lessonService.GetLessonsByGroupIdAsync(groups.First().Id);
 
-            int totalAssignments=0;
+            int totalAssignments = 0;
 
-            lessons.ForEach(l => totalAssignments += l.LessonAssignments.Count);
+            int totalMaterials = 0;
+
+            lessons.ForEach(l => totalMaterials += l.LessonMaterials.Count);
+            lessons.ForEach(l => totalAssignments += l.Assignments.Count);
 
             AppUser teacher = new();
 

@@ -34,11 +34,17 @@ namespace DataAccess.Concrete
 
         public DbSet<Lesson> Lessons { get; set; }
 
-        public DbSet<LessonAssignment> LessonAssignments { get; set; }
+        public DbSet<AssignmentMaterial> AssignmentMaterials { get; set; }
+
+        public DbSet<AssignmentAppUser> AssignmentAppUsers { get; set; }
+
+        public DbSet<AssignmentAppUserMaterial> AssignmentAppUserMaterials { get; set; }
 
         public DbSet<LessonMaterial> LessonMaterials { get; set; }
 
         public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Assignment> Assignments { get; set; }
 
         public DbSet<Quiz> Quizzes { get; set; }
 

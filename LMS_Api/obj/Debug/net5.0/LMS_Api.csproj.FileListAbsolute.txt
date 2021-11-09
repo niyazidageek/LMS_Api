@@ -13,6 +13,8 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Razor.Language.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.CodeAnalysis.dll
@@ -45,6 +47,7 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -130,10 +133,10 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Entities.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Business.pdb
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/DataAccess.pdb
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Entities.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Utils.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Core.pdb
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Entities.pdb
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/DataAccess.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.csproj.AssemblyReference.cache
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.GeneratedMSBuildEditorConfig.editorconfig
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.AssemblyInfoInputs.cache
@@ -150,6 +153,3 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/ref/LMS_Api.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.genruntimeconfig.cache
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.JsonPatch.dll
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll

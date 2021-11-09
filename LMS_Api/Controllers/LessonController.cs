@@ -25,15 +25,12 @@ namespace LMS_Api.Controllers
         private readonly IMapper _mapper;
         private readonly IGroupService _groupService;
         private readonly ILessonMaterialService _lessonMaterialService;
-        private readonly ILessonAssignmentService _lessonAssignmentService;
 
         public LessonController(ILessonService lessonService,
             IMapper mapper,
             IGroupService groupService,
-            ILessonMaterialService lessonMaterialService,
-            ILessonAssignmentService lessonAssignmentService)
+            ILessonMaterialService lessonMaterialService)
         {
-            _lessonAssignmentService = lessonAssignmentService;
             _lessonMaterialService = lessonMaterialService;
             _lessonService = lessonService;
             _mapper = mapper;
@@ -63,7 +60,6 @@ namespace LMS_Api.Controllers
                 return NotFound();
 
             var lessonDto = _mapper.Map<LessonDTO>(lessonDb);
-
 
             return Ok(lessonDto);
         }
@@ -109,21 +105,6 @@ namespace LMS_Api.Controllers
                 await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
             }
 
-            if (lessonAttachmentDto.Assignments is not null)
-            {
-                List<LessonAssignment> lessonAssignments = new();
-
-                foreach (var file in lessonAttachmentDto.Assignments)
-                {
-                    LessonAssignment lessonAssignment = new();
-                    lessonAssignment.LessonId = lessonDb.Id;
-                    lessonAssignment.File = file;
-                    lessonAssignments.Add(lessonAssignment);
-                }
-
-                await _lessonAssignmentService.CreateLessonAssignmentsAsync(lessonAssignments);
-            }
-
             return Ok();
         }
 
@@ -142,14 +123,8 @@ namespace LMS_Api.Controllers
 
             var existingMaterialFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
 
-            var existingAssignmentFiles = lessonDb.LessonAssignments.Select(la => la.FileName).ToList();
-
             var deleteableMaterialFiles = existingMaterialFiles
                     .Where(ef => !lessonDto.LessonMaterials.Any(lm => lm.FileName == ef))
-                    .ToList();
-
-            var deleteableAssignmentFiles = existingAssignmentFiles
-                    .Where(ef => !lessonDto.LessonAssignments.Any(la => la.FileName == ef))
                     .ToList();
 
             if (deleteableMaterialFiles is not null || deleteableMaterialFiles.Count is not 0)
@@ -182,48 +157,11 @@ namespace LMS_Api.Controllers
                 await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
             }
 
-            if (deleteableAssignmentFiles is not null || deleteableAssignmentFiles.Count is not 0)
-            {
-                List<LessonAssignment> lessonAssignments = new();
-
-                foreach (var file in deleteableAssignmentFiles)
-                {
-                    LessonAssignment lessonAssignment = new();
-                    lessonAssignment.FileName = file;
-                    lessonAssignment.LessonId = lessonDb.Id;
-                    lessonAssignments.Add(lessonAssignment);
-                }
-
-                await _lessonAssignmentService.DeleteLessonAssignmentsAsync(lessonAssignments);
-            }
-
-            if (lessonAttachmentDto.Assignments is not null)
-            {
-                List<LessonAssignment> lessonAssignments = new();
-
-                foreach (var file in lessonAttachmentDto.Assignments)
-                {
-                    LessonAssignment lessonAssignment = new();
-                    lessonAssignment.LessonId = lessonDb.Id;
-                    lessonAssignment.File = file;
-                    lessonAssignments.Add(lessonAssignment);
-                }
-
-                await _lessonAssignmentService.CreateLessonAssignmentsAsync(lessonAssignments);
-            }
-
-
             lessonDto.Id = lessonDb.Id;
             foreach (var lessonMaterialDto in lessonDto.LessonMaterials)
             {
                 lessonMaterialDto.Id = lessonDb.LessonMaterials
                     .FirstOrDefault(lm => lm.FileName == lessonMaterialDto.FileName).Id;
-            }
-
-            foreach (var lessonAssignmentDto in lessonDto.LessonAssignments)
-            {
-                lessonAssignmentDto.Id = lessonDb.LessonAssignments
-                    .FirstOrDefault(la => la.FileName == lessonAssignmentDto.FileName).Id;
             }
 
             _mapper.Map(lessonDto, lessonDb);
@@ -242,21 +180,12 @@ namespace LMS_Api.Controllers
 
             List<LessonMaterial> lessonMaterials = new();
 
-            List<LessonAssignment> lessonAssignments = new();
-
             foreach (var lessonMaterial in lessonDb.LessonMaterials)
             {
                 lessonMaterials.Add(lessonMaterial);
             }
 
-            foreach (var lessonAssignment in lessonDb.LessonAssignments)
-            {
-                lessonAssignments.Add(lessonAssignment);
-            }
-
             await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
-
-            await _lessonAssignmentService.DeleteLessonAssignmentsAsync(lessonAssignments);
 
             await _lessonService.DeleteLessonAsync(id);
 

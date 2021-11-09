@@ -10,36 +10,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete
 {
-    public class EfLessonAssignmentDal : EFRepositoryBase<LessonAssignment, AppDbContext>, ILessonAssignmentDal
+    public class EFAssignmentMaterialDal : EFRepositoryBase<AssignmentMaterial, AppDbContext>, IAssignmentMaterialDal
     {
-        public EfLessonAssignmentDal(AppDbContext context) : base(context)
+        public EFAssignmentMaterialDal(AppDbContext context) : base(context)
         {
         }
 
-        public async Task<List<LessonAssignment>> GetAllByLessonIdAsync(int lessonId)
+        public async Task<List<AssignmentMaterial>> GetAllByAssignmentIdAsync(int assignmentId)
         {
-            return await Context.LessonAssignments
+            return await Context.AssignmentMaterials
                 .AsNoTracking()
-                .Where(la => la.LessonId == lessonId)
+                .Where(am => am.AssignmentId == assignmentId)
                 .ToListAsync();
         }
 
-        public async Task<bool> CreateLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments)
+        public async Task<bool> CreateAssignmentMaterialsAsync(List<AssignmentMaterial> assignmentMaterials)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var lessonAssignment in lessonAssignments)
+                foreach (var assignmentMaterial in assignmentMaterials)
                 {
-                    var fileName = await FileHelper.AddFile(lessonAssignment.File);
+                    var fileName = await FileHelper.AddFile(assignmentMaterial.File);
 
-                    LessonAssignment lessonAssignmentDb = new()
+                    AssignmentMaterial assignmentMaterialDb = new()
                     {
-                        LessonId = lessonAssignment.LessonId,
+                        AssignmentId = assignmentMaterial.AssignmentId,
                         FileName = fileName
                     };
 
-                    await Context.LessonAssignments.AddAsync(lessonAssignmentDb);                  
+                    await Context.AssignmentMaterials.AddAsync(assignmentMaterialDb);                  
                 }
 
                 await Context.SaveChangesAsync();
@@ -54,17 +54,17 @@ namespace DataAccess.Concrete
             }
         }
 
-        public async Task<bool> DeleteLessonAssignmentsAsync(List<LessonAssignment> lessonAssignments)
+        public async Task<bool> DeleteAssignmentMaterialssAsync(List<AssignmentMaterial> assignmentMaterials)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var lessonAssignment in lessonAssignments)
+                foreach (var assignmentMaterial in assignmentMaterials)
                 {
-                    FileHelper.DeleteFile(lessonAssignment.FileName);
-                    var lessonAssignmentDb = await Context.LessonAssignments
-                        .FirstOrDefaultAsync(la => la.FileName == lessonAssignment.FileName);
-                    Context.LessonAssignments.Remove(lessonAssignmentDb);
+                    FileHelper.DeleteFile(assignmentMaterial.FileName);
+                    var assignmentMaterialDb = await Context.AssignmentMaterials
+                        .FirstOrDefaultAsync(am => am.FileName == assignmentMaterial.FileName);
+                    Context.AssignmentMaterials.Remove(assignmentMaterialDb);
                 }
 
                 await Context.SaveChangesAsync();

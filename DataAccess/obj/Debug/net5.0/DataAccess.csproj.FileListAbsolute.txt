@@ -6,7 +6,9 @@
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/DataAccess.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Core.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Entities.dll
+/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Entities.pdb
+/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Core.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.csproj.AssemblyReference.cache
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.GeneratedMSBuildEditorConfig.editorconfig
@@ -17,6 +19,3 @@
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/ref/DataAccess.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.pdb
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.genruntimeconfig.cache
-/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.dll
-/Users/niyazibabayev/Projects/LMS_Api/DataAccess/bin/Debug/net5.0/Utils.pdb
-/Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.csproj.CopyComplete

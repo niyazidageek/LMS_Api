@@ -22,13 +22,15 @@ namespace DataAccess.AutoMapper
 
             CreateMap<LessonMaterial, LessonMaterialDTO>().ReverseMap();
 
-            CreateMap<LessonAssignment, LessonAssignmentDTO>().ReverseMap();
-
             CreateMap<Question, QuestionDTO>().ReverseMap();
 
             CreateMap<Option, OptionDTO>().ReverseMap();
 
             CreateMap<Quiz, QuizDTO>().ReverseMap();
+
+            CreateMap<AssignmentMaterial, AssignmentMaterialDTO>().ReverseMap();
+
+            CreateMap<AssignmentAppUserMaterial, AssignmentAppUserMaterialDTO>().ReverseMap();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Entities.Models
 
         public List<LessonMaterial> LessonMaterials { get; set; }
 
-        public List<LessonAssignment> LessonAssignments { get; set; }
+        public List<Assignment> Assignments { get; set; }
 
         [NotMapped]
         public List<IFormFile> Files { get; set; }

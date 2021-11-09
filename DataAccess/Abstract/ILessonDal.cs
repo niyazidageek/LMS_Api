@@ -12,14 +12,6 @@ namespace DataAccess.Abstract
     {
         Task<List<Lesson>> GetAllAsync();
 
-        //Task<bool> AddWithFilesAsync(Lesson lesson);
-
-        //Task<bool> UpdateWithFilesAsync(Lesson lesson);
-
-        //Task<bool> UpdateWithoutFilesAsync(Lesson lesson);
-
-        //Task<bool> DeleteWithFilesAsync(Lesson lesson);
-
         Task<List<Lesson>> GetAllByGroupIdAsync(int groupId);
 
         Task<Lesson> GetAsync(int id);

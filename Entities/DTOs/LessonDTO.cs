@@ -20,6 +20,6 @@ namespace Entities.DTOs
 
         public List<LessonMaterialDTO> LessonMaterials { get; set; }
 
-        public List<LessonAssignmentDTO> LessonAssignments { get; set; }
+        public List<AssignmentDTO> Assignments { get; set; }
     }
 }

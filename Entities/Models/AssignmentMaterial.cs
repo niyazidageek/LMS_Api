@@ -5,15 +5,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Entities.Models
 {
-    public class LessonAssignment : IEntity
+    public class AssignmentMaterial : IEntity
     {
         public int Id { get; set; }
 
-        public int LessonId { get; set; }
+        public int AssignmentId { get; set; }
 
         public string FileName { get; set; }
-
-        //public DateTime DeadLine { get; set; }
 
         [NotMapped]
         public IFormFile File { get; set; }

@@ -20,14 +20,17 @@ namespace LMS_Api.Controllers
         private readonly IAssignmentService _assignmentService;
         private readonly IAssignmentAppUserService _assignmentAppUserService;
         private readonly IAssignmentMaterialService _assignmentMaterialService;
+        private readonly IAssignmentAppUserMaterialService _assignmentAppUserMaterialService;
         private readonly ILessonService _lessonService;
 
         public AssignmentController(IAssignmentService assignmentService,
             IAssignmentAppUserService assignmentAppUserService,
             IAssignmentMaterialService assignmentMaterialService,
             IMapper mapper,
+            IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
             ILessonService lessonService)
         {
+            _assignmentAppUserMaterialService = assignmentAppUserMaterialService;
             _lessonService = lessonService;
             _mapper = mapper;
             _assignmentService = assignmentService;
@@ -124,8 +127,87 @@ namespace LMS_Api.Controllers
                     assignmentAppUserMaterials.Add(assignmentAppUserMaterial);
                 }
 
-                //await _appusermate.crep(assignmentAppUserMaterials);
+                await _assignmentAppUserMaterialService.CreateAssignmentAppUserMaterialAsync(assignmentAppUserMaterials);
             }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetSubmissionsByLessonId(int id)
+        {
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+
+            if (lessonDb is null)
+                return NotFound();
+
+            var assignmentAppUsersDb = await _assignmentAppUserService.GetAssignmentAppUsersByLessonIdAsync(lessonDb.Id);
+
+            var assignmentAppUserDto = _mapper.Map<List<AssignmentAppUserDto>>(assignmentAppUsersDb);
+
+            return Ok(assignmentAppUserDto);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult> EditAssignment(int id, [FromForm] AssignmentAttachmentDTO assignmentAttachmentDto)
+        {
+            var assignmentDb = await _assignmentService.GetAssignmentByIdAsync(id);
+
+            if (assignmentDb is null)
+                return NotFound();
+
+            AssignmentDTO assignmentDto = JsonConvert.DeserializeObject<AssignmentDTO>(assignmentAttachmentDto.Values);
+
+            var existingAppUserMaterials = assignmentDb.AssignmentMaterials.Select(am => am.FileName).ToList();
+
+            var deleteableAppUserMaterials = existingAppUserMaterials
+                    .Where(eam => !assignmentDto.AssignmentMaterials.Any(am => am.FileName == eam))
+                    .ToList();
+
+            if (deleteableAppUserMaterials is not null || deleteableAppUserMaterials.Count is not 0)
+            {
+                List<AssignmentMaterial> assignmentMaterials = new();
+
+                foreach (var file in deleteableAppUserMaterials)
+                {
+                    AssignmentMaterial assignmentMaterial = new();
+                    assignmentMaterial.FileName = file;
+                    assignmentMaterial.AssignmentId = assignmentDb.Id;
+                    assignmentMaterials.Add(assignmentMaterial);
+                }
+
+                await _assignmentMaterialService.DeleteAssignmentMaterialsAsync(assignmentMaterials);
+            }
+
+            if (assignmentAttachmentDto.Materials is not null)
+            {
+                List<AssignmentMaterial> assignmentMaterials = new();
+
+                foreach (var file in assignmentAttachmentDto.Materials)
+                {
+                    AssignmentMaterial assignmentMaterial = new();
+                    assignmentMaterial.AssignmentId = assignmentDb.Id;
+                    assignmentMaterial.File = file;
+                    assignmentMaterials.Add(assignmentMaterial);
+                }
+
+                await _assignmentMaterialService.CreateAssignmentMaterialsAsync(assignmentMaterials);
+            }
+
+            assignmentDto.Id = assignmentDb.Id;
+
+            foreach (var assignmentMaterialDto in assignmentDto.AssignmentMaterials)
+            {
+                assignmentMaterialDto.Id = assignmentDb.AssignmentMaterials
+                    .FirstOrDefault(am => am.FileName == assignmentMaterialDto.FileName).Id;
+            }
+
+            _mapper.Map(assignmentDto, assignmentDb);
+
+            await _assignmentService.EditAssignmentAsync(assignmentDb);
+
             return Ok();
         }
     }

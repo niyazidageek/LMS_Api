@@ -10,6 +10,6 @@ namespace DataAccess.Abstract
     {
         Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId);
 
-        Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAndUserIdAsync(int lessonId, string appUserId);
+        Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId);
     }
 }

@@ -28,9 +28,9 @@ namespace Business.Concrete
             return await _context.GetAsync(aa => aa.Id == id);
         }
 
-        public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAndUserIdAsync(int lessonId, string appUserId)
+        public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonId(int lessonId)
         {
-            return await _context.GetAssignmentAppUsersByLessonIdAndUserIdAsync(lessonId, appUserId);
+            return await _context.GetAssignmentAppUsersByLessonId(lessonId);
         }
 
         public async Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId)

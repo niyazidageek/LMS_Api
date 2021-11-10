@@ -1,13 +1,16 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/AutoMapper/AutoMapperProfile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/Concrete/EFAssignmentAppUserDal.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="129" Column="25" />
-      <File FileName="Business/Abstract/IAssignmentService.cs" Line="20" Column="100" />
-      <File FileName="Business/Concrete/AssignmentMaterialService.cs" Line="14" Column="64" />
-      <File FileName="LMS_Api/Startup.cs" Line="111" Column="1" />
-      <File FileName="Business/Abstract/IAssignmentAppUserMaterialService.cs" Line="13" Column="1" />
-      <File FileName="Business/Concrete/AssignmentAppUserMaterialService.cs" Line="14" Column="41" />
-      <File FileName="DataAccess/AutoMapper/AutoMapperProfile.cs" Line="13" Column="16" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="154" Column="62" />
+      <File FileName="Business/Abstract/IAssignmentService.cs" />
+      <File FileName="Business/Concrete/AssignmentMaterialService.cs" />
+      <File FileName="Business/Abstract/IAssignmentAppUserMaterialService.cs" />
+      <File FileName="Business/Concrete/AssignmentAppUserMaterialService.cs" />
+      <File FileName="Business/Abstract/IAssignmentAppUserService.cs" />
+      <File FileName="Business/Concrete/AssignmentAppUserService.cs" />
+      <File FileName="DataAccess/Abstract/IAssignmentAppUserDal.cs" />
+      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="38" Column="29" />
+      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="29" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -24,10 +27,10 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="AutoMapper" expanded="True">
-                <Node name="AutoMapperProfile.cs" selected="True" />
+              <Node name="AutoMapper" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="EFAssignmentAppUserDal.cs" selected="True" />
               </Node>
-              <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
               <Node name="DTOs" expanded="True" />

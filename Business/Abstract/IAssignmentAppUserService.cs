@@ -9,7 +9,7 @@ namespace Business.Abstract
     {
         //Task<List<Subject>> GetSubjectsAsync();
 
-        Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAndUserIdAsync(int lessonId, string appUserId);
+        Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId);
 
         Task<AssignmentAppUser> GetAssignmentAppUserByIdAsync(int id);
 

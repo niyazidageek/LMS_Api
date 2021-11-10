@@ -11,5 +11,9 @@ namespace DataAccess.Abstract
         Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId);
 
         Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId);
+
+        Task<AssignmentAppUser> GetAsync(int id);
+
+        Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId);
     }
 }

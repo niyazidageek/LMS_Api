@@ -44,14 +44,31 @@ namespace DataAccess.Concrete
             }
         }
 
+        //Gets all submissions by lesson ID
+
         public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId)
         {
             return await Context.AssignmentAppUsers.AsNoTracking()
                 .Include(aa=>aa.Assignment)
-                .ThenInclude(aa=>aa.LessonId)
+                .Include(aa=>aa.AppUser)
                 .Include(aa=>aa.AssignmentAppUserMaterials)
                 .Where(aa => aa.Assignment.LessonId == lessonId &&  aa.IsSubmitted == true)
                 .ToListAsync();
+        }
+
+        public async Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId)
+        {
+            return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa => aa.AssignmentAppUserMaterials)
+                .FirstOrDefaultAsync(aa => aa.AppUserId == userId && aa.AssignmentId == assignmentId);
+        }
+
+        public async Task<AssignmentAppUser> GetAsync(int id)
+        {
+            return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa => aa.AssignmentAppUserMaterials)
+                .Include(aa=>aa.Assignment)
+                .FirstOrDefaultAsync(aa => aa.Id == id);
         }
     }
 }

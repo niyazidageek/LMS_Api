@@ -19,6 +19,8 @@ namespace Business.Abstract
 
         Task<bool> EditAssignmentAppUserAsync(AssignmentAppUser assignmentAppUser);
 
+        Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId);
+
         //Task<bool> DeleteSubjectAsync(int id);
     }
 }

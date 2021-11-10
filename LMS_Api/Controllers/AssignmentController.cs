@@ -94,6 +94,23 @@ namespace LMS_Api.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        //[Authorize(Roles = nameof(Roles.Teacher))]
+        public async Task<ActionResult> GradeAssignment(int id, [FromBody] AssignmentAppUserDto assignmentAppUserDto)
+        {
+            var assignmentAppUserDb = await _assignmentAppUserService.GetAssignmentAppUserByIdAsync(id);
+
+            if (assignmentAppUserDb is null)
+                return NotFound();
+
+            assignmentAppUserDb.Grade = assignmentAppUserDto.Grade;
+
+            await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
+
+            return Ok();
+        }
+
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles=nameof(Roles.Student))]
@@ -159,7 +176,8 @@ namespace LMS_Api.Controllers
             if (assignmentDb is null)
                 return NotFound();
 
-            var appUserAssignmentDb = await _assignmentAppUserService.GetAssignmentAppUserByIdAsync(id);
+            var appUserAssignmentDb = await
+                _assignmentAppUserService.GetAssignmentAppUserByAssignmentIdAndUserIdAsync(id, userId);
 
             if (appUserAssignmentDb is null)
                 return NotFound();
@@ -192,6 +210,7 @@ namespace LMS_Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        //[Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> GetSubmissionsByLessonId(int id)
         {
             var lessonDb = await _lessonService.GetLessonByIdAsync(id);
@@ -201,7 +220,22 @@ namespace LMS_Api.Controllers
 
             var assignmentAppUsersDb = await _assignmentAppUserService.GetAssignmentAppUsersByLessonIdAsync(lessonDb.Id);
 
-            var assignmentAppUserDto = _mapper.Map<List<AssignmentAppUserDto>>(assignmentAppUsersDb);
+            var assignmentAppUsersDto = _mapper.Map<List<AssignmentAppUserDto>>(assignmentAppUsersDb);
+
+            return Ok(assignmentAppUsersDto);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        //[Authorize(Roles = nameof(Roles.Teacher))]
+        public async Task<ActionResult> GetSubmissionById(int id)
+        {
+            var assignmentAppUserDb = await _assignmentAppUserService.GetAssignmentAppUserByIdAsync(id);
+
+            if (assignmentAppUserDb is null)
+                return NotFound();
+
+            var assignmentAppUserDto = _mapper.Map<AssignmentAppUserDto>(assignmentAppUserDb);
 
             return Ok(assignmentAppUserDto);
         }

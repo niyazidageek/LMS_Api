@@ -20,6 +20,8 @@ namespace Entities.Models
 
         public DateTime? SubmissionDate { get; set; }
 
+        public bool isLate { get; set; }
+
         public List<AssignmentAppUserMaterial> AssignmentAppUserMaterials { get; set; }
     }
 }

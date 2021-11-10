@@ -188,6 +188,9 @@ namespace LMS_Api.Controllers
             appUserAssignmentDb.IsSubmitted = true;
             appUserAssignmentDb.SubmissionDate = DateTime.UtcNow;
 
+            if (appUserAssignmentDb.SubmissionDate > assignmentDb.Deadline)
+                appUserAssignmentDb.isLate = true;
+
             await _assignmentAppUserService.EditAssignmentAppUserAsync(appUserAssignmentDb);
 
             if(submissionAttachmentDto.Files is not null)

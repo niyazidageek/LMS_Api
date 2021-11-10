@@ -19,6 +19,8 @@ namespace Entities.DTOs
 
         public DateTime? SubmissionDate { get; set; }
 
+        public bool isLate { get; set; }
+
         public List<AssignmentAppUserMaterialDTO> AssignmentAppUserMaterials { get; set; }
     }
 }

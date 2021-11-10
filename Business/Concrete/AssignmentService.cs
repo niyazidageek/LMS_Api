@@ -39,7 +39,7 @@ namespace Business.Concrete
 
         public async Task<Assignment> GetAssignmentByIdAsync(int id)
         {
-            return await _context.GetAsync(a => a.Id == id);
+            return await _context.GetByIdAsync(id);
         }
 
         public async Task<List<Assignment>> GetAssignmentsByLessonIdAsync(int lessonId)

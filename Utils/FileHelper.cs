@@ -9,12 +9,6 @@ namespace LMS_Api.Utils
 {
     public static class FileHelper
     {
-        static FileHelper()
-        {
-            uniqueId = Guid.NewGuid().ToString();
-        }
-
-        public static string uniqueId;
 
         public static string path = WebEnv().WebRootPath;
 
@@ -28,7 +22,10 @@ namespace LMS_Api.Utils
         {
             if (file.Length > 0)
             {
+                string uniqueId = Guid.NewGuid().ToString();
+
                 string _fileName = uniqueId + file.FileName;
+
                 using (FileStream fileStream = File.Create(Path.Combine(path,"images", _fileName)))
                 {
                     await file.CopyToAsync(fileStream);

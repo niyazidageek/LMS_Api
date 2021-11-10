@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
+using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -22,14 +25,17 @@ namespace LMS_Api.Controllers
         private readonly IAssignmentMaterialService _assignmentMaterialService;
         private readonly IAssignmentAppUserMaterialService _assignmentAppUserMaterialService;
         private readonly ILessonService _lessonService;
+        private readonly UserManager<AppUser> _userManager;
 
         public AssignmentController(IAssignmentService assignmentService,
             IAssignmentAppUserService assignmentAppUserService,
             IAssignmentMaterialService assignmentMaterialService,
+            UserManager<AppUser> userManager,
             IMapper mapper,
             IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
             ILessonService lessonService)
         {
+            _userManager = userManager;
             _assignmentAppUserMaterialService = assignmentAppUserMaterialService;
             _lessonService = lessonService;
             _mapper = mapper;
@@ -39,7 +45,7 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAssingmentAsync([FromForm] AssignmentAttachmentDTO assignmentAttachmentDto)
+        public async Task<ActionResult> CreateAssignment([FromForm] AssignmentAttachmentDTO assignmentAttachmentDto)
         {
             AssignmentDTO assignmentDto = JsonConvert.DeserializeObject<AssignmentDTO>(assignmentAttachmentDto.Values);
 
@@ -67,6 +73,22 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
+            List<AppUserGroup> students = new();
+
+            foreach (var appUserGroup in lessonDb.Group.AppUserGroups)
+            {
+                var user = await _userManager.FindByIdAsync(appUserGroup.AppUserId);
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var isStudent = roles.Any(x => x.ToLower() == nameof(Roles.Student).ToLower());
+
+                if (isStudent is true)
+                    students.Add(appUserGroup);
+            }
+
+            lessonDb.Group.AppUserGroups = students;
+
             await _assignmentAppUserService.InitializeAssignmentAsync(lessonDb, assignmentDb.Id);
 
             return Ok();
@@ -74,7 +96,8 @@ namespace LMS_Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult> GetAssignmentsByLessonId(int id)
+        [Authorize(Roles=nameof(Roles.Student))]
+        public async Task<ActionResult> GetUndoneAssignmentsByLessonId(int id)
         {
             var lessonDb = await _lessonService.GetLessonByIdAsync(id);
 
@@ -92,15 +115,46 @@ namespace LMS_Api.Controllers
             return Ok(assignmentsDto);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetAssignmentById(int id)
+        {
+            var assignmentDb = await _assignmentService.GetAssignmentByIdAsync(id);
+
+            if (assignmentDb is null)
+                return NotFound();
+
+            var assignmentDto = _mapper.Map<AssignmentDTO>(assignmentDb);
+
+            return Ok(assignmentDto);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetAllAssignmentsByLessonId(int id)
+        {
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+
+            if (lessonDb is null)
+                return NotFound();
+
+            var assignmentsdDb = await _assignmentService.GetAssignmentsByLessonIdAsync(id);
+
+            var assignmentsDto = _mapper.Map<List<AssignmentDTO>>(assignmentsdDb);
+
+            return Ok(assignmentsDto);
+        }
+
         [HttpPost]
         [Route("{id}")]
+        [Authorize(Roles = nameof(Roles.Student))]
         public async Task<ActionResult> SubmitAssingment(int id,[FromForm] SubmissionAttachmentDTO submissionAttachmentDto)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
             if (userId is null)
                 return Unauthorized();
 
-            var assignmentDb = _assignmentService.GetAssignmentByIdAsync(id);
+            var assignmentDb = await _assignmentService.GetAssignmentByIdAsync(id);
 
             if (assignmentDb is null)
                 return NotFound();
@@ -109,6 +163,9 @@ namespace LMS_Api.Controllers
 
             if (appUserAssignmentDb is null)
                 return NotFound();
+
+            if (appUserAssignmentDb.IsSubmitted is true)
+                return BadRequest();
 
             appUserAssignmentDb.IsSubmitted = true;
             appUserAssignmentDb.SubmissionDate = DateTime.UtcNow;
@@ -210,5 +267,29 @@ namespace LMS_Api.Controllers
 
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> DeleteAssignment(int id)
+        {
+            var assignmentDb = await _assignmentService.GetAssignmentByIdAsync(id);
+
+            if (assignmentDb is null)
+                return NotFound();
+
+            List<AssignmentMaterial> assignmentMaterials = new();
+
+            foreach (var assignmentMaterial in assignmentDb.AssignmentMaterials)
+            {
+                assignmentMaterials.Add(assignmentMaterial);
+            }
+
+            await _assignmentMaterialService.DeleteAssignmentMaterialsAsync(assignmentMaterials);
+
+            await _assignmentService.DeleteAssignmentAsync(id);
+
+            return Ok();
+        }
+
     }
 }

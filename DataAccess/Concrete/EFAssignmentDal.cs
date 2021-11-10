@@ -18,16 +18,23 @@ namespace DataAccess.Concrete
         public async Task<List<Assignment>> GetAllByLessonIdAsync(int lessonId)
         {
             return await Context.Assignments
+                .AsNoTracking()
                 .Where(a => a.LessonId == lessonId)
-                .Include(a => a.AssignmentMaterials)
                 .ToListAsync();
+        }
+
+        public async Task<Assignment> GetByIdAsync(int assignmentId)
+        {
+            return await Context.Assignments
+                .AsNoTracking()
+                .Include(a => a.AssignmentMaterials)
+                .FirstOrDefaultAsync(a => a.Id == assignmentId);
         }
 
         public async Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string appUserId)
         {
             var assignmentAppUsers = await Context.AssignmentAppUsers.AsNoTracking()
                 .Include(aa => aa.Assignment)
-                .ThenInclude(aa => aa.LessonId)
                 .Where(aa => aa.AppUserId == appUserId && aa.Assignment.LessonId == lessonId && aa.IsSubmitted == false)
                 .ToListAsync();
 
@@ -36,7 +43,6 @@ namespace DataAccess.Concrete
             foreach (var assignmentAppUser in assignmentAppUsers)
             {
                 var assignmentDb = await Context.Assignments.AsNoTracking()
-                    .Include(a => a.AssignmentMaterials)
                     .FirstOrDefaultAsync(a => a.Id == assignmentAppUser.AssignmentId);
                 assignmentsDb.Add(assignmentDb);
             }

@@ -31,7 +31,7 @@ namespace DataAccess.Concrete
                         FileName = fileName
                     };
 
-                    await Context.AssignmentAppUserMaterials.AddAsync(assignmentAppUserMaterial);
+                    await Context.AssignmentAppUserMaterials.AddAsync(assignmentAppUserMaterialDb);
                 }
 
                 await Context.SaveChangesAsync();

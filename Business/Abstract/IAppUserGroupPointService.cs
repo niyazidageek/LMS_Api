@@ -9,6 +9,5 @@ namespace Business.Abstract
         Task<AppUserGroupPoint> GetAppUserGroupPointByAppUserGroupIdAsync(int appUserGroup);
 
         Task<bool> EditAppUserGroupPointAsync(AppUserGroupPoint appUserGroupPoint);
-
     }
 }

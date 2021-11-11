@@ -28,6 +28,7 @@ namespace LMS_Api.Controllers
         private readonly ILessonService _lessonService;
         private readonly IAppUserGroupPointService _appUserGroupPointService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IAppUserGroupService _appUserGroupService;
 
         public AssignmentController(IAssignmentService assignmentService,
             IAssignmentAppUserService assignmentAppUserService,
@@ -37,8 +38,10 @@ namespace LMS_Api.Controllers
             IAppUserGroupPointService appUserGroupPointService,
             IGroupMaxPointService groupMaxPointService,
             IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
-            ILessonService lessonService)
+            ILessonService lessonService,
+            IAppUserGroupService appUserGroupService)
         {
+            _appUserGroupService = appUserGroupService;
             _appUserGroupPointService = appUserGroupPointService;
             _groupMaxPointService = groupMaxPointService;
             _userManager = userManager;
@@ -122,12 +125,19 @@ namespace LMS_Api.Controllers
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
 
-            //var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentAppUserDb.Assignment.LessonId);
+            var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentAppUserDb.Assignment.LessonId);
 
-            //var groupId = lessonDb.GroupId;
+            var groupId = lessonDb.GroupId;
 
-            //var appUserGroupPointDb = await _appUserGroupPointService
-            //    .GetAppUserGroupPointByAppUserGroupIdAsync(assignmentAppUserDb);
+            var appUserGroup = await _appUserGroupService
+                .GetAppUserGroupByUserIdAndGroupIdAsync(assignmentAppUserDb.AppUserId, groupId);
+
+            var appUserGroupPointDb = await _appUserGroupPointService
+                .GetAppUserGroupPointByAppUserGroupIdAsync(appUserGroup.Id);
+
+            appUserGroupPointDb.Point += assignmentAppUserDto.Grade;
+
+            await _appUserGroupPointService.EditAppUserGroupPointAsync(appUserGroupPointDb);
 
             return Ok();
         }
@@ -359,6 +369,21 @@ namespace LMS_Api.Controllers
             await _assignmentMaterialService.DeleteAssignmentMaterialsAsync(assignmentMaterials);
 
             var currentGrade = assignmentDb.MaxGrade;
+
+            var assignmentAppUsers = await _assignmentAppUserService.GetAssignmentAppUsersByLessonIdAsync(lessonDb.Id);
+
+            foreach (var assignmentAppUser in assignmentAppUsers)
+            {
+                var appUserGroup = await _appUserGroupService
+                    .GetAppUserGroupByUserIdAndGroupIdAsync(assignmentAppUser.AppUserId, lessonDb.GroupId);
+
+                var appUserGroupPoint = await _appUserGroupPointService
+                    .GetAppUserGroupPointByAppUserGroupIdAsync(appUserGroup.Id);
+
+                appUserGroupPoint.Point -= assignmentAppUser.Grade;
+
+                await _appUserGroupPointService.EditAppUserGroupPointAsync(appUserGroupPoint);
+            }
 
             await _assignmentService.DeleteAssignmentAsync(id);
 

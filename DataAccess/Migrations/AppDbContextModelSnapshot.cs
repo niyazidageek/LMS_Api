@@ -116,6 +116,27 @@ namespace DataAccess.Migrations
                     b.ToTable("AppUserGroups");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserGroupPoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Point")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserGroupId")
+                        .IsUnique();
+
+                    b.ToTable("AppUserGroupPoints");
+                });
+
             modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
                 {
                     b.Property<int>("Id")
@@ -578,6 +599,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserGroupPoint", b =>
+                {
+                    b.HasOne("Entities.Models.AppUserGroup", "AppUserGroup")
+                        .WithOne("AppUserGroupPoint")
+                        .HasForeignKey("Entities.Models.AppUserGroupPoint", "AppUserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUserGroup");
+                });
+
             modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
                 {
                     b.HasOne("Entities.Models.AppUser", "AppUser")
@@ -772,6 +804,11 @@ namespace DataAccess.Migrations
                     b.Navigation("AppUserGroups");
 
                     b.Navigation("AppUserQuizzes");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserGroup", b =>
+                {
+                    b.Navigation("AppUserGroupPoint");
                 });
 
             modelBuilder.Entity("Entities.Models.Assignment", b =>

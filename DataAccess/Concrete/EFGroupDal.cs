@@ -18,7 +18,8 @@ namespace DataAccess.Concrete
 
         public async Task<Group> GetAsync(int id)
         {
-            return await Context.Groups.AsNoTracking().Include(g => g.Subject)
+            return await Context.Groups.AsNoTracking()
+                .Include(g => g.Subject)
                 .Include(g=>g.AppUserGroups)
                 .ThenInclude(aug=>aug.AppUser)
                 .FirstOrDefaultAsync(g => g.Id == id);

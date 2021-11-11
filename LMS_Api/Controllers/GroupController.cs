@@ -24,14 +24,17 @@ namespace LMS_Api.Controllers
         private readonly IMapper _mapper;
         private readonly ISubjectService _subjectService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IAppUserGroupService _appUserGroupService;
 
         public GroupController(IGroupService groupService, IMapper mapper,
-            UserManager<AppUser> userManager, ISubjectService subjectService)
+            UserManager<AppUser> userManager, ISubjectService subjectService,
+            IAppUserGroupService appUserGroupService)
         {
             _groupService = groupService;
             _mapper = mapper;
             _subjectService = subjectService;
             _userManager = userManager;
+            _appUserGroupService = appUserGroupService;
         }
 
         [HttpGet]
@@ -111,25 +114,26 @@ namespace LMS_Api.Controllers
 
             groupDb.SubjectId = groupDto.SubjectId;
 
+            groupDb.GroupMaxPoint = new GroupMaxPoint { GroupId = groupDb.Id };
+
+            await _groupService.AddGroupAsync(groupDb);
+
             if (groupDto.AppUserIds is not null)
             {
-                List<AppUserGroup> AppUserGroups = new();
+                List<AppUserGroup> appUserGroups = new();
 
                 foreach (var appUserId in groupDto.AppUserIds)
                 {
                     var appUserGroup = new AppUserGroup();
                     appUserGroup.AppUserId = appUserId;
                     appUserGroup.GroupId = groupDb.Id;
+                    appUserGroup.AppUserGroupPoint = new AppUserGroupPoint { AppUserGroupId = appUserGroup.Id };
 
-                    AppUserGroups.Add(appUserGroup);
+                    appUserGroups.Add(appUserGroup);
                 }
 
-                groupDb.AppUserGroups = AppUserGroups;
+                await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroups);
             }
-
-            groupDb.GroupMaxPoint = new GroupMaxPoint { GroupId = groupDb.Id };
-
-            await _groupService.AddGroupAsync(groupDb);
 
             return Ok(new ResponseDTO
             {
@@ -151,25 +155,47 @@ namespace LMS_Api.Controllers
 
             groupDto.Id = groupDb.Id;
             _mapper.Map(groupDto, groupDb);
-           
-
-            if(groupDto.AppUsers is not null)
-            {
-                List<AppUserGroup> AppUserGroups = new();
-
-                foreach (var appUserDto in groupDto.AppUsers)
-                {
-                    var appUserGroup = new AppUserGroup();
-                    appUserGroup.AppUserId = appUserDto.Id;
-                    appUserGroup.GroupId = groupDb.Id;
-
-                    AppUserGroups.Add(appUserGroup);
-                }
-
-                groupDb.AppUserGroups = AppUserGroups;
-            }
 
             await _groupService.EditGroupAsync(groupDb);
+
+            var existingAppUserGroups = groupDb.AppUserGroups;
+
+            var deleteableAppUserGroups = existingAppUserGroups
+                    .Where(eag => !groupDto.AppUserIds.Any(ai => ai == eag.AppUserId))
+                    .ToList();
+
+            var newAppUserGroupIds = groupDto.AppUserIds
+                .Except(existingAppUserGroups.Select(eaug =>eaug.AppUserId))
+                .ToList();
+
+            if (deleteableAppUserGroups is not null || deleteableAppUserGroups.Count is not 0)
+            {
+                List<AppUserGroup> appUserGroups = new();
+
+                foreach (var appUserGroup in deleteableAppUserGroups)
+                {
+                    appUserGroups.Add(appUserGroup);
+                }
+
+                await _appUserGroupService.DeleteAppUserGroupsAsync(appUserGroups);
+            }
+
+            if (newAppUserGroupIds is not null)
+            {
+                List<AppUserGroup> appUserGroups = new();
+
+                foreach (var appUserId in newAppUserGroupIds)
+                {
+                    var appUserGroup = new AppUserGroup();
+                    appUserGroup.AppUserId = appUserId;
+                    appUserGroup.GroupId = groupDb.Id;
+                    appUserGroup.AppUserGroupPoint = new AppUserGroupPoint { AppUserGroupId = appUserGroup.Id };
+
+                    appUserGroups.Add(appUserGroup);
+                }
+
+                await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroups);
+            }
 
             return Ok(new ResponseDTO
             {

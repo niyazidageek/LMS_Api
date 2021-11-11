@@ -26,6 +26,7 @@ namespace LMS_Api.Controllers
         private readonly IAssignmentMaterialService _assignmentMaterialService;
         private readonly IAssignmentAppUserMaterialService _assignmentAppUserMaterialService;
         private readonly ILessonService _lessonService;
+        private readonly IAppUserGroupPointService _appUserGroupPointService;
         private readonly UserManager<AppUser> _userManager;
 
         public AssignmentController(IAssignmentService assignmentService,
@@ -33,10 +34,12 @@ namespace LMS_Api.Controllers
             IAssignmentMaterialService assignmentMaterialService,
             UserManager<AppUser> userManager,
             IMapper mapper,
+            IAppUserGroupPointService appUserGroupPointService,
             IGroupMaxPointService groupMaxPointService,
             IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
             ILessonService lessonService)
         {
+            _appUserGroupPointService = appUserGroupPointService;
             _groupMaxPointService = groupMaxPointService;
             _userManager = userManager;
             _assignmentAppUserMaterialService = assignmentAppUserMaterialService;
@@ -118,6 +121,13 @@ namespace LMS_Api.Controllers
             assignmentAppUserDb.Grade = assignmentAppUserDto.Grade;
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
+
+            //var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentAppUserDb.Assignment.LessonId);
+
+            //var groupId = lessonDb.GroupId;
+
+            //var appUserGroupPointDb = await _appUserGroupPointService
+            //    .GetAppUserGroupPointByAppUserGroupIdAsync(assignmentAppUserDb);
 
             return Ok();
         }

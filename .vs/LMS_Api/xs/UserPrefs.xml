@@ -1,14 +1,16 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Entities/DTOs/LessonDTO.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Business/Concrete/GroupService.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="99" Column="64" />
-      <File FileName="DataAccess/Concrete/EFOptionDal.cs" Line="15" Column="65" />
-      <File FileName="Entities/Models/GroupMaxPoint.cs" Line="9" Column="36" />
-      <File FileName="Entities/Models/Group.cs" Line="27" Column="24" />
-      <File FileName="DataAccess/Abstract/IGroupDal.cs" Line="9" Column="50" />
-      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="15" Column="64" />
-      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="55" Column="26" />
-      <File FileName="Entities/DTOs/LessonDTO.cs" Line="7" Column="18" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="125" Column="54" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="24" Column="47" />
+      <File FileName="LMS_Api/Controllers/GroupController.cs" Line="157" Column="35" />
+      <File FileName="Entities/DTOs/AssignmentAppUserDto.cs" Line="6" Column="18" />
+      <File FileName="DataAccess/Abstract/IAppUserGroupDal.cs" Line="15" Column="57" />
+      <File FileName="DataAccess/Concrete/EFAppUserGroupDal.cs" Line="11" Column="92" />
+      <File FileName="DataAccess/Concrete/EFAssignmentMaterialDal.cs" Line="80" Column="10" />
+      <File FileName="Business/Concrete/AppUserGroupService.cs" Line="15" Column="10" />
+      <File FileName="Business/Abstract/IAppUserGroupService.cs" Line="14" Column="26" />
+      <File FileName="Business/Concrete/GroupService.cs" Line="14" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,7 +18,9 @@
           <Node name="LMS_Api" expanded="True">
             <Node name="Business" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="Concrete" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="GroupService.cs" selected="True" />
+              </Node>
             </Node>
             <Node name="Core" expanded="True">
               <Node name="Repository" expanded="True">
@@ -29,9 +33,7 @@
               <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
-              <Node name="DTOs" expanded="True">
-                <Node name="LessonDTO.cs" selected="True" />
-              </Node>
+              <Node name="DTOs" expanded="True" />
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
@@ -54,6 +56,7 @@
     <BreakpointStore>
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/GroupController.cs" relfile="LMS_Api/Controllers/GroupController.cs" line="145" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

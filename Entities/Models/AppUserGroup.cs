@@ -1,7 +1,9 @@
 ﻿using System;
+using Core.Entities;
+
 namespace Entities.Models
 {
-    public class AppUserGroup
+    public class AppUserGroup:IEntity
     {
         public int Id { get; set; }
 
@@ -10,5 +12,7 @@ namespace Entities.Models
 
         public int GroupId { get; set; }
         public Group Group { get; set; }
+
+        public AppUserGroupPoint AppUserGroupPoint { get; set; }
     }
 }

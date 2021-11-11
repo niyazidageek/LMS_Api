@@ -126,6 +126,9 @@ namespace LMS_Api
 
             services.AddScoped<IGroupMaxPointService, GroupMaxPointService>();
             services.AddScoped<IGroupMaxPointDal, EFGroupMaxPointDal>();
+
+            services.AddScoped<IAppUserGroupService, AppUserGroupService>();
+            services.AddScoped<IAppUserGroupDal, EFAppUserGroupDal>();
         }
 
 

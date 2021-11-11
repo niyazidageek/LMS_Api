@@ -53,5 +53,7 @@ namespace DataAccess.Concrete
         public DbSet<AppUserQuiz> AppUserQuizzes { get; set; }
 
         public DbSet<GroupMaxPoint> GroupMaxPoints { get; set; }
+
+        public DbSet<AppUserGroupPoint> AppUserGroupPoints { get; set; }
     }
 }

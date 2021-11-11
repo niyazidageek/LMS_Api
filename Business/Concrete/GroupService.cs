@@ -32,7 +32,7 @@ namespace Business.Concrete
 
         public async Task<bool> EditGroupAsync(Group group)
         {
-            await _context.RelationalUpdateAsync(group);
+            await _context.UpdateAsync(group);
 
             return true;
         }
@@ -44,7 +44,7 @@ namespace Business.Concrete
 
         public async Task<Group> GetGroupByIdAsync(int id)
         {
-            return await _context.GetAsync(g => g.Id == id);
+            return await _context.GetAsync(id);
         }
 
         public async Task<List<Group>> GetGroupsAsync()

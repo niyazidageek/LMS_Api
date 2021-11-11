@@ -126,7 +126,9 @@ namespace LMS_Api.Controllers
 
                 groupDb.AppUserGroups = AppUserGroups;
             }
-           
+
+            groupDb.GroupMaxPoint = new GroupMaxPoint { GroupId = groupDb.Id };
+
             await _groupService.AddGroupAsync(groupDb);
 
             return Ok(new ResponseDTO

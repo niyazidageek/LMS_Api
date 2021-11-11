@@ -59,6 +59,16 @@ namespace LMS_Api.Controllers
             return Ok(studentsDto);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetAllTeachers()
+        {
+            var teachers = await _userManager.GetUsersInRoleAsync(nameof(Roles.Teacher));
+
+            var teachersDto = _mapper.Map<List<AppUserDTO>>(teachers);
+
+            return Ok(teachersDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerDto)
         {

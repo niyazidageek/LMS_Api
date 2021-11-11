@@ -20,6 +20,7 @@ namespace LMS_Api.Controllers
     public class AssignmentController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IGroupMaxPointService _groupMaxPointService;
         private readonly IAssignmentService _assignmentService;
         private readonly IAssignmentAppUserService _assignmentAppUserService;
         private readonly IAssignmentMaterialService _assignmentMaterialService;
@@ -32,9 +33,11 @@ namespace LMS_Api.Controllers
             IAssignmentMaterialService assignmentMaterialService,
             UserManager<AppUser> userManager,
             IMapper mapper,
+            IGroupMaxPointService groupMaxPointService,
             IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
             ILessonService lessonService)
         {
+            _groupMaxPointService = groupMaxPointService;
             _userManager = userManager;
             _assignmentAppUserMaterialService = assignmentAppUserMaterialService;
             _lessonService = lessonService;
@@ -90,6 +93,14 @@ namespace LMS_Api.Controllers
             lessonDb.Group.AppUserGroups = students;
 
             await _assignmentAppUserService.InitializeAssignmentAsync(lessonDb, assignmentDb.Id);
+
+            var groupId = lessonDb.GroupId;
+
+            var groupMaxPoint = await _groupMaxPointService.GetGroupMaxPointByGroupId(groupId);
+
+            groupMaxPoint.MaxPoint += assignmentDb.MaxGrade;
+
+            await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
             return Ok();
         }
@@ -252,6 +263,10 @@ namespace LMS_Api.Controllers
             if (assignmentDb is null)
                 return NotFound();
 
+            var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentDb.LessonId);
+
+            var oldGrade = assignmentDb.MaxGrade;
+
             AssignmentDTO assignmentDto = JsonConvert.DeserializeObject<AssignmentDTO>(assignmentAttachmentDto.Values);
 
             var existingAppUserMaterials = assignmentDb.AssignmentMaterials.Select(am => am.FileName).ToList();
@@ -302,6 +317,14 @@ namespace LMS_Api.Controllers
 
             await _assignmentService.EditAssignmentAsync(assignmentDb);
 
+            var groupId = lessonDb.GroupId;
+
+            var groupMaxPoint = await _groupMaxPointService.GetGroupMaxPointByGroupId(groupId);
+
+            groupMaxPoint.MaxPoint = groupMaxPoint.MaxPoint - oldGrade + assignmentDb.MaxGrade;
+
+            await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
+
             return Ok();
         }
 
@@ -310,6 +333,8 @@ namespace LMS_Api.Controllers
         public async Task<ActionResult> DeleteAssignment(int id)
         {
             var assignmentDb = await _assignmentService.GetAssignmentByIdAsync(id);
+
+            var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentDb.LessonId);
 
             if (assignmentDb is null)
                 return NotFound();
@@ -323,7 +348,17 @@ namespace LMS_Api.Controllers
 
             await _assignmentMaterialService.DeleteAssignmentMaterialsAsync(assignmentMaterials);
 
+            var currentGrade = assignmentDb.MaxGrade;
+
             await _assignmentService.DeleteAssignmentAsync(id);
+
+            var groupId = lessonDb.GroupId;
+
+            var groupMaxPoint = await _groupMaxPointService.GetGroupMaxPointByGroupId(groupId);
+
+            groupMaxPoint.MaxPoint -= currentGrade;
+
+            await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
             return Ok();
         }

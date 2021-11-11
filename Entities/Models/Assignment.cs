@@ -17,6 +17,8 @@ namespace Entities.Models
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }
 
+        public decimal MaxGrade { get; set; } = 0;
+
         public List<AssignmentMaterial> AssignmentMaterials { get; set; }
     }
 }

@@ -123,6 +123,9 @@ namespace LMS_Api
 
             services.AddScoped<IAssignmentAppUserMaterialService, AssignmentAppUserMaterialService>();
             services.AddScoped<IAssignmentAppUserMaterialDal, EFAssingnmentAppUserMaterialDal>();
+
+            services.AddScoped<IGroupMaxPointService, GroupMaxPointService>();
+            services.AddScoped<IGroupMaxPointDal, EFGroupMaxPointDal>();
         }
 
 

@@ -157,6 +157,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("LessonId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("MaxGrade")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -267,6 +270,27 @@ namespace DataAccess.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("Entities.Models.GroupMaxPoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MaxPoint")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId")
+                        .IsUnique();
+
+                    b.ToTable("GroupMaxPoints");
                 });
 
             modelBuilder.Entity("Entities.Models.Lesson", b =>
@@ -628,6 +652,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("Entities.Models.GroupMaxPoint", b =>
+                {
+                    b.HasOne("Entities.Models.Group", "Group")
+                        .WithOne("GroupMaxPoint")
+                        .HasForeignKey("Entities.Models.GroupMaxPoint", "GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Entities.Models.Lesson", b =>
                 {
                     b.HasOne("Entities.Models.Group", "Group")
@@ -752,6 +787,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.Group", b =>
                 {
                     b.Navigation("AppUserGroups");
+
+                    b.Navigation("GroupMaxPoint");
 
                     b.Navigation("Lessons");
                 });

@@ -16,6 +16,8 @@ namespace Entities.DTOs
         public int LessonId { get; set; }
         public LessonDTO Lesson { get; set; }
 
+        public decimal MaxGrade { get; set; } = 0;
+
         public List<AssignmentMaterialDTO> AssignmentMaterials { get; set; }
     }
 }

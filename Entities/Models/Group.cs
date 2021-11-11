@@ -22,8 +22,9 @@ namespace Entities.Models
 
         [Required]
         public int SubjectId { get; set; }
-
         public Subject Subject { get; set; }
+
+        public GroupMaxPoint GroupMaxPoint { get; set; }
 
         public List<AppUserGroup> AppUserGroups { get; set; }
 

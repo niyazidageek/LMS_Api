@@ -51,5 +51,7 @@ namespace DataAccess.Concrete
         public DbSet<Option> Options { get; set; }
 
         public DbSet<AppUserQuiz> AppUserQuizzes { get; set; }
+
+        public DbSet<GroupMaxPoint> GroupMaxPoints { get; set; }
     }
 }

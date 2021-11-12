@@ -16,5 +16,7 @@ namespace Business.Abstract
         Task<bool> EditTheoryAppUserAsync(TheoryAppUser theoryAppUser);
 
         Task<TheoryAppUser> GetTheoryAppUserByTheoryIdAndUserIdAsync(int theoryId, string userId);
+
+        Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupId(string userId, int groupId);
     }
 }

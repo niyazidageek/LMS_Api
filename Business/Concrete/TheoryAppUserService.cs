@@ -33,6 +33,11 @@ namespace Business.Concrete
             return await _context.GetTheoryAppUserByTheoryIdAndUserIdAsync(theoryId, userId);
         }
 
+        public async Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupId(string userId, int groupId)
+        {
+            return await _context.GetTheoryAppUsersByAppUserIdAndGroupIdAsync(userId, groupId);
+        }
+
         public async Task<List<TheoryAppUser>> GetTheoryAppUsersByLessonIdAsync(int lessonId)
         {
             return await _context.GetTheoryAppUsersByLessonIdAsync(lessonId);

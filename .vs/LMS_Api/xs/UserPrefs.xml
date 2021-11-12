@@ -1,8 +1,14 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/TheoryController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/Concrete/EFGroupDal.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/TheoryController.cs" Line="189" Column="59" />
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="386" Column="14" />
+      <File FileName="LMS_Api/Controllers/TheoryController.cs" Line="245" Column="1" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="198" Column="51" />
+      <File FileName="Entities/DTOs/TheoryDTO.cs" />
+      <File FileName="LMS_Api/Controllers/QuizController.cs" Line="1" Column="1" />
+      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" Line="59" Column="1" />
+      <File FileName="Entities/DTOs/StudentHomeDTO.cs" Line="23" Column="1" />
+      <File FileName="Business/Concrete/GroupService.cs" Line="62" Column="1" />
+      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="47" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,7 +26,9 @@
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
               <Node name="AutoMapper" expanded="True" />
-              <Node name="Concrete" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="EFGroupDal.cs" selected="True" />
+              </Node>
               <Node name="Identity" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
@@ -29,9 +37,7 @@
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Controllers" expanded="True">
-                <Node name="TheoryController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>
@@ -49,6 +55,7 @@
     <BreakpointStore>
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/StudentHomeController.cs" relfile="LMS_Api/Controllers/StudentHomeController.cs" line="53" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

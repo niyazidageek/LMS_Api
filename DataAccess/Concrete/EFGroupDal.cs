@@ -47,7 +47,7 @@ namespace DataAccess.Concrete
             var groups = await Context.Groups.AsNoTracking()
                 .Include(g => g.AppUserGroups)
                 .ThenInclude(g => g.AppUser)
-                .Where(g => g.AppUserGroups.All(ag => ag.AppUserId == userId))
+                .Where(g => g.AppUserGroups.Any(ag => ag.AppUserId == userId))
                 .ToListAsync();
 
             return groups;

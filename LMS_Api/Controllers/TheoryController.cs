@@ -229,6 +229,21 @@ namespace LMS_Api.Controllers
 
             await _theoryAppUserService.EditTheoryAppUserAsync(theoryAppUserDb);
 
+            var lessonDb = await _lessonService.GetLessonByIdAsync(theoryDb.LessonId);
+
+            var groupId = lessonDb.GroupId;
+
+            var appUserGroup = await _appUserGroupService
+                .GetAppUserGroupByUserIdAndGroupIdAsync(theoryAppUserDb.AppUserId, groupId);
+
+            var appUserGroupPointDb = await _appUserGroupPointService
+                .GetAppUserGroupPointByAppUserGroupIdAsync(appUserGroup.Id);
+
+            appUserGroupPointDb.Point += theoryDb.Point;
+
+            await _appUserGroupPointService.EditAppUserGroupPointAsync(appUserGroupPointDb);
+
+
             return Ok();
         }
     }

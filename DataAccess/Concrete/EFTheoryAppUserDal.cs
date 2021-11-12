@@ -21,6 +21,15 @@ namespace DataAccess.Concrete
                .FirstOrDefaultAsync(ta => ta.AppUserId == userId && ta.TheoryId == theoryId);
         }
 
+        public async Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupIdAsync(string userId, int groupId)
+        {
+            return await Context.TheoryAppUsers.AsNoTracking()
+                .Include(ta => ta.Theory)
+                .ThenInclude(ta => ta.Lesson)
+                .Where(ta => ta.AppUserId == userId && ta.Theory.Lesson.GroupId == groupId && ta.IsRead == true)
+                .ToListAsync();
+        }
+
         public async Task<List<TheoryAppUser>> GetTheoryAppUsersByLessonIdAsync(int lessonId)
         {
             return await Context.TheoryAppUsers.AsNoTracking()

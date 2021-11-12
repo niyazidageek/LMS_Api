@@ -12,6 +12,8 @@ namespace DataAccess.Abstract
 
         Task<List<TheoryAppUser>> GetTheoryAppUsersByLessonIdAsync(int lessonId);
 
+        Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupIdAsync(string userId, int groupId);
+
         Task<TheoryAppUser> GetTheoryAppUserByTheoryIdAndUserIdAsync(int theoryId, string userId);
     }
 }

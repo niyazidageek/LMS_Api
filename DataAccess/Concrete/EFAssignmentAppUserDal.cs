@@ -70,5 +70,14 @@ namespace DataAccess.Concrete
                 .Include(aa=>aa.Assignment)
                 .FirstOrDefaultAsync(aa => aa.Id == id);
         }
+
+        public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByAppUserIdAndGroupIdAsync(string userId, int groupId)
+        {
+            return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa => aa.Assignment)
+                .ThenInclude(aa => aa.Lesson)
+                .Where(aa => aa.AppUserId == userId && aa.Assignment.Lesson.GroupId == groupId && aa.IsSubmitted == true)
+                .ToListAsync();
+        }
     }
 }

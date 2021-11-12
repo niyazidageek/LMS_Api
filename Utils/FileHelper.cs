@@ -25,9 +25,9 @@ namespace LMS_Api.Utils
             {
                 string uniqueId = Guid.NewGuid().ToString();
 
-                string _fileName = uniqueId;
+                string _fileName = uniqueId + ".txt";
 
-                using (FileStream fileStream = File.Create(Path.Combine(path, "images", _fileName+".txt")))
+                using (FileStream fileStream = File.Create(Path.Combine(path, "images", _fileName)))
                 {
                     byte[] info = new UTF8Encoding(true).GetBytes(json);
 

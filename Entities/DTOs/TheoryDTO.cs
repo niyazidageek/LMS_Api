@@ -1,9 +1,7 @@
 ﻿using System;
-using Core.Entities;
-
-namespace Entities.Models
+namespace Entities.DTOs
 {
-    public class Theory:IEntity
+    public class TheoryDTO
     {
         public int Id { get; set; }
 
@@ -14,6 +12,6 @@ namespace Entities.Models
         public decimal Point { get; set; }
 
         public int LessonId { get; set; }
-        public Lesson Lesson { get; set; }
+        public LessonDTO Lesson { get; set; }
     }
 }

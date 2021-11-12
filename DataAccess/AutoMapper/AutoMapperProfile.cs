@@ -28,6 +28,8 @@ namespace DataAccess.AutoMapper
 
             CreateMap<Quiz, QuizDTO>().ReverseMap();
 
+            CreateMap<Theory, TheoryDTO>().ReverseMap();
+
             CreateMap<AssignmentMaterial, AssignmentMaterialDTO>().ReverseMap();
 
             CreateMap<Assignment, AssignmentDTO>().ReverseMap();

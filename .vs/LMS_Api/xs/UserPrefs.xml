@@ -1,17 +1,15 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Business/Concrete/TheoryService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/TheoryController.cs">
     <Files>
       <File FileName="Entities/Models/Lesson.cs" Line="32" Column="53" />
-      <File FileName="Entities/Models/Theory.cs" Line="11" Column="1" />
-      <File FileName="Entities/DTOs/LessonDTO.cs" Line="21" Column="71" />
-      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="90" Column="19" />
-      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="30" Column="56" />
-      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" Line="49" Column="79" />
-      <File FileName="Utils/FileHelper.cs" Line="40" Column="14" />
-      <File FileName="Business/Abstract/ITheoryService.cs" Line="16" Column="49" />
-      <File FileName="Business/Concrete/TheoryService.cs" Line="16" Column="32" />
-      <File FileName="DataAccess/Abstract/ITheoryDal.cs" Line="11" Column="64" />
-      <File FileName="DataAccess/Concrete/EFTheoryDal.cs" Line="22" Column="32" />
+      <File FileName="Entities/DTOs/LessonDTO.cs" />
+      <File FileName="DataAccess/Concrete/EFLessonDal.cs" />
+      <File FileName="Business/Abstract/ITheoryService.cs" />
+      <File FileName="Business/Concrete/TheoryService.cs" />
+      <File FileName="DataAccess/Abstract/ITheoryDal.cs" />
+      <File FileName="DataAccess/Concrete/EFTheoryDal.cs" />
+      <File FileName="LMS_Api/Controllers/TheoryController.cs" Line="99" Column="14" />
+      <File FileName="Entities/Models/Theory.cs" Line="19" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,9 +17,7 @@
           <Node name="LMS_Api" expanded="True">
             <Node name="Business" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="Concrete" expanded="True">
-                <Node name="TheoryService.cs" selected="True" />
-              </Node>
+              <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Core" expanded="True">
               <Node name="Repository" expanded="True">
@@ -40,7 +36,9 @@
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="TheoryController.cs" selected="True" />
+              </Node>
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>

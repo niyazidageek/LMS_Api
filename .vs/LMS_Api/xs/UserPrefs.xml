@@ -1,18 +1,17 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/AssignmentController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Business/Concrete/TheoryService.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="235" Column="49" />
-      <File FileName="DataAccess/Concrete/EFGroupDal.cs" Line="23" Column="45" />
-      <File FileName="LMS_Api/Controllers/GroupController.cs" Line="159" Column="57" />
-      <File FileName="Entities/DTOs/AssignmentAppUserDto.cs" Line="6" Column="18" />
-      <File FileName="DataAccess/Abstract/IAppUserGroupDal.cs" Line="15" Column="57" />
-      <File FileName="DataAccess/Concrete/EFAppUserGroupDal.cs" Line="11" Column="92" />
-      <File FileName="DataAccess/Concrete/EFAssignmentMaterialDal.cs" Line="80" Column="10" />
-      <File FileName="Business/Concrete/AppUserGroupService.cs" Line="15" Column="10" />
-      <File FileName="Business/Abstract/IAppUserGroupService.cs" Line="14" Column="26" />
-      <File FileName="Business/Concrete/GroupService.cs" Line="47" Column="48" />
-      <File FileName="LMS_Api/Startup.cs" Line="127" Column="79" />
-      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="12" Column="18" />
+      <File FileName="Entities/Models/Lesson.cs" Line="32" Column="53" />
+      <File FileName="Entities/Models/Theory.cs" Line="11" Column="1" />
+      <File FileName="Entities/DTOs/LessonDTO.cs" Line="21" Column="71" />
+      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="90" Column="19" />
+      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="30" Column="56" />
+      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" Line="49" Column="79" />
+      <File FileName="Utils/FileHelper.cs" Line="40" Column="14" />
+      <File FileName="Business/Abstract/ITheoryService.cs" Line="16" Column="49" />
+      <File FileName="Business/Concrete/TheoryService.cs" Line="16" Column="32" />
+      <File FileName="DataAccess/Abstract/ITheoryDal.cs" Line="11" Column="64" />
+      <File FileName="DataAccess/Concrete/EFTheoryDal.cs" Line="22" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,7 +19,9 @@
           <Node name="LMS_Api" expanded="True">
             <Node name="Business" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="Concrete" expanded="True" />
+              <Node name="Concrete" expanded="True">
+                <Node name="TheoryService.cs" selected="True" />
+              </Node>
             </Node>
             <Node name="Core" expanded="True">
               <Node name="Repository" expanded="True">
@@ -31,6 +32,7 @@
               <Node name="Abstract" expanded="True" />
               <Node name="AutoMapper" expanded="True" />
               <Node name="Concrete" expanded="True" />
+              <Node name="Identity" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
               <Node name="DTOs" expanded="True" />
@@ -38,9 +40,7 @@
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Controllers" expanded="True">
-                <Node name="AssignmentController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>
@@ -58,6 +58,7 @@
     <BreakpointStore>
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/LessonController.cs" relfile="LMS_Api/Controllers/LessonController.cs" line="85" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

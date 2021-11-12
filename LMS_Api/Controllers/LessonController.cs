@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
@@ -78,32 +79,39 @@ namespace LMS_Api.Controllers
             return Ok(lessonsDto);
         }
 
+
         [HttpPost]
         public async Task<ActionResult> CreateLesson([FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
+            var theorycontent = JsonConvert.DeserializeObject(lessonAttachmentDto.Values);
 
-            if (!ModelState.IsValid) return BadRequest();
+            var b = lessonAttachmentDto.Values.Length;
 
-            LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
+            await FileHelper.AddJsonFile(lessonAttachmentDto.Values);
 
-            var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-            await _lessonService.AddLessonAsync(lessonDb);
+            //if (!ModelState.IsValid) return BadRequest();
 
-            if (lessonAttachmentDto.Materials is not null)
-            {
-                List<LessonMaterial> lessonMaterials = new();
+            //LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
-                foreach (var file in lessonAttachmentDto.Materials)
-                {
-                    LessonMaterial lessonMaterial = new();
-                    lessonMaterial.LessonId = lessonDb.Id;
-                    lessonMaterial.File = file;
-                    lessonMaterials.Add(lessonMaterial);
-                }
+            //var lessonDb = _mapper.Map<Lesson>(lessonDto);
 
-                await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
-            }
+            //await _lessonService.AddLessonAsync(lessonDb);
+
+            //if (lessonAttachmentDto.Materials is not null)
+            //{
+            //    List<LessonMaterial> lessonMaterials = new();
+
+            //    foreach (var file in lessonAttachmentDto.Materials)
+            //    {
+            //        LessonMaterial lessonMaterial = new();
+            //        lessonMaterial.LessonId = lessonDb.Id;
+            //        lessonMaterial.File = file;
+            //        lessonMaterials.Add(lessonMaterial);
+            //    }
+
+            //    await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
+            //}
 
             return Ok();
         }
@@ -112,61 +120,61 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> EditLesson(int id, [FromForm] LessonAttachmentDTO lessonAttachmentDto)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            //if (!ModelState.IsValid) return BadRequest();
 
-            LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
+            //LessonDTO lessonDto = JsonConvert.DeserializeObject<LessonDTO>(lessonAttachmentDto.Values);
 
-            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+            //var lessonDb = await _lessonService.GetLessonByIdAsync(id);
 
-            if (lessonDb is null)
-                return NotFound();
+            //if (lessonDb is null)
+            //    return NotFound();
 
-            var existingMaterialFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
+            //var existingMaterialFiles = lessonDb.LessonMaterials.Select(lm => lm.FileName).ToList();
 
-            var deleteableMaterialFiles = existingMaterialFiles
-                    .Where(ef => !lessonDto.LessonMaterials.Any(lm => lm.FileName == ef))
-                    .ToList();
+            //var deleteableMaterialFiles = existingMaterialFiles
+            //        .Where(ef => !lessonDto.LessonMaterials.Any(lm => lm.FileName == ef))
+            //        .ToList();
 
-            if (deleteableMaterialFiles is not null || deleteableMaterialFiles.Count is not 0)
-            {
-                List<LessonMaterial> lessonMaterials = new();
+            //if (deleteableMaterialFiles is not null || deleteableMaterialFiles.Count is not 0)
+            //{
+            //    List<LessonMaterial> lessonMaterials = new();
 
-                foreach (var file in deleteableMaterialFiles)
-                {
-                    LessonMaterial lessonMaterial = new();
-                    lessonMaterial.FileName = file;
-                    lessonMaterial.LessonId = lessonDb.Id;
-                    lessonMaterials.Add(lessonMaterial);
-                }
+            //    foreach (var file in deleteableMaterialFiles)
+            //    {
+            //        LessonMaterial lessonMaterial = new();
+            //        lessonMaterial.FileName = file;
+            //        lessonMaterial.LessonId = lessonDb.Id;
+            //        lessonMaterials.Add(lessonMaterial);
+            //    }
 
-                await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
-            }
+            //    await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
+            //}
 
-            if(lessonAttachmentDto.Materials is not null)
-            {
-                List<LessonMaterial> lessonMaterials = new();
+            //if(lessonAttachmentDto.Materials is not null)
+            //{
+            //    List<LessonMaterial> lessonMaterials = new();
 
-                foreach (var file in lessonAttachmentDto.Materials)
-                {
-                    LessonMaterial lessonMaterial = new();
-                    lessonMaterial.LessonId = lessonDb.Id;
-                    lessonMaterial.File = file;
-                    lessonMaterials.Add(lessonMaterial);
-                }
+            //    foreach (var file in lessonAttachmentDto.Materials)
+            //    {
+            //        LessonMaterial lessonMaterial = new();
+            //        lessonMaterial.LessonId = lessonDb.Id;
+            //        lessonMaterial.File = file;
+            //        lessonMaterials.Add(lessonMaterial);
+            //    }
 
-                await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
-            }
+            //    await _lessonMaterialService.CreateLessonMaterialsAsync(lessonMaterials);
+            //}
 
-            lessonDto.Id = lessonDb.Id;
-            foreach (var lessonMaterialDto in lessonDto.LessonMaterials)
-            {
-                lessonMaterialDto.Id = lessonDb.LessonMaterials
-                    .FirstOrDefault(lm => lm.FileName == lessonMaterialDto.FileName).Id;
-            }
+            //lessonDto.Id = lessonDb.Id;
+            //foreach (var lessonMaterialDto in lessonDto.LessonMaterials)
+            //{
+            //    lessonMaterialDto.Id = lessonDb.LessonMaterials
+            //        .FirstOrDefault(lm => lm.FileName == lessonMaterialDto.FileName).Id;
+            //}
 
-            _mapper.Map(lessonDto, lessonDb);
+            //_mapper.Map(lessonDto, lessonDb);
 
-            await _lessonService.EditLessonAsync(lessonDb);
+            //await _lessonService.EditLessonAsync(lessonDb);
 
             return Ok();
 
@@ -176,18 +184,18 @@ namespace LMS_Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteLesson(int id)
         {
-            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+            //var lessonDb = await _lessonService.GetLessonByIdAsync(id);
 
-            List<LessonMaterial> lessonMaterials = new();
+            //List<LessonMaterial> lessonMaterials = new();
 
-            foreach (var lessonMaterial in lessonDb.LessonMaterials)
-            {
-                lessonMaterials.Add(lessonMaterial);
-            }
+            //foreach (var lessonMaterial in lessonDb.LessonMaterials)
+            //{
+            //    lessonMaterials.Add(lessonMaterial);
+            //}
 
-            await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
+            //await _lessonMaterialService.DeleteLessonMaterialsAsync(lessonMaterials);
 
-            await _lessonService.DeleteLessonAsync(id);
+            //await _lessonService.DeleteLessonAsync(id);
 
             return Ok();
         }

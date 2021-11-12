@@ -42,34 +42,6 @@ namespace DataAccess.Concrete
                 .ToListAsync();
         }
 
-        public async Task<bool> RelationalUpdateAsync(Group group)
-        {
-            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
-            try
-            {
-                var appUserGroups = await Context.AppUserGroups.Where(aug => aug.GroupId == group.Id)
-                    .ToListAsync();
-
-                if (appUserGroups is not null)
-                    foreach (var appUserGroup in appUserGroups)
-                    {
-                        Context.AppUserGroups.Remove(appUserGroup);
-                        await Context.SaveChangesAsync();
-                    }
-
-                Context.Update(group);
-                await Context.SaveChangesAsync();
-                await dbContextTransaction.CommitAsync();
-
-                return true;
-            }
-            catch (Exception)
-            {
-                await dbContextTransaction.RollbackAsync();
-                throw;
-            }
-        }
-
         public async Task<List<Group>> GetGroupsByUserIdAsync(string userId)
         {
             var groups = await Context.Groups.AsNoTracking()

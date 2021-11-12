@@ -46,7 +46,7 @@ namespace LMS_Api.Controllers
 
             int totalMaterials = 0;
 
-            lessons.ForEach(l => totalMaterials += l.LessonMaterials.Count);
+            //lessons.ForEach(l => totalMaterials += l.LessonMaterials.Count);
             lessons.ForEach(l => totalAssignments += l.Assignments.Count);
 
             AppUser teacher = new();

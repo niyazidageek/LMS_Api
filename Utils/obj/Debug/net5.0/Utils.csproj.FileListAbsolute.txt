@@ -2,7 +2,6 @@
 /Users/niyazibabayev/Projects/LMS_Api/Utils/bin/Debug/net5.0/Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/Utils/bin/Debug/net5.0/ref/Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/Utils/bin/Debug/net5.0/Utils.pdb
-/Users/niyazibabayev/Projects/LMS_Api/Utils/obj/Debug/net5.0/Utils.csproj.AssemblyReference.cache
 /Users/niyazibabayev/Projects/LMS_Api/Utils/obj/Debug/net5.0/Utils.GeneratedMSBuildEditorConfig.editorconfig
 /Users/niyazibabayev/Projects/LMS_Api/Utils/obj/Debug/net5.0/Utils.AssemblyInfoInputs.cache
 /Users/niyazibabayev/Projects/LMS_Api/Utils/obj/Debug/net5.0/Utils.AssemblyInfo.cs

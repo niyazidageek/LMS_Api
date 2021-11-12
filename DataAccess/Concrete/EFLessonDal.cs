@@ -28,7 +28,6 @@ namespace DataAccess.Concrete
         public async Task<Lesson> GetAsync(int id)
         {
             return await Context.Lessons.AsNoTracking()
-                .Include(l=>l.LessonMaterials)
                 .Include(l=>l.Assignments)
                 .ThenInclude(l => l.AssignmentMaterials)
                 .Include(l => l.Group)
@@ -42,7 +41,6 @@ namespace DataAccess.Concrete
                 .Where(l => l.GroupId == groupId)
                 .Include(l=>l.Assignments)
                 .ThenInclude(l => l.AssignmentMaterials)
-                .Include(l=>l.LessonMaterials)
                 .ToListAsync();
         }
 
@@ -55,7 +53,6 @@ namespace DataAccess.Concrete
                 .Take(take)
                 .Include(l => l.Assignments)
                 .ThenInclude(l=>l.AssignmentMaterials)
-                .Include(l => l.LessonMaterials)
                 .ToListAsync();
         }
     }

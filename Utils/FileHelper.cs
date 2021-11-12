@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace LMS_Api.Utils
 {
@@ -16,6 +17,29 @@ namespace LMS_Api.Utils
         {
             var _accessor = new HttpContextAccessor();
             return _accessor.HttpContext.RequestServices.GetRequiredService<IHostingEnvironment>();
+        }
+
+        public async static Task<string> AddJsonFile(string json)
+        {
+            if (json.Length > 0)
+            {
+                string uniqueId = Guid.NewGuid().ToString();
+
+                string _fileName = uniqueId;
+
+                using (FileStream fileStream = File.Create(Path.Combine(path, "images", _fileName+".txt")))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes(json);
+
+                    await fileStream.WriteAsync(info, 0, info.Length);
+                }
+
+                return _fileName;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async static Task<string> AddFile(IFormFile file)

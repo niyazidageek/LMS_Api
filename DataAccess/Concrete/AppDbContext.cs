@@ -46,6 +46,8 @@ namespace DataAccess.Concrete
 
         public DbSet<Assignment> Assignments { get; set; }
 
+        public DbSet<Theory> Theories { get; set; }
+
         public DbSet<Quiz> Quizzes { get; set; }
 
         public DbSet<Option> Options { get; set; }

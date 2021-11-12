@@ -25,40 +25,12 @@ namespace Business.Concrete
             return true;
         }
 
-        //public async Task<bool> AddLessonWithFilesAsync(Lesson lesson)
-        //{
-        //    await _conext.AddWithFilesAsync(lesson);
-
-        //    return true;
-        //}
-
-        //public async Task<bool> DeleteLessonAsync(int id)
-        //{
-        //    await _conext.DeleteWithFilesAsync(new Lesson { Id = id });
-
-        //    return true;
-        //}
-
         public async Task<bool> DeleteLessonAsync(int id)
         {
             await _conext.DeleteAsync(new Lesson { Id = id });
 
             return true;
         }
-
-        //public async Task<bool> EditLessonWithFilesAsync(Lesson lesson)
-        //{
-        //    await _conext.UpdateWithFilesAsync(lesson);
-
-        //    return true;
-        //}
-
-        //public async Task<bool> EditLessonAsync(Lesson lesson)
-        //{
-        //    await _conext.UpdateWithoutFilesAsync(lesson);
-
-        //    return true;
-        //}
 
         public async Task<bool> EditLessonAsync(Lesson lesson)
         {

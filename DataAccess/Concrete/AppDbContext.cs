@@ -40,8 +40,6 @@ namespace DataAccess.Concrete
 
         public DbSet<AssignmentAppUserMaterial> AssignmentAppUserMaterials { get; set; }
 
-        public DbSet<LessonMaterial> LessonMaterials { get; set; }
-
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<Assignment> Assignments { get; set; }

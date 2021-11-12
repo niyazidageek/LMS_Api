@@ -29,7 +29,7 @@ namespace DataAccess.Concrete
         {
             return await Context.Lessons.AsNoTracking()
                 .Include(l=>l.Assignments)
-                .ThenInclude(l => l.AssignmentMaterials)
+                .Include(l=>l.Theories)
                 .Include(l => l.Group)
                 .ThenInclude(l=>l.AppUserGroups)
                 .FirstOrDefaultAsync(l => l.Id == id);
@@ -39,6 +39,7 @@ namespace DataAccess.Concrete
         {
             return await Context.Lessons.AsNoTracking()
                 .Where(l => l.GroupId == groupId)
+                .Include(l=>l.Theories)
                 .Include(l=>l.Assignments)
                 .ThenInclude(l => l.AssignmentMaterials)
                 .ToListAsync();
@@ -53,6 +54,7 @@ namespace DataAccess.Concrete
                 .Take(take)
                 .Include(l => l.Assignments)
                 .ThenInclude(l=>l.AssignmentMaterials)
+                .Include(l => l.Theories)
                 .ToListAsync();
         }
     }

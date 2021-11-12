@@ -24,11 +24,8 @@ namespace Entities.Models
 
         public Group Group { get; set; }
 
-        //public List<LessonMaterial> LessonMaterials { get; set; }
-
         public List<Assignment> Assignments { get; set; }
 
-        //[NotMapped]
-        //public List<IFormFile> Files { get; set; }
+        public List<Theory> Theories { get; set; }
     }
 }

@@ -15,11 +15,7 @@ namespace Business.Abstract
 
         Task<bool> AddLessonAsync(Lesson lesson);
 
-        //Task<bool> AddLessonWithFilesAsync(Lesson lesson);
-
         Task<bool> EditLessonAsync(Lesson lesson);
-
-        //Task<bool> EditLessonWithFilesAsync(Lesson lesson);
 
         Task<bool> DeleteLessonAsync(int id);
 

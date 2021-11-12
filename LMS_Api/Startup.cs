@@ -109,9 +109,6 @@ namespace LMS_Api
             services.AddScoped<IQuizService, QuizService>();
             services.AddScoped<IQuizDal, EFQuizDal>();
 
-            services.AddScoped<ILessonMaterialService, LessonMaterialService>();
-            services.AddScoped<ILessonMaterialDal, EfLessonMaterialDal>();
-
             services.AddScoped<IAssignmentMaterialService, AssignmentMaterialService>();
             services.AddScoped<IAssignmentMaterialDal, EFAssignmentMaterialDal>();
 

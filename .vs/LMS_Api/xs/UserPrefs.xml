@@ -1,14 +1,15 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/AutoMapper/AutoMapperProfile.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Startup.cs">
     <Files>
-      <File FileName="Entities/Models/Lesson.cs" Line="29" Column="51" />
-      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="57" Column="17" />
-      <File FileName="DataAccess/Abstract/ILessonDal.cs" Line="11" Column="22" />
-      <File FileName="Business/Abstract/ILessonService.cs" Line="18" Column="51" />
-      <File FileName="Business/Concrete/LessonService.cs" Line="12" Column="41" />
-      <File FileName="DataAccess/Concrete/AppDbContext.cs" Line="41" Column="89" />
-      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="38" Column="18" />
-      <File FileName="DataAccess/AutoMapper/AutoMapperProfile.cs" Line="13" Column="35" />
+      <File FileName="Entities/Models/TheoryAppUser.cs" Line="15" Column="1" />
+      <File FileName="DataAccess/Abstract/ITheoryAssignmentDal.cs" Line="13" Column="82" />
+      <File FileName="DataAccess/Abstract/IAssignmentAppUserDal.cs" Line="15" Column="50" />
+      <File FileName="DataAccess/Concrete/EFTheoryAppUserDal.cs" Line="44" Column="50" />
+      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="44" Column="14" />
+      <File FileName="Business/Abstract/ITheoryAppUserService.cs" Line="12" Column="63" />
+      <File FileName="Business/Concrete/TheoryAppUserService.cs" Line="45" Column="25" />
+      <File FileName="Business/Abstract/IAssignmentAppUserService.cs" Line="10" Column="1" />
+      <File FileName="LMS_Api/Startup.cs" Line="137" Column="69" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,9 +26,7 @@
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
-              <Node name="AutoMapper" expanded="True">
-                <Node name="AutoMapperProfile.cs" selected="True" />
-              </Node>
+              <Node name="AutoMapper" expanded="True" />
               <Node name="Concrete" expanded="True" />
               <Node name="Identity" expanded="True" />
             </Node>
@@ -38,6 +37,7 @@
             <Node name="LMS_Api" expanded="True">
               <Node name="Dependencies" expanded="True" />
               <Node name="Controllers" expanded="True" />
+              <Node name="Startup.cs" selected="True" />
             </Node>
             <Node name="Utils" expanded="True" />
           </Node>

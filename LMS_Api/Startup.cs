@@ -132,6 +132,9 @@ namespace LMS_Api
 
             services.AddScoped<ITheoryService, TheoryService>();
             services.AddScoped<ITheoryDal, EFTheoryDal>();
+
+            services.AddScoped<ITheoryAppUserService, TheoryAppUserService>();
+            services.AddScoped<ITheoryAppUserDal, EFTheoryAppUserDal>();
         }
 
 

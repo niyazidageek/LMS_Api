@@ -38,6 +38,8 @@ namespace DataAccess.Concrete
 
         public DbSet<AssignmentAppUser> AssignmentAppUsers { get; set; }
 
+        public DbSet<TheoryAppUser> TheoryAppUsers { get; set; }
+
         public DbSet<AssignmentAppUserMaterial> AssignmentAppUserMaterials { get; set; }
 
         public DbSet<Question> Questions { get; set; }

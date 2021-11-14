@@ -61,6 +61,9 @@ namespace LMS_Api.Controllers
             var group = groupId == null ? groups.First() : groups
                 .FirstOrDefault(g=>g.Id == (int)groupId);
 
+            var allLessons = await _lessonService
+                .GetLessonsByGroupIdAsync(group.Id);
+
             var lessons = await _lessonService
                 .GetLessonsByGroupIdAndUserIdAsync(group.Id,userId);
 
@@ -68,8 +71,8 @@ namespace LMS_Api.Controllers
 
             int totalTheories = 0;
 
-            lessons.ForEach(l => totalTheories += l.Theories.Count);
-            lessons.ForEach(l => totalAssignments += l.Assignments.Count);
+            allLessons.ForEach(l => totalTheories += l.Theories.Count);
+            allLessons.ForEach(l => totalAssignments += l.Assignments.Count);
 
             AppUser teacher=null;
 
@@ -107,7 +110,8 @@ namespace LMS_Api.Controllers
 
             int submittedAssignmentsCount = assignmentAppUsersDb.Count;
 
-            int progressPercentage = (int)Math.Ceiling(currentPoint / maxPoint * 100);
+            int progressPercentage =
+                maxPoint == 0 ? 0 : ((int)Math.Ceiling(currentPoint / maxPoint * 100));
 
             var teacherDto =  _mapper.Map<AppUserDTO>(teacher);
 

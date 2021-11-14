@@ -161,7 +161,8 @@ namespace LMS_Api
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true)
-                .AllowCredentials());
+                .AllowCredentials()
+                .WithExposedHeaders("count"));
 
             app.UseAuthentication();
 

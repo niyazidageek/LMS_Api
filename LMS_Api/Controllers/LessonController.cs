@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
 using DataAccess.Concrete;
+using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
 using LMS_Api.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -60,6 +62,29 @@ namespace LMS_Api.Controllers
             var lessonDto = _mapper.Map<LessonDTO>(lessonDb);
 
             return Ok(lessonDto);
+        }
+
+        [HttpGet]
+        [Route("{id}/{page}/{size}")]
+        [Authorize(Roles = nameof(Roles.Student))]
+        public async Task<ActionResult> GetLessonsByGroupIdAndUserId(int id, int page, int size)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+            if (userId is null)
+                return Unauthorized();
+
+            var lessonsDb = await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size);
+
+            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(id);
+
+            if (lessonsDb is null)
+                return NotFound();
+
+            var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
+
+            HttpContext.Response.Headers.Add("Count", lessonsDbCount.ToString());
+
+            return Ok(lessonsDto);
         }
 
         [HttpGet]

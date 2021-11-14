@@ -19,8 +19,12 @@ namespace Business.Abstract
 
         Task<bool> DeleteLessonAsync(int id);
 
+        Task<int> GetLessonsByGroupIdCountAsync(int groupId);
+
         Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId);
 
         Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId, int skip = 0, int take = 2);
+
+        Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0, int size = 3);
     }
 }

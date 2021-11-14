@@ -62,7 +62,7 @@ namespace LMS_Api.Controllers
                 .FirstOrDefault(g=>g.Id == (int)groupId);
 
             var lessons = await _lessonService
-                .GetLessonsByGroupIdAsync(group.Id);
+                .GetLessonsByGroupIdAndUserIdAsync(group.Id,userId);
 
             int totalAssignments = 0;
 
@@ -97,6 +97,7 @@ namespace LMS_Api.Controllers
             var appUserPointDb = await _appUserGroupPointService.GetAppUserGroupPointByAppUserGroupIdAsync(appUserGroupDb.Id);
             var theoryAppUsersDb = await _theoryAppUserService.GetTheoryAppUsersByAppUserIdAndGroupId(userId, group.Id);
             var assignmentAppUsersDb = await _assignmentAppUserService.GetAssignmentAppUsersByAppUserIdAndGroupIdAsync(userId, group.Id);
+            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(group.Id);
 
             decimal maxPoint = groupMaxPointDb.MaxPoint;
 
@@ -126,7 +127,10 @@ namespace LMS_Api.Controllers
                 TotalAssignments = totalAssignments,
                 ReadTheoriesCount = readTheoriesCount,
                 SubmittedAssignmentsCount = submittedAssignmentsCount
+
             };
+
+            HttpContext.Response.Headers.Add("Count", lessonsDbCount.ToString());
 
             return Ok(studentHomeDto);
         }

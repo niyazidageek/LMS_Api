@@ -21,5 +21,7 @@ namespace Entities.DTOs
         public List<AssignmentDTO> Assignments { get; set; }
 
         public List<TheoryDTO> Theories { get; set; }
+
+        public int Count { get; set; }
     }
 }

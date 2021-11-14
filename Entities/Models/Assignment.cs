@@ -20,5 +20,7 @@ namespace Entities.Models
         public decimal MaxGrade { get; set; } = 0;
 
         public List<AssignmentMaterial> AssignmentMaterials { get; set; }
+
+        public List<AssignmentAppUser> AssignmentAppUsers { get; set; }
     }
 }

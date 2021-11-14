@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Core.Entities;
 
 namespace Entities.Models
@@ -15,5 +16,7 @@ namespace Entities.Models
 
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }
+
+        public List<TheoryAppUser> TheoryAppUsers { get; set; }
     }
 }

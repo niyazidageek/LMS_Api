@@ -49,6 +49,11 @@ namespace Business.Concrete
             return await _conext.GetAllAsync();
         }
 
+        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0, int size = 3)
+        {
+            return await _conext.GetLessonsByGroupIdAndUserIdAsync(groupId, userId, page, size);
+        }
+
         public async Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId)
         {
             return await _conext.GetAllByGroupIdAsync(groupId);
@@ -57,6 +62,11 @@ namespace Business.Concrete
         public async Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId, int skip = 0, int take = 2)
         {
             return await _conext.GetAllByGroupIdAsync(groupId, skip, take);
+        }
+
+        public async Task<int> GetLessonsByGroupIdCountAsync(int groupId)
+        {
+            return await _conext.GetLessonsByGroupIdCountAsync(groupId);
         }
     }
 }

@@ -35,6 +35,8 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
+
+
         public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId)
         {
             return await Context.Lessons.AsNoTracking()
@@ -43,6 +45,26 @@ namespace DataAccess.Concrete
                 .Include(l=>l.Assignments)
                 .ThenInclude(l => l.AssignmentMaterials)
                 .ToListAsync();
+        }
+
+        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page=0, int size=3)
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Include(l => l.Assignments)
+                .ThenInclude(l => l.AssignmentAppUsers.Where(aa => aa.AppUserId == userId && aa.IsSubmitted == true))
+                .Include(l => l.Theories)
+                .ThenInclude(l => l.TheoryAppUsers.Where(ta => ta.AppUserId == userId && ta.IsRead == true))
+                .Where(l => l.GroupId == groupId && l.StartDate<=DateTime.UtcNow.AddDays(2))
+                .OrderByDescending(l=>l.StartDate)
+                .Skip(page*size)
+                .Take(size)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetLessonsByGroupIdCountAsync(int groupId)
+        {
+            return await Context.Lessons.AsNoTracking()
+                 .CountAsync(l => l.GroupId == groupId);
         }
 
         public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId, int skip=0, int take=2)

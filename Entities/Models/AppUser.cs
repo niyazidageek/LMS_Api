@@ -19,6 +19,8 @@ namespace Entities.Models
 
         public string Bio { get; set; }
 
+        public bool IsSubscribedToSender { get; set; } = true;
+
         public List<AppUserGroup> AppUserGroups { get; set; }
 
         public List<AppUserQuiz> AppUserQuizzes { get; set; }

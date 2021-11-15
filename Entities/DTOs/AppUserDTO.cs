@@ -24,6 +24,8 @@ namespace Entities.DTOs
 
         public string Bio { get; set; }
 
+        public bool IsSubscribedToSender { get; set; } = true;
+
         public List<string> Roles { get; set; }
     }
 }

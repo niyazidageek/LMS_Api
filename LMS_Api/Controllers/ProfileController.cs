@@ -156,6 +156,7 @@ namespace LMS_Api.Controllers
             userDb.Name = appUserDto.Name;
             userDb.Surname = appUserDto.Surname;
             userDb.Bio = appUserDto.Bio;
+            userDb.IsSubscribedToSender = appUserDto.IsSubscribedToSender;
 
             var result = await _userManager.UpdateAsync(userDb);
 

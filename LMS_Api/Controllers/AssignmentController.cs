@@ -7,11 +7,13 @@ using Business.Abstract;
 using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using LMS_Api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -84,6 +86,8 @@ namespace LMS_Api.Controllers
 
             List<AppUserGroup> students = new();
 
+            List<string> receivers = new();
+
             foreach (var appUserGroup in lessonDb.Group.AppUserGroups)
             {
                 var user = await _userManager.FindByIdAsync(appUserGroup.AppUserId);
@@ -93,12 +97,26 @@ namespace LMS_Api.Controllers
                 var isStudent = roles.Any(x => x.ToLower() == nameof(Roles.Student).ToLower());
 
                 if (isStudent is true)
+                {
                     students.Add(appUserGroup);
+
+                    if (user.IsSubscribedToSender is true)
+                        receivers.Add(user.Email);
+                }
             }
 
             lessonDb.Group.AppUserGroups = students;
 
             await _assignmentAppUserService.InitializeAssignmentAsync(lessonDb, assignmentDb.Id);
+
+            var isSent = EmailHelper.SendMailToManyUsers(receivers,"New homework is available!");
+
+            if (isSent is false)
+                return BadRequest(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.EmailError),
+                    Message = "Email can't be sent!"
+                });
 
             var groupId = lessonDb.GroupId;
 

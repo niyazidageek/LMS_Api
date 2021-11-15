@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +43,49 @@ namespace LMS_Api.Utils
                 return false;
             }
 
+        }
+
+        public static bool SendMailToManyUsers(List<string> recipients, string subject, string token = "", string url = "")
+        {
+            var smtp = new System.Net.Mail.SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("mm.aleskerov93@gmail.com", "niyazi0502106331")
+            };
+
+            try
+            {
+                var mail = new MailMessage();
+
+                foreach (var recipient in recipients)
+                {
+                    mail.To.Add(recipient);
+                }
+
+                mail.From = new MailAddress("mm.aleskerov93@gmail.com", "LMS");
+                mail.Subject = subject;
+                mail.IsBodyHtml = true;
+                string body = File.ReadAllText("/Users/niyazibabayev/Desktop/LMS_FrontEnd/templates/mail.html");
+                body = body.Replace("#MailTopic#", subject);
+                body = body.Replace("#Action#", subject);
+                body = body.Replace("#Link#", url);
+                body = body.Replace("#Token#", token);
+                mail.Body = body;
+
+
+                smtp.Send(mail);
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static bool SendConfirmationEmail(string confirmationToken, string email, string userId)

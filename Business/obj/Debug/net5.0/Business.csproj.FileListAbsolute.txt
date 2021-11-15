@@ -18,3 +18,4 @@
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/ref/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.pdb
+/Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.csproj.CopyComplete

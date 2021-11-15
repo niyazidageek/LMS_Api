@@ -15,7 +15,6 @@
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.AssemblyInfoInputs.cache
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.AssemblyInfo.cs
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.csproj.CoreCompileInputs.cache
-/Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.csproj.CopyComplete
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/ref/Business.dll
 /Users/niyazibabayev/Projects/LMS_Api/Business/obj/Debug/net5.0/Business.pdb

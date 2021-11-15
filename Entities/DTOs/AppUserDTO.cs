@@ -22,6 +22,8 @@ namespace Entities.DTOs
         //[Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        public string Bio { get; set; }
+
         public List<string> Roles { get; set; }
     }
 }

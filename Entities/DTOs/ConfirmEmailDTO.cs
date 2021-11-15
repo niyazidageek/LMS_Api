@@ -9,5 +9,7 @@ namespace Entities.DTOs
         public string UserId { get; set; }
         [Required]
         public string Token { get; set; }
+
+        public string NewEmail { get; set; }
     }
 }

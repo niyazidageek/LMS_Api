@@ -15,6 +15,10 @@ namespace Entities.Models
         [Required, StringLength(255)]
         public string Surname { get; set; }
 
+        public string Filename { get; set; }
+
+        public string Bio { get; set; }
+
         public List<AppUserGroup> AppUserGroups { get; set; }
 
         public List<AppUserQuiz> AppUserQuizzes { get; set; }

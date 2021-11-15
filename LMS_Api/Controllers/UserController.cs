@@ -438,6 +438,7 @@ namespace LMS_Api.Controllers
                 });
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             var url = $"http://localhost:3000/resetpassword";
 
             var suceeded = EmailHelper.SendMailToOneUser(user.Email, "Reset password", token, url);

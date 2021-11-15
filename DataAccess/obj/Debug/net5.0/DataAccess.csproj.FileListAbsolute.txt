@@ -15,7 +15,6 @@
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.AssemblyInfoInputs.cache
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.AssemblyInfo.cs
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.csproj.CoreCompileInputs.cache
-/Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.csproj.CopyComplete
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/ref/DataAccess.dll
 /Users/niyazibabayev/Projects/LMS_Api/DataAccess/obj/Debug/net5.0/DataAccess.pdb

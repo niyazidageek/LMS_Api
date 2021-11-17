@@ -11,12 +11,14 @@ namespace Business.Abstract
 
         Task<TheoryAppUser> GetTheoryAppUserByIdAsync(int id);
 
-        Task<bool> InitializeTheoryAsync(Lesson lesson, int theoryId);
+        Task<bool> InitializeTheoryAsync(List<AppUserGroup> appUserGroups, int theoryId);
 
         Task<bool> EditTheoryAppUserAsync(TheoryAppUser theoryAppUser);
 
         Task<TheoryAppUser> GetTheoryAppUserByTheoryIdAndUserIdAsync(int theoryId, string userId);
 
         Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupId(string userId, int groupId);
+
+        Task<bool> ReinitializeTheoriesAsync(List<AppUserGroup> appUserGroups, List<Theory> theories);
     }
 }

@@ -27,12 +27,17 @@ namespace LMS_Api.Controllers
         private readonly IAppUserGroupService _appUserGroupService;
         private readonly IAssignmentService _assignmentService;
         private readonly IAssignmentAppUserService _assignmentAppUserService;
+        private readonly ITheoryService _theoryService;
+        private readonly ITheoryAppUserService _theoryAppUserService;
 
         public GroupController(IGroupService groupService, IMapper mapper,
             UserManager<AppUser> userManager, ISubjectService subjectService,
             IAppUserGroupService appUserGroupService, IAssignmentService assignmentService,
-            IAssignmentAppUserService assignmentAppUserService)
+            IAssignmentAppUserService assignmentAppUserService, ITheoryService theoryService,
+            ITheoryAppUserService theoryAppUserService)
         {
+            _theoryService = theoryService;
+            _theoryAppUserService = theoryAppUserService;
             _groupService = groupService;
             _mapper = mapper;
             _subjectService = subjectService;
@@ -203,7 +208,11 @@ namespace LMS_Api.Controllers
 
                 var assignments = await _assignmentService.GetAllByGroupIdAsync(groupDb.Id);
 
+                var theories = await _theoryService.GetAllByGroupIdAsync(groupDb.Id);
+
                 await _assignmentAppUserService.ReinitializeAssignmentsAsync(appUserGroups, assignments);
+
+                await _theoryAppUserService.ReinitializeTheoriesAsync(appUserGroups, theories);
             }
 
             return Ok(new ResponseDTO

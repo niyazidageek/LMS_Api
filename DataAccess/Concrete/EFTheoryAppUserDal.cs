@@ -39,12 +39,12 @@ namespace DataAccess.Concrete
                 .ToListAsync();
         }
 
-        public async Task<bool> InitializeTheoryAsync(Lesson lesson, int theoryId)
+        public async Task<bool> InitializeTheoryAsync(List<AppUserGroup> appUserGroups, int theoryId)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var appUserGroup in lesson.Group.AppUserGroups)
+                foreach (var appUserGroup in appUserGroups)
                 {
                     TheoryAppUser theoryAppUser = new();
 
@@ -66,5 +66,37 @@ namespace DataAccess.Concrete
                 throw;
             }
         }
+
+        public async Task<bool> ReinitializeTheoriesAsync(List<AppUserGroup> appUserGroups, List<Theory> theories)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var appUserGroup in appUserGroups)
+                {
+                    foreach (var theory in theories)
+                    {
+                        TheoryAppUser theoryAppUser = new();
+
+                        theoryAppUser.AppUserId = appUserGroup.AppUserId;
+                        theoryAppUser.TheoryId = theory.Id;
+                        theoryAppUser.IsRead = false;
+
+                        await Context.TheoryAppUsers.AddAsync(theoryAppUser);
+                    }
+                }
+
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
+        }
+
     }
 }

@@ -43,11 +43,16 @@ namespace Business.Concrete
             return await _context.GetTheoryAppUsersByLessonIdAsync(lessonId);
         }
 
-        public async Task<bool> InitializeTheoryAsync(Lesson lesson, int theoryId)
+        public async Task<bool> InitializeTheoryAsync(List<AppUserGroup> appUserGroups, int theoryId)
         {
-            await _context.InitializeTheoryAsync(lesson, theoryId);
+            await _context.InitializeTheoryAsync(appUserGroups, theoryId);
 
             return true;
+        }
+
+        public async Task<bool> ReinitializeTheoriesAsync(List<AppUserGroup> appUserGroups, List<Theory> theories)
+        {
+            return await _context.ReinitializeTheoriesAsync(appUserGroups, theories);
         }
     }
 }

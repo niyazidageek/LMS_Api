@@ -8,12 +8,14 @@ namespace DataAccess.Abstract
 {
     public interface ITheoryAppUserDal: IRepository<TheoryAppUser>
     {
-        Task<bool> InitializeTheoryAsync(Lesson lesson, int theoryId);
+        Task<bool> InitializeTheoryAsync(List<AppUserGroup> appUserGroups, int theoryId);
 
         Task<List<TheoryAppUser>> GetTheoryAppUsersByLessonIdAsync(int lessonId);
 
         Task<List<TheoryAppUser>> GetTheoryAppUsersByAppUserIdAndGroupIdAsync(string userId, int groupId);
 
         Task<TheoryAppUser> GetTheoryAppUserByTheoryIdAndUserIdAsync(int theoryId, string userId);
+
+        Task<bool> ReinitializeTheoriesAsync(List<AppUserGroup> appUserGroups, List<Theory> theories);
     }
 }

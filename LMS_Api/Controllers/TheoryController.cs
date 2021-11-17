@@ -152,7 +152,7 @@ namespace LMS_Api.Controllers
 
             lessonDb.Group.AppUserGroups = students;
 
-            await _theoryAppUserService.InitializeTheoryAsync(lessonDb, theoryDb.Id);
+            await _theoryAppUserService.InitializeTheoryAsync(students, theoryDb.Id);
 
             var groupId = lessonDb.GroupId;
 

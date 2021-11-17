@@ -13,6 +13,7 @@ namespace Utils
         InvalidToken,
         ConfirmationError,
         ResetPasswordError,
-        AssignmentError
+        AssignmentError,
+        TheoryError
     }
 }

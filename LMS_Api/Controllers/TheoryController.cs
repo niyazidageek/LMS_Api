@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -245,7 +246,7 @@ namespace LMS_Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("{id}")]
         [Authorize(Roles = nameof(Roles.Student))]
         public async Task<ActionResult> MarkTheoryAsRead(int id)
@@ -263,7 +264,11 @@ namespace LMS_Api.Controllers
                 .GetTheoryAppUserByTheoryIdAndUserIdAsync(id, userId);
 
             if (theoryAppUserDb.IsRead is true)
-                return BadRequest();
+                return Conflict(new ResponseDTO
+                {
+                    Status=nameof(StatusTypes.TheoryError),
+                    Message="You have already read the theory!"
+                });
 
             theoryAppUserDb.IsRead = true;
 
@@ -284,7 +289,11 @@ namespace LMS_Api.Controllers
             await _appUserGroupPointService.EditAppUserGroupPointAsync(appUserGroupPointDb);
 
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="You have read theory successfully!"
+            });
         }
     }
 }

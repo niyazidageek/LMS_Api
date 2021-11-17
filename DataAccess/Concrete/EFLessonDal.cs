@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.Repository.EFRepository;
 using DataAccess.Abstract;
@@ -35,8 +36,6 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
-
-
         public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId)
         {
             return await Context.Lessons.AsNoTracking()
@@ -47,14 +46,15 @@ namespace DataAccess.Concrete
                 .ToListAsync();
         }
 
-        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page=0, int size=3)
+        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(string userId, int page=0, int size=3,
+            Expression<Func<Lesson, bool>> filter = null)
         {
             return await Context.Lessons.AsNoTracking()
                 .Include(l => l.Assignments)
                 .ThenInclude(l => l.AssignmentAppUsers.Where(aa => aa.AppUserId == userId && aa.IsSubmitted == true))
                 .Include(l => l.Theories)
                 .ThenInclude(l => l.TheoryAppUsers.Where(ta => ta.AppUserId == userId && ta.IsRead == true))
-                .Where(l => l.GroupId == groupId && l.StartDate<=DateTime.UtcNow.AddDays(2))
+                .Where(filter)
                 .OrderByDescending(l=>l.StartDate)
                 .Skip(page*size)
                 .Take(size)
@@ -67,13 +67,13 @@ namespace DataAccess.Concrete
                  .CountAsync(l => l.GroupId == groupId);
         }
 
-        public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId, int skip=0, int take=2)
+        public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId, int page=0, int size=2)
         {
             return await Context.Lessons.AsNoTracking()
                 .Where(l => l.GroupId == groupId)
                 .OrderByDescending(l=>l.Id)
-                .Skip(skip)
-                .Take(take)
+                .Skip(page*size)
+                .Take(size)
                 .Include(l => l.Assignments)
                 .ThenInclude(l=>l.AssignmentMaterials)
                 .Include(l => l.Theories)

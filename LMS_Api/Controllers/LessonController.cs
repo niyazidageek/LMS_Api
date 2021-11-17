@@ -65,16 +65,18 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/{page}/{size}")]
+        [Route("{id}/{page}/{size}/{futureDaysCount?}")]
         [Authorize(Roles = nameof(Roles.Student))]
-        public async Task<ActionResult> GetLessonsByGroupIdAndUserId(int id, int page, int size)
+        public async Task<ActionResult> GetLessonsByGroupIdAndUserId(int id, int page, int size, int? futureDaysCount)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
 
             if (userId is null)
                 return Unauthorized();
 
-            var lessonsDb = await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size);
+            var lessonsDb = futureDaysCount is null ?
+                await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size) :
+                await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size, (int)futureDaysCount);
 
             var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(id);
 

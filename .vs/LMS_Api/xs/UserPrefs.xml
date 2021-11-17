@@ -1,15 +1,9 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/AssignmentController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/StudentHomeController.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="123" Column="1" />
-      <File FileName="LMS_Api/Controllers/QuizController.cs" />
-      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" />
-      <File FileName="Entities/DTOs/StudentHomeDTO.cs" />
-      <File FileName="Entities/Models/AppUser.cs" />
-      <File FileName="LMS_Api/Controllers/ProfileController.cs" />
-      <File FileName="LMS_Api/Controllers/UserController.cs" />
-      <File FileName="Entities/Models/AssignmentAppUser.cs" Line="7" Column="18" />
-      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="56" Column="69" />
+      <File FileName="DataAccess/Concrete/EFLessonDal.cs" Line="38" Column="1" IsPinned="True" />
+      <File FileName="LMS_Api/Controllers/LessonController.cs" Line="76" Column="1" />
+      <File FileName="LMS_Api/Controllers/StudentHomeController.cs" Line="68" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,6 +12,11 @@
             <Node name="Business" expanded="True">
               <Node name="Abstract" expanded="True" />
               <Node name="Concrete" expanded="True" />
+            </Node>
+            <Node name="Core" expanded="True">
+              <Node name="Repository" expanded="True">
+                <Node name="EFRepository" expanded="True" />
+              </Node>
             </Node>
             <Node name="DataAccess" expanded="True">
               <Node name="Abstract" expanded="True" />
@@ -29,7 +28,7 @@
             </Node>
             <Node name="LMS_Api" expanded="True">
               <Node name="Controllers" expanded="True">
-                <Node name="AssignmentController.cs" selected="True" />
+                <Node name="StudentHomeController.cs" selected="True" />
               </Node>
             </Node>
             <Node name="Utils" expanded="True" />

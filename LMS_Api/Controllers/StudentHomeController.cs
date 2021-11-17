@@ -65,7 +65,7 @@ namespace LMS_Api.Controllers
                 .GetLessonsByGroupIdAsync(group.Id);
 
             var lessons = await _lessonService
-                .GetLessonsByGroupIdAndUserIdAsync(group.Id,userId);
+                .GetLessonsByGroupIdAndUserIdAsync(group.Id,userId,futureDaysCount:2);
 
             int totalAssignments = 0;
 

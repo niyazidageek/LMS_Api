@@ -25,6 +25,9 @@ namespace Business.Abstract
 
         Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId, int skip = 0, int take = 2);
 
+        Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0,
+            int size = 3, int futureDaysCount=2);
+
         Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0, int size = 3);
     }
 }

@@ -49,9 +49,18 @@ namespace Business.Concrete
             return await _conext.GetAllAsync();
         }
 
-        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0, int size = 3)
+        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0,
+            int size = 3, int futureDaysCount=2)
         {
-            return await _conext.GetLessonsByGroupIdAndUserIdAsync(groupId, userId, page, size);
+            return await _conext.GetLessonsByGroupIdAndUserIdAsync(userId, page, size,
+                l=>l.GroupId == groupId && l.StartDate <= DateTime.UtcNow.AddDays(futureDaysCount));
+        }
+
+        public async Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0,
+            int size = 3)
+        {
+            return await _conext.GetLessonsByGroupIdAndUserIdAsync(userId, page, size,
+                l => l.GroupId == groupId);
         }
 
         public async Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId)

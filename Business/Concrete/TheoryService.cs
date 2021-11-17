@@ -56,5 +56,10 @@ namespace Business.Concrete
         {
             return await _context.GetAsync(t => t.Id == id);
         }
+
+        public async Task<List<Theory>> GetAllByGroupIdAsync(int groupId)
+        {
+            return await _context.GetAllByGroupIdAsync(groupId);
+        }
     }
 }

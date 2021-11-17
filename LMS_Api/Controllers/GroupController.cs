@@ -25,16 +25,21 @@ namespace LMS_Api.Controllers
         private readonly ISubjectService _subjectService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IAppUserGroupService _appUserGroupService;
+        private readonly IAssignmentService _assignmentService;
+        private readonly IAssignmentAppUserService _assignmentAppUserService;
 
         public GroupController(IGroupService groupService, IMapper mapper,
             UserManager<AppUser> userManager, ISubjectService subjectService,
-            IAppUserGroupService appUserGroupService)
+            IAppUserGroupService appUserGroupService, IAssignmentService assignmentService,
+            IAssignmentAppUserService assignmentAppUserService)
         {
             _groupService = groupService;
             _mapper = mapper;
             _subjectService = subjectService;
             _userManager = userManager;
             _appUserGroupService = appUserGroupService;
+            _assignmentService = assignmentService;
+            _assignmentAppUserService = assignmentAppUserService;
         }
 
         [HttpGet]
@@ -195,6 +200,10 @@ namespace LMS_Api.Controllers
                 }
 
                 await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroups);
+
+                var assignments = await _assignmentService.GetAllByGroupIdAsync(groupDb.Id);
+
+                await _assignmentAppUserService.ReinitializeAssignmentsAsync(appUserGroups, assignments);
             }
 
             return Ok(new ResponseDTO

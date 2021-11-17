@@ -15,6 +15,15 @@ namespace DataAccess.Concrete
         {
         }
 
+        public async Task<List<Theory>> GetAllByGroupIdAsync(int groupId)
+        {
+            return await Context.Theories
+                .AsNoTracking()
+                .Include(t => t.Lesson)
+                .Where(t => t.Lesson.GroupId == groupId)
+                .ToListAsync();
+        }
+
         public async Task<Theory> GetByIdAndUserId(int theoryId, string userId)
         {
             return await Context.Theories.AsNoTracking()

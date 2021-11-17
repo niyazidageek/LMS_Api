@@ -49,5 +49,10 @@ namespace Business.Concrete
 
             return true;
         }
+
+        public async Task<bool> ReinitializeAssignmentsAsync(List<AppUserGroup> appUserGroups, List<Assignment> assignments)
+        {
+            return await _context.ReinitializeAssignmentsAsync(appUserGroups, assignments);
+        }
     }
 }

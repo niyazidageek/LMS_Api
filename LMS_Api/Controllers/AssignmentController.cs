@@ -107,7 +107,7 @@ namespace LMS_Api.Controllers
 
             lessonDb.Group.AppUserGroups = students;
 
-            await _assignmentAppUserService.InitializeAssignmentAsync(lessonDb, assignmentDb.Id);
+            await _assignmentAppUserService.InitializeAssignmentAsync(students, assignmentDb.Id);
 
             var isSent = EmailHelper.SendMailToManyUsers(receivers,"New homework is available!");
 

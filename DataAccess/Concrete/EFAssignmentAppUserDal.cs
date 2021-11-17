@@ -44,6 +44,38 @@ namespace DataAccess.Concrete
             }
         }
 
+        public async Task<bool> ReinitializeAssignmentsAsync(List<AppUserGroup> appUserGroups, List<Assignment> assignments)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var appUserGroup in appUserGroups)
+                {
+                    foreach (var assignment in assignments)
+                    {
+                        AssignmentAppUser assignmentAppUser = new();
+
+                        assignmentAppUser.AppUserId = appUserGroup.AppUserId;
+                        assignmentAppUser.AssignmentId = assignment.Id;
+                        assignmentAppUser.IsSubmitted = false;
+                        assignmentAppUser.SubmissionDate = null;
+
+                        await Context.AssignmentAppUsers.AddAsync(assignmentAppUser);
+                    }
+                }
+
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
+        }
+
         //Gets all submissions by lesson ID
 
         public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId)

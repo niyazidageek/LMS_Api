@@ -109,14 +109,17 @@ namespace LMS_Api.Controllers
 
             await _assignmentAppUserService.InitializeAssignmentAsync(students, assignmentDb.Id);
 
-            var isSent = EmailHelper.SendMailToManyUsers(receivers,"New homework is available!");
+            if (assignmentAttachmentDto.NotifyAll)
+            {
+                var isSent = EmailHelper.SendMailToManyUsers(receivers, "New homework is available!");
 
-            if (isSent is false)
-                return BadRequest(new ResponseDTO
-                {
-                    Status = nameof(StatusTypes.EmailError),
-                    Message = "Email can't be sent!"
-                });
+                if (isSent is false)
+                    return BadRequest(new ResponseDTO
+                    {
+                        Status = nameof(StatusTypes.EmailError),
+                        Message = "Email can't be sent!"
+                    });
+            }
 
             var groupId = lessonDb.GroupId;
 

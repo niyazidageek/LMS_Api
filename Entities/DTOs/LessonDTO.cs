@@ -16,6 +16,10 @@ namespace Entities.DTOs
 
         public int GroupId { get; set; }
 
+        public string Description { get; set; }
+
+        public bool IsOnline { get; set; }
+
         public GroupDTO Group { get; set; }
 
         public List<AssignmentDTO> Assignments { get; set; }

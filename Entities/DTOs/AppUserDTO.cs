@@ -7,7 +7,7 @@ namespace Entities.DTOs
     public class AppUserDTO
     {
 
-        [Required]
+        //[Required]
         public string Id { get; set; }
 
         //[Required, StringLength(255)]
@@ -19,12 +19,16 @@ namespace Entities.DTOs
         //[Required, StringLength(255)]
         public string Username { get; set; }
 
+        public string Filename { get; set; }
+
         //[Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public string Bio { get; set; }
 
         public bool IsSubscribedToSender { get; set; } = true;
+
+        public List<GroupDTO> Groups { get; set; }
 
         public List<string> Roles { get; set; }
     }

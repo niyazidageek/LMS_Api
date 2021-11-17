@@ -15,12 +15,12 @@ namespace DataAccess.Concrete
         {
         }
 
-        public async Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId)
+        public async Task<bool> InitializeAssignmentAsync(List<AppUserGroup> appUserGroups, int assignmentId)
         {
             await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var appUserGroup in lesson.Group.AppUserGroups)
+                foreach (var appUserGroup in appUserGroups)
                 {
                     AssignmentAppUser assignmentAppUser = new();
 

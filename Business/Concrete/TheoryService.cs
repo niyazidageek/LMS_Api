@@ -37,6 +37,16 @@ namespace Business.Concrete
             return true;
         }
 
+        public async Task<Theory> GetTheoryByIdAndUserId(int theoryId, string userId)
+        {
+            return await _context.GetByIdAndUserId(theoryId, userId);
+        }
+
+        public async Task<List<Theory>> GetTheoriesByLessonIdAndUserIdAsync(int lessonId, string appUserId)
+        {
+            return await _context.GetTheoriesByLessonIdAndUserIdAsync(lessonId, appUserId);
+        }
+
         public async Task<List<Theory>> GetTheoriesByLessonIdAsync(int lessonId)
         {
             return await _context.GetAllByLessonIdAsync(lessonId);

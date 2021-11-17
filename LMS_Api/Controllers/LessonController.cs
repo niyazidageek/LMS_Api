@@ -70,6 +70,7 @@ namespace LMS_Api.Controllers
         public async Task<ActionResult> GetLessonsByGroupIdAndUserId(int id, int page, int size)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+
             if (userId is null)
                 return Unauthorized();
 

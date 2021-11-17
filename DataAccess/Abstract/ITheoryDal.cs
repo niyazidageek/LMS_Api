@@ -8,6 +8,10 @@ namespace DataAccess.Abstract
 {
     public interface ITheoryDal: IRepository<Theory>
     {
+        Task<List<Theory>> GetTheoriesByLessonIdAndUserIdAsync(int lessonId, string appUserId);
+
         Task<List<Theory>> GetAllByLessonIdAsync(int lessonId);
+
+        Task<Theory> GetByIdAndUserId(int theoryId, string userId);
     }
 }

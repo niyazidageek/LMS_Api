@@ -22,6 +22,10 @@ namespace Entities.Models
 
         public int GroupId { get; set; }
 
+        public bool IsOnline { get; set; }
+
+        public string Description { get; set; }
+
         public Group Group { get; set; }
 
         public List<Assignment> Assignments { get; set; }

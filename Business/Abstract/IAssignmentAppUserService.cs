@@ -11,7 +11,7 @@ namespace Business.Abstract
 
         Task<AssignmentAppUser> GetAssignmentAppUserByIdAsync(int id);
 
-        Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId);
+        Task<bool> InitializeAssignmentAsync(List<AppUserGroup> appUserGroups, int assignmentId);
 
         Task<bool> EditAssignmentAppUserAsync(AssignmentAppUser assignmentAppUser);
 

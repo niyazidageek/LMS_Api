@@ -12,6 +12,7 @@ namespace Utils
         RoleError,
         InvalidToken,
         ConfirmationError,
-        ResetPasswordError
+        ResetPasswordError,
+        AssignmentError
     }
 }

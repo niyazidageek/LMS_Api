@@ -197,6 +197,25 @@ namespace LMS_Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = nameof(Roles.Student))]
+        public async Task<ActionResult> GetStudentsAssignmentById(int id)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+            if (userId is null)
+                return Unauthorized();
+
+            var assignmentDb = await _assignmentService.GetAssignmentByIdAndUserIdAsync(id,userId);
+
+            if (assignmentDb is null)
+                return NotFound();
+
+            var assignmentDto = _mapper.Map<AssignmentDTO>(assignmentDb);
+
+            return Ok(assignmentDto);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
         public async Task<ActionResult> GetAllAssignmentsByLessonId(int id)
         {
             var lessonDb = await _lessonService.GetLessonByIdAsync(id);
@@ -214,7 +233,7 @@ namespace LMS_Api.Controllers
         [HttpPost]
         [Route("{id}")]
         [Authorize(Roles = nameof(Roles.Student))]
-        public async Task<ActionResult> SubmitAssingment(int id,[FromForm] SubmissionAttachmentDTO submissionAttachmentDto)
+        public async Task<ActionResult> SubmitAssignment(int id,[FromForm] SubmissionAttachmentDTO submissionAttachmentDto)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
             if (userId is null)
@@ -232,7 +251,11 @@ namespace LMS_Api.Controllers
                 return NotFound();
 
             if (appUserAssignmentDb.IsSubmitted is true)
-                return BadRequest();
+                return Conflict(new ResponseDTO
+                {
+                    Status=nameof(StatusTypes.AssignmentError),
+                    Message="You have already submitted your assignment!"
+                });
 
             appUserAssignmentDb.IsSubmitted = true;
             appUserAssignmentDb.SubmissionDate = DateTime.UtcNow;
@@ -257,7 +280,11 @@ namespace LMS_Api.Controllers
                 await _assignmentAppUserMaterialService.CreateAssignmentAppUserMaterialAsync(assignmentAppUserMaterials);
             }
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Submitted successfully!"
+            });
         }
 
         [HttpGet]

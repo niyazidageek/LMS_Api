@@ -15,11 +15,39 @@ namespace DataAccess.Concrete
         {
         }
 
+        public async Task<Theory> GetByIdAndUserId(int theoryId, string userId)
+        {
+            return await Context.Theories.AsNoTracking()
+                .Include(t => t.TheoryAppUsers.Where(ta => ta.AppUserId == userId))
+                .FirstOrDefaultAsync(t => t.Id == theoryId);
+        }
+
         public async Task<List<Theory>> GetAllByLessonIdAsync(int lessonId)
         {
             return await Context.Theories.AsNoTracking()
                 .Where(t => t.LessonId == lessonId)
                 .ToListAsync();
+        }
+
+        public async Task<List<Theory>> GetTheoriesByLessonIdAndUserIdAsync(int lessonId, string appUserId)
+        {
+            var theoryAppUsers = await Context.TheoryAppUsers.AsNoTracking()
+                .Include(ta => ta.Theory)
+                .Where(ta => ta.AppUserId == appUserId && ta.Theory.LessonId == lessonId)
+                .ToListAsync();
+
+            List<Theory> theoriesDb = new();
+
+            foreach (var theoryAppUser in theoryAppUsers)
+            {
+                var theoryDb = await Context.Theories.AsNoTracking()
+                    .Include(t => t.TheoryAppUsers.Where(ta => ta.AppUserId == appUserId))
+                    .FirstOrDefaultAsync(t => t.Id == theoryAppUser.TheoryId);
+
+                theoriesDb.Add(theoryDb);
+            }
+
+            return theoriesDb;
         }
     }
 }

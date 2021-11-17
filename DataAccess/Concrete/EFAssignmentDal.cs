@@ -31,11 +31,20 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(a => a.Id == assignmentId);
         }
 
+        public async Task<Assignment> GetByIdAndUserIdAsync(int assignmentId, string userId)
+        {
+            return await Context.Assignments
+                .AsNoTracking()
+                .Include(a => a.AssignmentMaterials)
+                .Include(a=>a.AssignmentAppUsers.Where(aa=>aa.AppUserId == userId))
+                .FirstOrDefaultAsync(a => a.Id == assignmentId);
+        }
+
         public async Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string appUserId)
         {
             var assignmentAppUsers = await Context.AssignmentAppUsers.AsNoTracking()
                 .Include(aa => aa.Assignment)
-                .Where(aa => aa.AppUserId == appUserId && aa.Assignment.LessonId == lessonId && aa.IsSubmitted == false)
+                .Where(aa => aa.AppUserId == appUserId && aa.Assignment.LessonId == lessonId)
                 .ToListAsync();
 
             List<Assignment> assignmentsDb = new();
@@ -43,6 +52,7 @@ namespace DataAccess.Concrete
             foreach (var assignmentAppUser in assignmentAppUsers)
             {
                 var assignmentDb = await Context.Assignments.AsNoTracking()
+                    .Include(a=>a.AssignmentAppUsers.Where(aa=>aa.AppUserId == appUserId))
                     .FirstOrDefaultAsync(a => a.Id == assignmentAppUser.AssignmentId);
                 assignmentsDb.Add(assignmentDb);
             }

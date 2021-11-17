@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using Business.Abstract;
 using Entities.DTOs;
 using Entities.Models;
 using LMS_Api.Utils;
@@ -20,10 +22,41 @@ namespace LMS_Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IGroupService _groupService;
 
-        public ProfileController(UserManager<AppUser> userManager)
+        public ProfileController(UserManager<AppUser> userManager, IMapper mapper,
+            IGroupService groupService)
         {
+            _groupService = groupService;
             _userManager = userManager;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> GetMyProfile()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+
+            if (userId is null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user is null)
+                return NotFound();
+
+            var userDto = _mapper.Map<AppUserDTO>(user);
+
+            var groupsDb = await _groupService.GetGroupsByUserIdAsync(userId);
+
+            var groupsDto = _mapper.Map<List<GroupDTO>>(groupsDb);
+
+            userDto.Groups = groupsDto;
+
+            return Ok(userDto);
+
         }
 
         [HttpPut]

@@ -16,5 +16,9 @@ namespace Business.Abstract
         Task<bool> EditTheoryAsync(Theory theory);
 
         Task<bool> DeleteTheoryAsync(int id);
+
+        Task<List<Theory>> GetTheoriesByLessonIdAndUserIdAsync(int lessonId, string appUserId);
+
+        Task<Theory> GetTheoryByIdAndUserId(int theoryId, string userId);
     }
 }

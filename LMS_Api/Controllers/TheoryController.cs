@@ -78,6 +78,46 @@ namespace LMS_Api.Controllers
             return Ok(theoryDto);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(Roles = nameof(Roles.Student))]
+        public async Task<ActionResult> GetStudentsTheoryById(int id)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+
+            if (userId is null)
+                return Unauthorized();
+
+            var theoryDb = await _theoryService.GetTheoryByIdAndUserId(id,userId);
+
+            if (theoryDb is null)
+                return NotFound();
+
+            var theoryDto = _mapper.Map<TheoryDTO>(theoryDb);
+
+            return Ok(theoryDto);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetStudentsTheoriesByLessonId(int id)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+            if (userId is null)
+                return Unauthorized();
+
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+
+            if (lessonDb is null)
+                return NotFound();
+
+            var theoriesDb = await _theoryService.GetTheoriesByLessonIdAndUserIdAsync(id, userId);
+
+            var theoriesDto = _mapper.Map<List<TheoryDTO>>(theoriesDb);
+
+            return Ok(theoriesDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateTheory([FromForm] TheoryAttachmentDTO theoryAttachmentDto)
         {

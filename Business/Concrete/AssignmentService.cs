@@ -51,5 +51,10 @@ namespace Business.Concrete
         {
             return await _context.GetAssignmentsByLessonIdAndUserIdAsync(lessonId, userId);
         }
+
+        public async Task<Assignment> GetAssignmentByIdAndUserIdAsync(int assignmentId, string userId)
+        {
+            return await _context.GetByIdAndUserIdAsync(assignmentId, userId);
+        }
     }
 }

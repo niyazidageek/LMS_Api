@@ -43,9 +43,9 @@ namespace Business.Concrete
             return await _context.GetAssignmentAppUsersByLessonIdAsync(lessonId);
         }
 
-        public async Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId)
+        public async Task<bool> InitializeAssignmentAsync(List<AppUserGroup> appUserGroups, int assignmentId)
         {
-            await _context.InitializeAssignmentAsync(lesson, assignmentId);
+            await _context.InitializeAssignmentAsync(appUserGroups, assignmentId);
 
             return true;
         }

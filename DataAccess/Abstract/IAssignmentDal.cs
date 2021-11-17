@@ -13,5 +13,7 @@ namespace DataAccess.Abstract
         Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string appUserId);
 
         Task<Assignment> GetByIdAsync(int assignmentId);
+
+        Task<Assignment> GetByIdAndUserIdAsync(int assignmentId, string userId);
     }
 }

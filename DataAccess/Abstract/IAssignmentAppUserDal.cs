@@ -8,7 +8,7 @@ namespace DataAccess.Abstract
 {
     public interface IAssignmentAppUserDal: IRepository<AssignmentAppUser>
     {
-        Task<bool> InitializeAssignmentAsync(Lesson lesson, int assignmentId);
+        Task<bool> InitializeAssignmentAsync(List<AppUserGroup> appUserGroups, int assignmentId);
 
         Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId);
 

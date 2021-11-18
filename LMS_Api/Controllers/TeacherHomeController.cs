@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstract;
 using DataAccess.Identity;
+using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -77,9 +78,22 @@ namespace LMS_Api.Controllers
 
             decimal maxPoint = groupMaxPointDb.MaxPoint;
 
+            var groupsDto = _mapper.Map<List<GroupDTO>>(groups); 
+            var studentsDto = _mapper.Map<List<AppUserDTO>>(students);
+            var lessonsDto = _mapper.Map<List<LessonDTO>>(lessons);
 
+            TeacherHomeDTO teacherHomeDto = new()
+            {
+                Groups = groupsDto,
+                Students = studentsDto,
+                Lessons = lessonsDto,
+                CurrentGroupId = group.Id,
+                MaxPoint = maxPoint
+            };
 
-            return Ok();
+            HttpContext.Response.Headers.Add("Count", lessonsDbCount.ToString());
+
+            return Ok(teacherHomeDto);
         }
     }
 }

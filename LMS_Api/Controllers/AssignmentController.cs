@@ -22,6 +22,7 @@ namespace LMS_Api.Controllers
     public class AssignmentController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IGroupSubmissionService _groupSubmissionService;
         private readonly IGroupMaxPointService _groupMaxPointService;
         private readonly IAssignmentService _assignmentService;
         private readonly IAssignmentAppUserService _assignmentAppUserService;
@@ -34,6 +35,7 @@ namespace LMS_Api.Controllers
 
         public AssignmentController(IAssignmentService assignmentService,
             IAssignmentAppUserService assignmentAppUserService,
+            IGroupSubmissionService groupSubmissionService,
             IAssignmentMaterialService assignmentMaterialService,
             UserManager<AppUser> userManager,
             IMapper mapper,
@@ -43,6 +45,7 @@ namespace LMS_Api.Controllers
             ILessonService lessonService,
             IAppUserGroupService appUserGroupService)
         {
+            _groupSubmissionService = groupSubmissionService;
             _appUserGroupService = appUserGroupService;
             _appUserGroupPointService = appUserGroupPointService;
             _groupMaxPointService = groupMaxPointService;
@@ -267,6 +270,12 @@ namespace LMS_Api.Controllers
                 appUserAssignmentDb.isLate = true;
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(appUserAssignmentDb);
+
+            GroupSubmission groupSubmission = new();
+            groupSubmission.GroupId = assignmentDb.Lesson.GroupId;
+            groupSubmission.Date = DateTime.UtcNow;
+
+            await _groupSubmissionService.AddGroupSubmissionAsync(groupSubmission);
 
             if(submissionAttachmentDto.Files is not null)
             {

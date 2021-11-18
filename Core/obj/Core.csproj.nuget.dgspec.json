@@ -14,7 +14,7 @@
         "outputPath": "/Users/niyazibabayev/Projects/LMS_Api/Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/niyazibabayev/.config/NuGet/NuGet.Config"
+          "/Users/niyazibabayev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

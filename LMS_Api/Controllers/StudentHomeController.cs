@@ -51,7 +51,6 @@ namespace LMS_Api.Controllers
         [Authorize(Roles = nameof(Roles.Student))]
         public async Task<ActionResult> GetStudentHomeContent(int? groupId)
         {
-
             var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
             if (userId is null)
                 return Unauthorized();
@@ -82,7 +81,7 @@ namespace LMS_Api.Controllers
             {
                 var roles = await _userManager.GetRolesAsync(appUserGroup.AppUser);
 
-                var isTeacher = roles.Any(r => r.ToLower() == nameof(Roles.Teacher));
+                var isTeacher = roles.Any(r => r.ToLower() == nameof(Roles.Teacher).ToLower());
 
                 if (isTeacher)
                 {

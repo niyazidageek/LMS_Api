@@ -37,6 +37,7 @@ namespace DataAccess.Concrete
             return await Context.Assignments
                 .AsNoTracking()
                 .Include(a => a.AssignmentMaterials)
+                .Include(a => a.Lesson)
                 .FirstOrDefaultAsync(a => a.Id == assignmentId);
         }
 

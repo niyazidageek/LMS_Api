@@ -323,6 +323,24 @@ namespace DataAccess.Migrations
                     b.ToTable("GroupMaxPoints");
                 });
 
+            modelBuilder.Entity("Entities.Models.GroupSubmission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupSubmissions");
+                });
+
             modelBuilder.Entity("Entities.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")

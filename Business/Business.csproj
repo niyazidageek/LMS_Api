@@ -10,6 +10,7 @@
     <None Remove="System.Text.Encodings.Web" />
     <None Remove="Microsoft.AspNetCore.WebUtilities" />
     <None Remove="Microsoft.AspNetCore.Hosting" />
+    <None Remove="Microsoft.AspNetCore.SignalR" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />
@@ -23,5 +24,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
   </ItemGroup>
 </Project>

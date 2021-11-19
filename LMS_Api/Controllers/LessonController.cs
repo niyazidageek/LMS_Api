@@ -60,9 +60,12 @@ namespace LMS_Api.Controllers
 
             var appUserGroups = await _appUserGroupService.GetAppUserGroupsByGroupIdAsync(lessonDb.GroupId);
 
-            var userIds = appUserGroups.Select(ag => ag.AppUserId);
+            var userIds = appUserGroups.Select(ag => ag.AppUserId).ToList();
 
-            await _hub.Clients.Users(userIds).SendAsync("ReceiveMessage", lessonJoinLinkDto.JoinLink);
+            lessonJoinLinkDto.LessonId = id;
+            var lessonJoinLinkJson = JsonConvert.SerializeObject(lessonJoinLinkDto);
+
+            await _hub.Clients.Users(userIds).SendAsync("ReceiveMessage", lessonJoinLinkJson);
 
             await _lessonJoinLinkService.AddLessonJoinLinkAsync(new LessonJoinLink
             {

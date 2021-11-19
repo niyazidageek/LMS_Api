@@ -34,5 +34,10 @@ namespace Business.Concrete
         {
             return await _context.GetByAppUserIdAndGroupIdAsync(userId, groupId);
         }
+
+        public async Task<List<AppUserGroup>> GetAppUserGroupsByGroupIdAsync(int groupId)
+        {
+            return await _context.GetAllByGroupIdAsync(groupId);
+        }
     }
 }

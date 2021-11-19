@@ -31,5 +31,7 @@ namespace Entities.Models
         public List<Assignment> Assignments { get; set; }
 
         public List<Theory> Theories { get; set; }
+
+        public LessonJoinLink LessonJoinLink { get; set; }
     }
 }

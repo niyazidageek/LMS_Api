@@ -375,6 +375,27 @@ namespace DataAccess.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("Entities.Models.LessonJoinLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("JoinLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId")
+                        .IsUnique();
+
+                    b.ToTable("LessonJoinLinks");
+                });
+
             modelBuilder.Entity("Entities.Models.Option", b =>
                 {
                     b.Property<int>("Id")
@@ -770,6 +791,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("Entities.Models.LessonJoinLink", b =>
+                {
+                    b.HasOne("Entities.Models.Lesson", "Lesson")
+                        .WithOne("LessonJoinLink")
+                        .HasForeignKey("Entities.Models.LessonJoinLink", "LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+                });
+
             modelBuilder.Entity("Entities.Models.Option", b =>
                 {
                     b.HasOne("Entities.Models.Question", "Question")
@@ -918,6 +950,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.Lesson", b =>
                 {
                     b.Navigation("Assignments");
+
+                    b.Navigation("LessonJoinLink");
 
                     b.Navigation("Theories");
                 });

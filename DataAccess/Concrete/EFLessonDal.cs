@@ -31,6 +31,7 @@ namespace DataAccess.Concrete
             return await Context.Lessons.AsNoTracking()
                 .Include(l=>l.Assignments)
                 .Include(l=>l.Theories)
+                .Include(l=>l.LessonJoinLink)
                 .Include(l => l.Group)
                 .ThenInclude(l=>l.AppUserGroups)
                 .FirstOrDefaultAsync(l => l.Id == id);
@@ -50,6 +51,7 @@ namespace DataAccess.Concrete
             Expression<Func<Lesson, bool>> filter = null)
         {
             return await Context.Lessons.AsNoTracking()
+                .Include(l => l.LessonJoinLink)
                 .Include(l => l.Assignments)
                 .ThenInclude(l => l.AssignmentAppUsers.Where(aa => aa.AppUserId == userId && aa.IsSubmitted == true))
                 .Include(l => l.Theories)
@@ -67,16 +69,17 @@ namespace DataAccess.Concrete
                  .CountAsync(l => l.GroupId == groupId);
         }
 
-        public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId, int page=0, int size=2)
+        public async Task<List<Lesson>> GetAllByGroupIdAsync(int page=0, int size=3,
+             Expression<Func<Lesson, bool>> filter = null)
         {
             return await Context.Lessons.AsNoTracking()
-                .Where(l => l.GroupId == groupId)
-                .OrderByDescending(l=>l.Id)
+                .Include(l => l.LessonJoinLink)
+                .Include(l => l.Assignments)
+                .Include(l => l.Theories)
+                .Where(filter)
+                .OrderByDescending(l => l.StartDate)
                 .Skip(page*size)
                 .Take(size)
-                .Include(l => l.Assignments)
-                .ThenInclude(l=>l.AssignmentMaterials)
-                .Include(l => l.Theories)
                 .ToListAsync();
         }
     }

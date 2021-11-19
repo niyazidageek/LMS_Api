@@ -9,6 +9,7 @@ using DataAccess.Abstract;
 using DataAccess.AutoMapper;
 using DataAccess.Concrete;
 using Entities.Models;
+using LMS_Api.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +42,8 @@ namespace LMS_Api
             services.AddControllers()
                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling
                                         = ReferenceLoopHandling.Ignore);
+
+            services.AddSignalR();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -138,6 +141,9 @@ namespace LMS_Api
 
             services.AddScoped<IGroupSubmissionService, GroupSubmissionService>();
             services.AddScoped<IGroupSubmissionDal, EFGroupSubmissionDal>();
+
+            services.AddScoped<ILessonJoinLinkService, LessonJoinLinkService>();
+            services.AddScoped<ILessonJoinLinkDal, EFLessonJoinLinkDal>();
         }
 
 
@@ -176,6 +182,7 @@ namespace LMS_Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<BroadcastHub>("/broadcasthub");
             });
         }
     }

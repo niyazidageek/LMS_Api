@@ -13,5 +13,7 @@ namespace DataAccess.Abstract
         Task<bool> DeleteAppUserGroupsAsync(List<AppUserGroup> appUserGroups);
 
         Task<AppUserGroup> GetByAppUserIdAndGroupIdAsync(string userId, int groupId);
+
+        Task<List<AppUserGroup>> GetAllByGroupIdAsync(int groupId);
     }
 }

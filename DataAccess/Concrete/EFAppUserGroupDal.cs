@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Repository.EFRepository;
 using DataAccess.Abstract;
@@ -62,6 +63,13 @@ namespace DataAccess.Concrete
         {
             return await Context.AppUserGroups.AsNoTracking()
                 .FirstOrDefaultAsync(ag => ag.AppUserId == userId && ag.GroupId == groupId);
+        }
+
+        public async Task<List<AppUserGroup>> GetAllByGroupIdAsync(int groupId)
+        {
+            return await Context.AppUserGroups.AsNoTracking()
+                .Where(ag => ag.GroupId == groupId)
+                .ToListAsync();
         }
     }
 }

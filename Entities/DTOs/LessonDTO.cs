@@ -26,6 +26,8 @@ namespace Entities.DTOs
 
         public List<TheoryDTO> Theories { get; set; }
 
+        public LessonJoinLinkDTO LessonJoinLink { get; set; }
+
         public int Count { get; set; }
     }
 }

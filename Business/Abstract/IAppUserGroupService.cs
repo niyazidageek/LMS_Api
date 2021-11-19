@@ -12,5 +12,7 @@ namespace Business.Abstract
         Task<bool> DeleteAppUserGroupsAsync(List<AppUserGroup> appUserGroups);
 
         Task<AppUserGroup> GetAppUserGroupByUserIdAndGroupIdAsync(string userId, int groupId);
+
+        Task<List<AppUserGroup>> GetAppUserGroupsByGroupIdAsync(int groupId);
     }
 }

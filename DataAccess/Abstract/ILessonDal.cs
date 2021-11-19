@@ -17,10 +17,11 @@ namespace DataAccess.Abstract
 
         Task<Lesson> GetAsync(int id);
 
-        Task<List<Lesson>> GetAllByGroupIdAsync(int groupId, int page = 0, int size = 2);
-
         Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(string userId, int page = 0, int size = 3,
             Expression<Func<Lesson, bool>> filter = null);
+
+        Task<List<Lesson>> GetAllByGroupIdAsync(int page = 0, int size = 3,
+             Expression<Func<Lesson, bool>> filter = null);
 
         Task<int> GetLessonsByGroupIdCountAsync(int groupId);
     }

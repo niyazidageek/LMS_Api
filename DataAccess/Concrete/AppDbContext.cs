@@ -59,5 +59,7 @@ namespace DataAccess.Concrete
         public DbSet<AppUserGroupPoint> AppUserGroupPoints { get; set; }
 
         public DbSet<GroupSubmission> GroupSubmissions { get; set; }
+
+        public DbSet<LessonJoinLink> LessonJoinLinks { get; set; }
     }
 }

@@ -11,6 +11,10 @@ namespace Entities.DTOs
 
         public List<GroupDTO> Groups { get; set; }
 
+        public int TotalTheories { get; set; }
+
+        public int TotalAssignments { get; set; }
+
         public int CurrentGroupId { get; set; }
 
         public decimal MaxPoint { get; set; }

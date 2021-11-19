@@ -10,11 +10,13 @@ using DataAccess.Concrete;
 using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using LMS_Api.Hubs;
 using LMS_Api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -24,17 +26,51 @@ namespace LMS_Api.Controllers
     [ApiController]
     public class LessonController : ControllerBase
     {
+        private readonly IHubContext<BroadcastHub> _hub;
         private readonly ILessonService _lessonService;
         private readonly IMapper _mapper;
         private readonly IGroupService _groupService;
+        private readonly IAppUserGroupService _appUserGroupService;
+        private readonly ILessonJoinLinkService _lessonJoinLinkService;
 
         public LessonController(ILessonService lessonService,
             IMapper mapper,
-            IGroupService groupService)
+            IAppUserGroupService appUserGroupService,
+            IHubContext<BroadcastHub> hub,
+            IGroupService groupService,
+            ILessonJoinLinkService lessonJoinLinkService)
         {
+            _appUserGroupService = appUserGroupService;
+            _hub = hub;
             _lessonService = lessonService;
             _mapper = mapper;
             _groupService = groupService;
+            _lessonJoinLinkService = lessonJoinLinkService;
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        [Authorize(Roles=nameof(Roles.Teacher))]
+        public async Task<ActionResult> StartLesson(int id, [FromBody] LessonJoinLinkDTO lessonJoinLinkDto)
+        {
+            var lessonDb = await _lessonService.GetLessonByIdAsync(id);
+
+            if (lessonDb is null)
+                return NotFound();
+
+            var appUserGroups = await _appUserGroupService.GetAppUserGroupsByGroupIdAsync(lessonDb.GroupId);
+
+            var userIds = appUserGroups.Select(ag => ag.AppUserId);
+
+            await _hub.Clients.Users(userIds).SendAsync("ReceiveMessage", lessonJoinLinkDto.JoinLink);
+
+            await _lessonJoinLinkService.AddLessonJoinLinkAsync(new LessonJoinLink
+            {
+                LessonId = lessonDb.Id,
+                JoinLink = lessonJoinLinkDto.JoinLink
+            });
+
+            return Ok();
         }
 
         [HttpGet]
@@ -91,15 +127,17 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
-        [Route("{groupId}/{skip}/{take}")]
-        public async Task<ActionResult> GetLessonsByGroupId(int groupId, int skip, int take)
+        [Route("{groupId}/{page}/{size}/{futureDaysCount?}")]
+        public async Task<ActionResult> GetLessonsByGroupId(int groupId, int page, int size, int? futureDaysCount)
         {
-            var lessonsDb = await _lessonService.GetLessonsByGroupIdAsync(groupId, skip, take);
+            var lessonsDb = futureDaysCount is null ?
+                await _lessonService.GetLessonsByGroupIdAsync(groupId, page, size) :
+                await _lessonService.GetLessonsByGroupIdAsync(groupId, page, size, (int)futureDaysCount);
 
             if (lessonsDb is null)
                 return NotFound();
 
-            var lessonsDto = _mapper.Map<LessonDTO>(lessonsDb);
+            var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
 
             return Ok(lessonsDto);
         }

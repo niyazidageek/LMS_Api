@@ -28,6 +28,8 @@ namespace DataAccess.AutoMapper
 
             CreateMap<Theory, TheoryDTO>().ReverseMap();
 
+            CreateMap<LessonJoinLink, LessonJoinLinkDTO>();
+
             CreateMap<TheoryAppUser, TheoryAppUserDTO>();
 
             CreateMap<AssignmentMaterial, AssignmentMaterialDTO>().ReverseMap();

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LMS_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TeacherHomeController : ControllerBase
     {
@@ -87,6 +87,8 @@ namespace LMS_Api.Controllers
                 Groups = groupsDto,
                 Students = studentsDto,
                 Lessons = lessonsDto,
+                TotalTheories = totalTheories,
+                TotalAssignments = totalAssignments,
                 CurrentGroupId = group.Id,
                 MaxPoint = maxPoint
             };

@@ -10,6 +10,7 @@ using DataAccess.Concrete;
 using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using LMS_Api.Attributes;
 using LMS_Api.Hubs;
 using LMS_Api.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -140,13 +142,19 @@ namespace LMS_Api.Controllers
             if (lessonsDb is null)
                 return NotFound();
 
+            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(groupId);
+
+
             var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
+
+            HttpContext.Response.Headers.Add("Count", lessonsDbCount.ToString());
 
             return Ok(lessonsDto);
         }
 
 
         [HttpPost]
+        [Roles(nameof(Roles.Teacher), nameof(Roles.Admin), nameof(Roles.SuperAdmin))]
         public async Task<ActionResult> CreateLesson([FromBody] LessonDTO lessonDto)
         {
 
@@ -156,11 +164,16 @@ namespace LMS_Api.Controllers
 
             await _lessonService.AddLessonAsync(lessonDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message="Lesson has been successfully created!"
+            });
         }
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<IActionResult> EditLesson(int id, [FromBody] LessonDTO lessonDto)
         {
             //if (!ModelState.IsValid) return BadRequest();
@@ -176,7 +189,11 @@ namespace LMS_Api.Controllers
 
             await _lessonService.EditLessonAsync(lessonDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Lesson has been successfully edited!"
+            });
 
         }
 

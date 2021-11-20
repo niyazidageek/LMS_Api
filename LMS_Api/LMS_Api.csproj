@@ -21,12 +21,14 @@
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <None Remove="Microsoft.AspNet.SignalR.Core" />
     <None Remove="BroadcastHub\" />
+    <None Remove="Attributes\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="Hubs\" />
+    <Folder Include="Attributes\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />

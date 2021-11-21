@@ -32,6 +32,17 @@ namespace DataAccess.Concrete
                 .ToListAsync();
         }
 
+        public async Task<List<Assignment>> GetAllByGroupIdAsync(int groupId, int page=0, int size = 3)
+        {
+            return await Context.Assignments.AsNoTracking()
+                .Include(a => a.Lesson)
+                .Where(a => a.Lesson.GroupId == groupId)
+                .OrderByDescending(a=>a.Deadline)
+                .Skip(page * size)
+                .Take(size)
+                .ToListAsync();
+        }
+
         public async Task<Assignment> GetByIdAsync(int assignmentId)
         {
             return await Context.Assignments
@@ -39,6 +50,13 @@ namespace DataAccess.Concrete
                 .Include(a => a.AssignmentMaterials)
                 .Include(a => a.Lesson)
                 .FirstOrDefaultAsync(a => a.Id == assignmentId);
+        }
+
+        public async Task<int> GetAssignmentsByGroupIdCountAsync(int groupId)
+        {
+            return await Context.Assignments.AsNoTracking()
+                 .Include(a=>a.Lesson)
+                 .CountAsync(a => a.Lesson.GroupId == groupId);
         }
 
         public async Task<Assignment> GetByIdAndUserIdAsync(int assignmentId, string userId)

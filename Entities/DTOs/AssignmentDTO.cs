@@ -18,6 +18,8 @@ namespace Entities.DTOs
 
         public decimal MaxGrade { get; set; } = 0;
 
+        public bool NotifyAll { get; set; }
+
         public List<AssignmentMaterialDTO> AssignmentMaterials { get; set; }
 
         public List<AssignmentAppUserDto> AssignmentAppUsers { get; set; }

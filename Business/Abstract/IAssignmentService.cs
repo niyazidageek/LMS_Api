@@ -17,10 +17,14 @@ namespace Business.Abstract
 
         Task<bool> DeleteAssignmentAsync(int id);
 
-        Task<List<Assignment>> GetAllByGroupIdAsync(int groupId);
+        Task<List<Assignment>> GetAssignmentsByGroupIdAsync(int groupId);
 
         Task<List<Assignment>> GetAssignmentsByLessonIdAndUserIdAsync(int lessonId, string userId);
 
         Task<Assignment> GetAssignmentByIdAndUserIdAsync(int assignmentId, string userId);
+
+        Task<int> GetAssignmentsByGroupIdCountAsync(int groupId);
+
+        Task<List<Assignment>> GetAssignmentsByGroupIdAsync(int groupId, int page = 0, int size = 3);
     }
 }

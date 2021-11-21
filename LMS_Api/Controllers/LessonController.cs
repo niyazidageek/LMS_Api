@@ -197,6 +197,19 @@ namespace LMS_Api.Controllers
 
         }
 
+        [HttpGet]
+        [Route("{input}")]
+        public async Task<IActionResult> SearchLesson(string input)
+        {
+            input = input.Trim();
+
+            var lessonsDb = await _lessonService.GetLessonsByMatchAsync(input);
+
+            var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
+
+            return Ok(lessonsDto);
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteLesson(int id)

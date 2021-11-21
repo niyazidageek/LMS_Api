@@ -13,6 +13,8 @@ namespace DataAccess.Abstract
     {
         Task<List<Lesson>> GetAllAsync();
 
+        Task<List<Lesson>> GetAllByMatchAsync(string match);
+
         Task<List<Lesson>> GetAllByGroupIdAsync(int groupId);
 
         Task<Lesson> GetAsync(int id);

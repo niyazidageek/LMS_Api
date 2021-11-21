@@ -13,6 +13,8 @@ namespace Business.Abstract
 
         Task<Lesson> GetLessonByIdAsync(int id);
 
+        Task<List<Lesson>> GetLessonsByMatchAsync(string match);
+
         Task<bool> AddLessonAsync(Lesson lesson);
 
         Task<bool> EditLessonAsync(Lesson lesson);

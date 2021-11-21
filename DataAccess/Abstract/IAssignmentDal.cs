@@ -17,5 +17,9 @@ namespace DataAccess.Abstract
         Task<Assignment> GetByIdAndUserIdAsync(int assignmentId, string userId);
 
         Task<List<Assignment>> GetAllByGroupIdAsync(int groupId);
+
+        Task<int> GetAssignmentsByGroupIdCountAsync(int groupId);
+
+        Task<List<Assignment>> GetAllByGroupIdAsync(int groupId, int page = 0, int size = 3);
     }
 }

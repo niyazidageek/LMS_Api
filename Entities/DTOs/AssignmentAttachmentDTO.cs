@@ -9,7 +9,5 @@ namespace Entities.DTOs
         public List<IFormFile> Materials { get; set; }
 
         public string Values { get; set; }
-
-        public bool NotifyAll { get; set; }
     }
 }

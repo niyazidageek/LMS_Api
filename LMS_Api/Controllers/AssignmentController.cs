@@ -22,6 +22,7 @@ namespace LMS_Api.Controllers
     public class AssignmentController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IGroupService _groupService;
         private readonly IGroupSubmissionService _groupSubmissionService;
         private readonly IGroupMaxPointService _groupMaxPointService;
         private readonly IAssignmentService _assignmentService;
@@ -39,12 +40,14 @@ namespace LMS_Api.Controllers
             IAssignmentMaterialService assignmentMaterialService,
             UserManager<AppUser> userManager,
             IMapper mapper,
+            IGroupService groupService,
             IAppUserGroupPointService appUserGroupPointService,
             IGroupMaxPointService groupMaxPointService,
             IAssignmentAppUserMaterialService assignmentAppUserMaterialService,
             ILessonService lessonService,
             IAppUserGroupService appUserGroupService)
         {
+            _groupService = groupService;
             _groupSubmissionService = groupSubmissionService;
             _appUserGroupService = appUserGroupService;
             _appUserGroupPointService = appUserGroupPointService;
@@ -59,6 +62,7 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> CreateAssignment([FromForm] AssignmentAttachmentDTO assignmentAttachmentDto)
         {
             AssignmentDTO assignmentDto = JsonConvert.DeserializeObject<AssignmentDTO>(assignmentAttachmentDto.Values);
@@ -112,7 +116,7 @@ namespace LMS_Api.Controllers
 
             await _assignmentAppUserService.InitializeAssignmentAsync(students, assignmentDb.Id);
 
-            if (assignmentAttachmentDto.NotifyAll)
+            if (assignmentDto.NotifyAll)
             {
                 var isSent = EmailHelper.SendMailToManyUsers(receivers, "New homework is available!");
 
@@ -132,7 +136,11 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Assignment has been successfully created!"
+            });
         }
 
         [HttpPut]
@@ -232,6 +240,28 @@ namespace LMS_Api.Controllers
             var assignmentsdDb = await _assignmentService.GetAssignmentsByLessonIdAsync(id);
 
             var assignmentsDto = _mapper.Map<List<AssignmentDTO>>(assignmentsdDb);
+
+            return Ok(assignmentsDto);
+        }
+
+        [HttpGet]
+        [Route("{groupId}/{page:int?}/{size:int?}")]
+        public async Task<ActionResult> GetAllAssignemntsByGroupId(int groupId, int? page, int? size)
+        {
+            var groupDb = await _groupService.GetGroupByIdAsync(groupId);
+
+            if (groupDb is null)
+                return NotFound();
+
+            var assignmentsdDb = page is not null && size is not null
+                ? await _assignmentService.GetAssignmentsByGroupIdAsync(groupId, (int)page, (int)size)
+                : await _assignmentService.GetAssignmentsByGroupIdAsync(groupId);
+
+            var assignmentDbCount = await _assignmentService.GetAssignmentsByGroupIdCountAsync(groupId);
+
+            var assignmentsDto = _mapper.Map<List<AssignmentDTO>>(assignmentsdDb);
+
+            HttpContext.Response.Headers.Add("Count", assignmentDbCount.ToString());
 
             return Ok(assignmentsDto);
         }

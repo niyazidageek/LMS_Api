@@ -206,7 +206,7 @@ namespace LMS_Api.Controllers
 
                 await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroups);
 
-                var assignments = await _assignmentService.GetAllByGroupIdAsync(groupDb.Id);
+                var assignments = await _assignmentService.GetAssignmentsByGroupIdAsync(groupDb.Id);
 
                 var theories = await _theoryService.GetAllByGroupIdAsync(groupDb.Id);
 

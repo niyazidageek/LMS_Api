@@ -37,6 +37,13 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
+        public async Task<List<Lesson>> GetAllByMatchAsync(string match)
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Where(l => l.Name.Contains(match))
+                .ToListAsync();
+        }
+
         public async Task<List<Lesson>> GetAllByGroupIdAsync(int groupId)
         {
             return await Context.Lessons.AsNoTracking()

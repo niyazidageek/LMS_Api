@@ -57,9 +57,19 @@ namespace Business.Concrete
             return await _context.GetByIdAndUserIdAsync(assignmentId, userId);
         }
 
-        public async Task<List<Assignment>> GetAllByGroupIdAsync(int groupId)
+        public async Task<List<Assignment>> GetAssignmentsByGroupIdAsync(int groupId)
         {
             return await _context.GetAllByGroupIdAsync(groupId);
+        }
+
+        public async Task<int> GetAssignmentsByGroupIdCountAsync(int groupId)
+        {
+            return await _context.GetAssignmentsByGroupIdCountAsync(groupId);
+        }
+
+        public async Task<List<Assignment>> GetAssignmentsByGroupIdAsync(int groupId, int page = 0, int size = 3)
+        {
+            return await _context.GetAllByGroupIdAsync(groupId, page, size);
         }
     }
 }

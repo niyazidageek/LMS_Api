@@ -84,5 +84,10 @@ namespace Business.Concrete
         {
             return await _conext.GetLessonsByGroupIdCountAsync(groupId);
         }
+
+        public async Task<List<Lesson>> GetLessonsByMatchAsync(string match)
+        {
+            return await _conext.GetAllByMatchAsync(match);
+        }
     }
 }

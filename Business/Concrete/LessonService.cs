@@ -85,9 +85,14 @@ namespace Business.Concrete
             return await _conext.GetLessonsByGroupIdCountAsync(groupId);
         }
 
-        public async Task<List<Lesson>> GetLessonsByMatchAsync(string match)
+        public async Task<List<Lesson>> GetLessonsByGroupIdWithSubmissionsAsync(int groupId, int page = 0, int size = 3)
         {
-            return await _conext.GetAllByMatchAsync(match);
+            return await _conext.GetLessonsByGroupIdWithSubmissionsAsync(groupId, page, size);
+        }
+
+        public async Task<List<Lesson>> GetLessonsByMatchAndGroupIdAsync(int groupId, string match)
+        {
+            return await _conext.GetAllByMatchAndGroupIdAsync(groupId, match);
         }
     }
 }

@@ -15,6 +15,14 @@ namespace DataAccess.Concrete
         {
         }
 
+        public async Task<Theory> GetAsync(int id)
+        {
+            return await Context.Theories
+                .AsNoTracking()
+                .Include(t => t.Lesson)
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
         public async Task<List<Theory>> GetAllByGroupIdAsync(int groupId)
         {
             return await Context.Theories
@@ -22,6 +30,25 @@ namespace DataAccess.Concrete
                 .Include(t => t.Lesson)
                 .Where(t => t.Lesson.GroupId == groupId)
                 .ToListAsync();
+        }
+
+        public async Task<List<Theory>> GetAllByGroupIdAsync(int groupId, int page = 0, int size = 3)
+        {
+            return await Context.Theories
+                .AsNoTracking()
+                .Include(t => t.Lesson)
+                .Where(t => t.Lesson.GroupId == groupId)
+                .OrderByDescending(t => t.Id)
+                .Skip(page * size)
+                .Take(size)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTheoriesByGroupIdCountAsync(int groupId)
+        {
+            return await Context.Theories.AsNoTracking()
+                 .Include(t => t.Lesson)
+                 .CountAsync(t => t.Lesson.GroupId == groupId);
         }
 
         public async Task<Theory> GetByIdAndUserId(int theoryId, string userId)

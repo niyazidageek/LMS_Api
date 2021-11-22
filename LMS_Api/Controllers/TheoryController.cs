@@ -23,6 +23,7 @@ namespace LMS_Api.Controllers
     {
         private readonly ITheoryService _theoryService;
         private readonly ILessonService _lessonService;
+        private readonly IGroupService _groupService;
         private readonly IMapper _mapper;
         private readonly IGroupMaxPointService _groupMaxPointService;
         private readonly UserManager<AppUser> _userManager;
@@ -37,6 +38,7 @@ namespace LMS_Api.Controllers
             IMapper mapper,
             IGroupMaxPointService groupMaxPointService,
             ITheoryAppUserService theoryAppUserService,
+            IGroupService groupService,
             UserManager<AppUser> userManager)
         {
             _appUserGroupPointService = appUserGroupPointService;
@@ -45,6 +47,7 @@ namespace LMS_Api.Controllers
             _theoryAppUserService = theoryAppUserService;
             _userManager = userManager;
             _mapper = mapper;
+            _groupService = groupService;
             _theoryService = theoryService;
             _lessonService = lessonService;
         }
@@ -120,6 +123,7 @@ namespace LMS_Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> CreateTheory([FromForm] TheoryAttachmentDTO theoryAttachmentDto)
         {
             var theoryDto = JsonConvert.DeserializeObject<TheoryDTO>(theoryAttachmentDto.Values);
@@ -163,10 +167,15 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Theory has been successfully created!"
+            });
         }
 
         [HttpPut]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         [Route("{id}")]
         public async Task<ActionResult> EditTheory(int id, [FromForm] TheoryAttachmentDTO theoryAttachmentDto)
         {
@@ -200,7 +209,33 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Theory has been successfully edited!"
+            });
+        }
+
+        [HttpGet]
+        [Route("{groupId}/{page:int?}/{size:int?}")]
+        public async Task<ActionResult> GetAllTheoriesByGroupId(int groupId, int? page, int? size)
+        {
+            var groupDb = await _groupService.GetGroupByIdAsync(groupId);
+
+            if (groupDb is null)
+                return NotFound();
+
+            var theoriesDb = page is not null && size is not null
+                ? await _theoryService.GetTheoriesByGroupIdAsync(groupId, (int)page, (int)size)
+                : await _theoryService.GetTheoriesByGroupIdAsync(groupId);
+
+            var theoriesDbCount = await _theoryService.GetTheoriesByGroupIdCountAsync(groupId);
+
+            var theoriesDto = _mapper.Map<List<TheoryDTO>>(theoriesDb);
+
+            HttpContext.Response.Headers.Add("Count", theoriesDbCount.ToString());
+
+            return Ok(theoriesDto);
         }
 
         [HttpDelete]

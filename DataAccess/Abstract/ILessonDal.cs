@@ -13,7 +13,7 @@ namespace DataAccess.Abstract
     {
         Task<List<Lesson>> GetAllAsync();
 
-        Task<List<Lesson>> GetAllByMatchAsync(string match);
+        Task<List<Lesson>> GetAllByMatchAndGroupIdAsync(int groupId, string match);
 
         Task<List<Lesson>> GetAllByGroupIdAsync(int groupId);
 
@@ -26,5 +26,7 @@ namespace DataAccess.Abstract
              Expression<Func<Lesson, bool>> filter = null);
 
         Task<int> GetLessonsByGroupIdCountAsync(int groupId);
+
+        Task<List<Lesson>> GetLessonsByGroupIdWithSubmissionsAsync(int groupId, int page = 0, int size = 3);
     }
 }

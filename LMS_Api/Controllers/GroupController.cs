@@ -208,7 +208,7 @@ namespace LMS_Api.Controllers
 
                 var assignments = await _assignmentService.GetAssignmentsByGroupIdAsync(groupDb.Id);
 
-                var theories = await _theoryService.GetAllByGroupIdAsync(groupDb.Id);
+                var theories = await _theoryService.GetTheoriesByGroupIdAsync(groupDb.Id);
 
                 await _assignmentAppUserService.ReinitializeAssignmentsAsync(appUserGroups, assignments);
 

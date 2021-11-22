@@ -153,6 +153,8 @@ namespace LMS_Api.Controllers
             if (assignmentAppUserDb is null)
                 return NotFound();
 
+            var oldGrade = assignmentAppUserDb.Grade;
+
             assignmentAppUserDb.Grade = assignmentAppUserDto.Grade;
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
@@ -167,11 +169,17 @@ namespace LMS_Api.Controllers
             var appUserGroupPointDb = await _appUserGroupPointService
                 .GetAppUserGroupPointByAppUserGroupIdAsync(appUserGroup.Id);
 
+            appUserGroupPointDb.Point -= oldGrade;
+
             appUserGroupPointDb.Point += assignmentAppUserDto.Grade;
 
             await _appUserGroupPointService.EditAppUserGroupPointAsync(appUserGroupPointDb);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Assignment has been succesfully graded!"
+            });
         }
 
         [HttpGet]
@@ -331,7 +339,7 @@ namespace LMS_Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        //[Authorize(Roles = nameof(Roles.Teacher))]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> GetSubmissionsByLessonId(int id)
         {
             var lessonDb = await _lessonService.GetLessonByIdAsync(id);
@@ -432,7 +440,11 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Assingment has been successfully edited!"
+            });
         }
 
         [HttpDelete]

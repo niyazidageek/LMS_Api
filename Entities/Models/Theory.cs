@@ -12,7 +12,7 @@ namespace Entities.Models
 
         public string FileName { get; set; }
 
-        public decimal Point { get; set; }
+        public decimal Point { get; set; } = 0;
 
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }

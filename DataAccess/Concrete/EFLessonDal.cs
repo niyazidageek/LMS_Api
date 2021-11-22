@@ -37,10 +37,10 @@ namespace DataAccess.Concrete
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<List<Lesson>> GetAllByMatchAsync(string match)
+        public async Task<List<Lesson>> GetAllByMatchAndGroupIdAsync(int groupId,string match)
         {
             return await Context.Lessons.AsNoTracking()
-                .Where(l => l.Name.Contains(match))
+                .Where(l => l.Name.Contains(match) && l.GroupId == groupId)
                 .ToListAsync();
         }
 
@@ -66,6 +66,18 @@ namespace DataAccess.Concrete
                 .Where(filter)
                 .OrderByDescending(l=>l.StartDate)
                 .Skip(page*size)
+                .Take(size)
+                .ToListAsync();
+        }
+
+        public async Task<List<Lesson>> GetLessonsByGroupIdWithSubmissionsAsync(int groupId, int page = 0, int size = 3)
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Include(l => l.Assignments)
+                .ThenInclude(l => l.AssignmentAppUsers.Where(aa=>aa.IsSubmitted == true))
+                .Where(l=>l.GroupId == groupId && l.Assignments !=null)
+                .OrderByDescending(l => l.StartDate)
+                .Skip(page * size)
                 .Take(size)
                 .ToListAsync();
         }

@@ -216,6 +216,9 @@ namespace DataAccess.Migrations
                     b.Property<decimal>("Grade")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("Graded")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsSubmitted")
                         .HasColumnType("bit");
 

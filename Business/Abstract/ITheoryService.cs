@@ -21,6 +21,10 @@ namespace Business.Abstract
 
         Task<Theory> GetTheoryByIdAndUserId(int theoryId, string userId);
 
-        Task<List<Theory>> GetAllByGroupIdAsync(int groupId);
+        Task<List<Theory>> GetTheoriesByGroupIdAsync(int groupId);
+
+        Task<List<Theory>> GetTheoriesByGroupIdAsync(int groupId, int page = 0, int size = 3);
+
+        Task<int> GetTheoriesByGroupIdCountAsync(int groupId);
     }
 }

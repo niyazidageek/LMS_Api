@@ -152,6 +152,24 @@ namespace LMS_Api.Controllers
             return Ok(lessonsDto);
         }
 
+        [HttpGet]
+        [Route("{groupId}/{page}/{size}")]
+        [Roles(nameof(Roles.Teacher), nameof(Roles.Admin), nameof(Roles.SuperAdmin))]
+        public async Task<ActionResult> GetLessonsWithSubmissionsByGroupId(int groupId, int page, int size)
+        {
+            var lessonsDb = await _lessonService.GetLessonsByGroupIdWithSubmissionsAsync(groupId, page, size);
+
+            if (lessonsDb is null)
+                return NotFound();
+
+            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(groupId);
+
+            var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
+
+            HttpContext.Response.Headers.Add("Count", lessonsDbCount.ToString());
+
+            return Ok(lessonsDto);
+        }
 
         [HttpPost]
         [Roles(nameof(Roles.Teacher), nameof(Roles.Admin), nameof(Roles.SuperAdmin))]
@@ -198,12 +216,17 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
-        [Route("{input}")]
-        public async Task<IActionResult> SearchLesson(string input)
+        [Route("{groupId}/{input}")]
+        public async Task<IActionResult> SearchLessonsByGroupId(int groupId,string input)
         {
+            var groupDb = await _groupService.GetGroupByIdAsync(groupId);
+
+            if (groupDb is null)
+                return NotFound();
+
             input = input.Trim();
 
-            var lessonsDb = await _lessonService.GetLessonsByMatchAsync(input);
+            var lessonsDb = await _lessonService.GetLessonsByMatchAndGroupIdAsync(groupId,input);
 
             var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
 

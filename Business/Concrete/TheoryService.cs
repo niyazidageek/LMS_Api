@@ -54,12 +54,22 @@ namespace Business.Concrete
 
         public async Task<Theory> GetTheoryByIdAsync(int id)
         {
-            return await _context.GetAsync(t => t.Id == id);
+            return await _context.GetAsync(id);
         }
 
-        public async Task<List<Theory>> GetAllByGroupIdAsync(int groupId)
+        public async Task<List<Theory>> GetTheoriesByGroupIdAsync(int groupId)
         {
             return await _context.GetAllByGroupIdAsync(groupId);
+        }
+
+        public async Task<List<Theory>> GetTheoriesByGroupIdAsync(int groupId, int page = 0, int size = 3)
+        {
+            return await _context.GetAllByGroupIdAsync(groupId, page, size);
+        }
+
+        public async Task<int> GetTheoriesByGroupIdCountAsync(int groupId)
+        {
+            return await _context.GetTheoriesByGroupIdCountAsync(groupId);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Business.Abstract
 
         Task<Lesson> GetLessonByIdAsync(int id);
 
-        Task<List<Lesson>> GetLessonsByMatchAsync(string match);
+        Task<List<Lesson>> GetLessonsByMatchAndGroupIdAsync(int groupId,string match);
 
         Task<bool> AddLessonAsync(Lesson lesson);
 
@@ -33,5 +33,7 @@ namespace Business.Abstract
             int size = 3, int futureDaysCount=2);
 
         Task<List<Lesson>> GetLessonsByGroupIdAndUserIdAsync(int groupId, string userId, int page = 0, int size = 3);
+
+        Task<List<Lesson>> GetLessonsByGroupIdWithSubmissionsAsync(int groupId, int page = 0, int size = 3);
     }
 }

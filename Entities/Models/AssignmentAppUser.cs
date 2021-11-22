@@ -18,6 +18,8 @@ namespace Entities.Models
 
         public decimal Grade { get; set; } = 0;
 
+        public bool Graded { get; set; }
+
         public DateTime? SubmissionDate { get; set; }
 
         public bool isLate { get; set; }

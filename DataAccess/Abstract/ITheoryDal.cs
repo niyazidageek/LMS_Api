@@ -15,5 +15,11 @@ namespace DataAccess.Abstract
         Task<Theory> GetByIdAndUserId(int theoryId, string userId);
 
         Task<List<Theory>> GetAllByGroupIdAsync(int groupId);
+
+        Task<List<Theory>> GetAllByGroupIdAsync(int groupId, int page = 0, int size = 3);
+
+        Task<int> GetTheoriesByGroupIdCountAsync(int groupId);
+
+        Task<Theory> GetAsync(int id);
     }
 }

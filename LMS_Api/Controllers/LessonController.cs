@@ -162,7 +162,7 @@ namespace LMS_Api.Controllers
             if (lessonsDb is null)
                 return NotFound();
 
-            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdCountAsync(groupId);
+            var lessonsDbCount = await _lessonService.GetLessonsByGroupIdWithSubmissionsCountAsync(groupId);
 
             var lessonsDto = _mapper.Map<List<LessonDTO>>(lessonsDb);
 

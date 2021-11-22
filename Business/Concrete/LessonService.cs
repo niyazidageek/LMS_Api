@@ -90,6 +90,11 @@ namespace Business.Concrete
             return await _conext.GetLessonsByGroupIdWithSubmissionsAsync(groupId, page, size);
         }
 
+        public async Task<int> GetLessonsByGroupIdWithSubmissionsCountAsync(int groupId)
+        {
+            return await _conext.GetLessonsByGroupIdWithSubmissionsCountAsync(groupId);
+        }
+
         public async Task<List<Lesson>> GetLessonsByMatchAndGroupIdAsync(int groupId, string match)
         {
             return await _conext.GetAllByMatchAndGroupIdAsync(groupId, match);

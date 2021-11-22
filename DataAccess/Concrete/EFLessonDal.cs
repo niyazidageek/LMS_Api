@@ -75,7 +75,7 @@ namespace DataAccess.Concrete
             return await Context.Lessons.AsNoTracking()
                 .Include(l => l.Assignments)
                 .ThenInclude(l => l.AssignmentAppUsers.Where(aa=>aa.IsSubmitted == true))
-                .Where(l=>l.GroupId == groupId && l.Assignments !=null)
+                .Where(l=>l.GroupId == groupId && (l.Assignments.Count!=0 && l.Assignments != null))
                 .OrderByDescending(l => l.StartDate)
                 .Skip(page * size)
                 .Take(size)
@@ -86,6 +86,13 @@ namespace DataAccess.Concrete
         {
             return await Context.Lessons.AsNoTracking()
                  .CountAsync(l => l.GroupId == groupId);
+        }
+
+        public async Task<int> GetLessonsByGroupIdWithSubmissionsCountAsync(int groupId)
+        {
+            return await Context.Lessons.AsNoTracking()
+                .Include(l=>l.Assignments)
+                .CountAsync(l => l.GroupId == groupId && (l.Assignments.Count != 0 && l.Assignments != null));
         }
 
         public async Task<List<Lesson>> GetAllByGroupIdAsync(int page=0, int size=3,

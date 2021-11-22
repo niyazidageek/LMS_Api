@@ -14,6 +14,8 @@ namespace DataAccess.Abstract
 
         Task<AssignmentAppUser> GetAsync(int id);
 
+        Task<int> GetAssignmentAppUsersByLessonIdCountAsync(int lessonId);
+
         Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId);
 
         Task<List<AssignmentAppUser>> GetAssignmentAppUsersByAppUserIdAndGroupIdAsync(string userId, int groupId);

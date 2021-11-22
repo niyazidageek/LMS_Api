@@ -351,6 +351,11 @@ namespace LMS_Api.Controllers
 
             var assignmentAppUsersDto = _mapper.Map<List<AssignmentAppUserDto>>(assignmentAppUsersDb);
 
+            var assignmentAppUsersDbCount = await _assignmentAppUserService
+                .GetAssignmentAppUsersByLessonIdCountAsync(lessonDb.Id);
+
+            HttpContext.Response.Headers.Add("Count", assignmentAppUsersDbCount.ToString());
+
             return Ok(assignmentAppUsersDto);
         }
 

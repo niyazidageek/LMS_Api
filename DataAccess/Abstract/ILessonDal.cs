@@ -27,6 +27,8 @@ namespace DataAccess.Abstract
 
         Task<int> GetLessonsByGroupIdCountAsync(int groupId);
 
+        Task<int> GetLessonsByGroupIdWithSubmissionsCountAsync(int groupId);
+
         Task<List<Lesson>> GetLessonsByGroupIdWithSubmissionsAsync(int groupId, int page = 0, int size = 3);
     }
 }

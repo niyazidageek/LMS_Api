@@ -76,6 +76,13 @@ namespace DataAccess.Concrete
             }
         }
 
+        public async Task<int> GetAssignmentAppUsersByLessonIdCountAsync(int lessonId)
+        {
+            return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa=>aa.Assignment)
+                .CountAsync(aa => aa.Assignment.LessonId == lessonId);
+        }
+
         //Gets all submissions by lesson ID
 
         public async Task<List<AssignmentAppUser>> GetAssignmentAppUsersByLessonIdAsync(int lessonId)

@@ -23,6 +23,8 @@ namespace Business.Abstract
 
         Task<int> GetLessonsByGroupIdCountAsync(int groupId);
 
+        Task<int> GetLessonsByGroupIdWithSubmissionsCountAsync(int groupId);
+
         Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId);
 
         Task<List<Lesson>> GetLessonsByGroupIdAsync(int groupId, int page = 0, int size = 3);

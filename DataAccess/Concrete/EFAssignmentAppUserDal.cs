@@ -91,7 +91,7 @@ namespace DataAccess.Concrete
                 .Include(aa=>aa.Assignment)
                 .Include(aa=>aa.AppUser)
                 .Include(aa=>aa.AssignmentAppUserMaterials)
-                .Where(aa => aa.Assignment.LessonId == lessonId &&  aa.IsSubmitted == true)
+                .Where(aa => aa.Assignment.LessonId == lessonId)
                 .ToListAsync();
         }
 
@@ -105,6 +105,7 @@ namespace DataAccess.Concrete
         public async Task<AssignmentAppUser> GetAsync(int id)
         {
             return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa=>aa.AppUser)
                 .Include(aa => aa.AssignmentAppUserMaterials)
                 .Include(aa=>aa.Assignment)
                 .FirstOrDefaultAsync(aa => aa.Id == id);

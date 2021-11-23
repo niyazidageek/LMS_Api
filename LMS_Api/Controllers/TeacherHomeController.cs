@@ -46,8 +46,11 @@ namespace LMS_Api.Controllers
 
             var groups = await _groupService.GetGroupsByUserIdAsync(userId);
 
-            var group = groupId == null ? groups.First() : groups
+            var group = groupId == null ?  groups.FirstOrDefault() : groups
                 .FirstOrDefault(g => g.Id == (int)groupId);
+
+            if (group==null)
+                return Ok();
 
             var allLessons = await _lessonService
                 .GetLessonsByGroupIdAsync(group.Id);

@@ -155,3 +155,4 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.genruntimeconfig.cache
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNet.SignalR.Core.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Net.WebSockets.WebSocketProtocol.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/MoreLinq.dll

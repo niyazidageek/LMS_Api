@@ -192,7 +192,8 @@ namespace LMS_Api.Controllers
 
             if (newAppUserGroupIds is not null)
             {
-                List<AppUserGroup> appUserGroups = new();
+                List<AppUserGroup> appUserGroupsWithTeacher = new();
+                List<AppUserGroup> appUserGroupsWithoutTeacher = new();
 
                 foreach (var appUserId in newAppUserGroupIds)
                 {
@@ -201,18 +202,31 @@ namespace LMS_Api.Controllers
                     appUserGroup.GroupId = groupDb.Id;
                     appUserGroup.AppUserGroupPoint = new AppUserGroupPoint { AppUserGroupId = appUserGroup.Id };
 
-                    appUserGroups.Add(appUserGroup);
+                    var user = await _userManager.FindByIdAsync(appUserId);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    var isTeacher = roles.Any(role => role.ToLower() == nameof(Roles.Teacher).ToLower());
+
+                    if (isTeacher)
+                    {
+                        appUserGroupsWithTeacher.Add(appUserGroup);
+                    }
+                    else
+                    {
+                        appUserGroupsWithTeacher.Add(appUserGroup);
+                        appUserGroupsWithoutTeacher.Add(appUserGroup);
+                    }
+                    
                 }
 
-                await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroups);
+                await _appUserGroupService.CreateAppUserGroupsAsync(appUserGroupsWithTeacher);
 
                 var assignments = await _assignmentService.GetAssignmentsByGroupIdAsync(groupDb.Id);
 
                 var theories = await _theoryService.GetTheoriesByGroupIdAsync(groupDb.Id);
 
-                await _assignmentAppUserService.ReinitializeAssignmentsAsync(appUserGroups, assignments);
+                await _assignmentAppUserService.ReinitializeAssignmentsAsync(appUserGroupsWithoutTeacher, assignments);
 
-                await _theoryAppUserService.ReinitializeTheoriesAsync(appUserGroups, theories);
+                await _theoryAppUserService.ReinitializeTheoriesAsync(appUserGroupsWithoutTeacher, theories);
             }
 
             return Ok(new ResponseDTO

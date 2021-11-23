@@ -145,7 +145,7 @@ namespace LMS_Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        //[Authorize(Roles = nameof(Roles.Teacher))]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> GradeAssignment(int id, [FromBody] AssignmentAppUserDto assignmentAppUserDto)
         {
             var assignmentAppUserDb = await _assignmentAppUserService.GetAssignmentAppUserByIdAsync(id);
@@ -156,6 +156,11 @@ namespace LMS_Api.Controllers
             var oldGrade = assignmentAppUserDb.Grade;
 
             assignmentAppUserDb.Grade = assignmentAppUserDto.Grade;
+
+            if (!assignmentAppUserDb.Graded)
+            {
+                assignmentAppUserDb.Graded = true;
+            }
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
 
@@ -361,7 +366,7 @@ namespace LMS_Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        //[Authorize(Roles = nameof(Roles.Teacher))]
+        [Authorize(Roles = nameof(Roles.Teacher))]
         public async Task<ActionResult> GetSubmissionById(int id)
         {
             var assignmentAppUserDb = await _assignmentAppUserService.GetAssignmentAppUserByIdAsync(id);

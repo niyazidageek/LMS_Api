@@ -8,5 +8,7 @@ namespace Entities.DTOs
         public List<int?> Data { get; set; }
 
         public List<int> Years { get; set; }
+
+        public int CurrentYear { get; set; }
     }
 }

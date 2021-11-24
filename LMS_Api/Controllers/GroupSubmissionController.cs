@@ -65,7 +65,8 @@ namespace LMS_Api.Controllers
             var submissionCountDto = new SubmissionCountDTO
             {
                 Data = submissionsCounts,
-                Years = possibleYears
+                Years = possibleYears,
+                CurrentYear = _year
             };
 
             return Ok(submissionCountDto);
@@ -135,7 +136,8 @@ namespace LMS_Api.Controllers
             var groupAssignmentPorgressDto = new GroupAssignmentProgressDTO
             {
                 Data = submissionPercentages,
-                Years = possibleYears
+                Years = possibleYears,
+                CurrentYear = _year
             };
 
             return Ok(groupAssignmentPorgressDto);

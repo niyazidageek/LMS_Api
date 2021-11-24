@@ -2293,7 +2293,8 @@
           "Entities": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.11",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11",
-          "Utils": "1.0.0"
+          "Utils": "1.0.0",
+          "morelinq": "3.3.2"
         },
         "runtime": {
           "DataAccess.dll": {}

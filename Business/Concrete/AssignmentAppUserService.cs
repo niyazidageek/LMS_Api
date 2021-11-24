@@ -23,6 +23,16 @@ namespace Business.Concrete
             return true;
         }
 
+        public async Task<List<int?>> GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year)
+        {
+            return await _context.GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(monthsCount, groupId, year);
+        }
+
+        public async Task<List<int>> GetAllSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year)
+        {
+            return await _context.GetAllSubmissionsCountByGroupIdAndYearAsync(monthsCount, groupId, year);
+        }
+
         public async Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId)
         {
             return await _context.GetAssignmentAppUserByAssignmentIdAndUserIdAsync(assignmentId, userId);

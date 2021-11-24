@@ -13,6 +13,8 @@ namespace Entities.DTOs
 
         public DateTime Deadline { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public int LessonId { get; set; }
         public LessonDTO Lesson { get; set; }
 

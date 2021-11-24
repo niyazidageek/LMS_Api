@@ -1,17 +1,11 @@
 ﻿<Properties StartupConfiguration="{17BF6481-9608-4CDB-AB12-8431044FB3B2}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Entities/DTOs/AssignmentAppUserDto.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LMS_Api/Controllers/GroupSubmissionController.cs">
     <Files>
-      <File FileName="LMS_Api/Controllers/TheoryController.cs" Line="216" Column="16" />
-      <File FileName="Business/Concrete/TheoryService.cs" />
-      <File FileName="Business/Concrete/LessonService.cs" />
-      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="372" Column="60" />
-      <File FileName="LMS_Api/Controllers/UserController.cs" Line="1" Column="1" />
-      <File FileName="LMS_Api/Controllers/GroupController.cs" Line="229" Column="98" />
-      <File FileName="LMS_Api/Controllers/GroupSubmissionController.cs" Line="1" Column="1" />
-      <File FileName="LMS_Api/Controllers/TeacherHomeController.cs" Line="48" Column="1" />
-      <File FileName="LMS_Api/Startup.cs" />
-      <File FileName="LMS_Api/Hubs/BroadcastHub.cs" Line="9" Column="12" />
-      <File FileName="Entities/DTOs/AssignmentAppUserDto.cs" Line="6" Column="18" />
+      <File FileName="DataAccess/Concrete/EFGroupSubmissionDal.cs" Line="24" Column="10" />
+      <File FileName="LMS_Api/Controllers/GroupSubmissionController.cs" Line="93" Column="62" />
+      <File FileName="LMS_Api/Controllers/AssignmentController.cs" Line="321" Column="84" />
+      <File FileName="Business/Concrete/AssignmentAppUserService.cs" Line="28" Column="1" />
+      <File FileName="DataAccess/Concrete/EFAssignmentAppUserDal.cs" Line="161" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,13 +21,13 @@
               <Node name="Concrete" expanded="True" />
             </Node>
             <Node name="Entities" expanded="True">
-              <Node name="DTOs" expanded="True">
-                <Node name="AssignmentAppUserDto.cs" selected="True" />
-              </Node>
+              <Node name="DTOs" expanded="True" />
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="LMS_Api" expanded="True">
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="GroupSubmissionController.cs" selected="True" />
+              </Node>
               <Node name="Hubs" expanded="True" />
             </Node>
           </Node>
@@ -51,8 +45,7 @@
     <BreakpointStore>
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/OptionController.cs" relfile="LMS_Api/Controllers/OptionController.cs" line="84" column="1" />
       <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/DataAccess/Concrete/EFOptionDal.cs" relfile="DataAccess/Concrete/EFOptionDal.cs" line="114" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/TheoryController.cs" relfile="LMS_Api/Controllers/TheoryController.cs" line="181" column="1" />
-      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/AssignmentController.cs" relfile="LMS_Api/Controllers/AssignmentController.cs" line="344" column="1" />
+      <Breakpoint file="/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/Controllers/GroupSubmissionController.cs" relfile="LMS_Api/Controllers/GroupSubmissionController.cs" line="68" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

@@ -21,6 +21,10 @@ namespace Business.Abstract
 
         Task<bool> ReinitializeAssignmentsAsync(List<AppUserGroup> appUserGroups, List<Assignment> assignments);
 
+        Task<List<int>> GetAllSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year);
+
         Task<int> GetAssignmentAppUsersByLessonIdCountAsync(int lessonId);
+
+        Task<List<int?>> GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year);
     }
 }

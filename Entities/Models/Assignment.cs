@@ -14,6 +14,8 @@ namespace Entities.Models
 
         public DateTime Deadline { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }
 

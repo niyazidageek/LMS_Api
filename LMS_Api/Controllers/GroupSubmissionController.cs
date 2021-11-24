@@ -13,10 +13,13 @@ namespace LMS_Api.Controllers
     public class GroupSubmissionController : ControllerBase
     {
         private readonly IGroupSubmissionService _groupSubmissionService;
+        private readonly IAssignmentAppUserService _assignmentAppUserService;
 
-        public GroupSubmissionController(IGroupSubmissionService groupSubmissionService)
+        public GroupSubmissionController(IGroupSubmissionService groupSubmissionService,
+            IAssignmentAppUserService assignmentAppUserService)
         {
             _groupSubmissionService = groupSubmissionService;
+            _assignmentAppUserService = assignmentAppUserService;
         }
 
         [HttpGet]
@@ -57,6 +60,70 @@ namespace LMS_Api.Controllers
             }
 
             return Ok(submissionsCounts);
+        }
+
+        [HttpGet]
+        [Route("{groupId}/{year?}")]
+        public async Task<ActionResult> GetAssignmentProgressByGroupIdAndYear(int groupId, int? year)
+        {
+            int _year = year ?? DateTime.UtcNow.Year;
+
+            List<int?> submissionPercentages = new();
+
+            if (DateTime.UtcNow.Year == _year)
+            {
+                var possibleSubmissionsCount = await _assignmentAppUserService
+                    .GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(DateTime.UtcNow.Month, groupId, _year);
+
+                var submissionsCount = await _assignmentAppUserService
+                    .GetAllSubmissionsCountByGroupIdAndYearAsync(DateTime.UtcNow.Month, groupId, _year);
+
+                for (int i = 0; i < possibleSubmissionsCount.Count; i++)
+                {
+                    int? possibleSubmissionCount = possibleSubmissionsCount[i];
+
+                    if (possibleSubmissionCount is null)
+                    {
+                        submissionPercentages.Add(null);
+                        continue;
+                    }
+
+                    int submissionCount = submissionsCount[i];
+
+                    var jjj = submissionCount / possibleSubmissionCount;
+
+                    int resultPercentage = (int)Math.Round(submissionCount / (decimal)possibleSubmissionCount*100);
+
+                    submissionPercentages.Add(resultPercentage);
+                }
+            }
+            else
+            {
+                var possibleSubmissionsCount = await _assignmentAppUserService
+                    .GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(12, groupId, _year);
+
+                var submissionsCount = await _assignmentAppUserService
+                    .GetAllSubmissionsCountByGroupIdAndYearAsync(12, groupId, _year);
+
+                for (int i = 0; i < possibleSubmissionsCount.Count; i++)
+                {
+                    int? possibleSubmissionCount = possibleSubmissionsCount[i];
+
+                    if (possibleSubmissionCount is null)
+                    {
+                        submissionPercentages.Add(null);
+                        continue;
+                    }
+
+                    int submissionCount = submissionsCount[i];
+
+                    int resultPercentage = (int)Math.Ceiling((decimal)(submissionCount / (int)possibleSubmissionCount));
+
+                    submissionPercentages.Add(resultPercentage);
+                }
+            }
+
+            return Ok(submissionPercentages);
         }
     }
 }

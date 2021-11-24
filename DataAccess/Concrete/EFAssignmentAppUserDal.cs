@@ -119,5 +119,57 @@ namespace DataAccess.Concrete
                 .Where(aa => aa.AppUserId == userId && aa.Assignment.Lesson.GroupId == groupId && aa.IsSubmitted == true)
                 .ToListAsync();
         }
+
+        public async Task<List<int?>> GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year)
+        {
+            List<int?> possibleSubmissionsCount = new();
+
+            for (int i = 1; i <= monthsCount; i++)
+            {
+                int submissionsCountDb = await Context.AssignmentAppUsers
+                    .AsNoTracking()
+                    .Include(aa => aa.Assignment)
+                    .ThenInclude(aa=>aa.Lesson)
+                    .CountAsync(aa =>
+                    aa.Assignment.Lesson.GroupId==groupId
+                    && aa.Assignment.CreationDate.Year == year
+                    && aa.Assignment.CreationDate.Month == i);
+
+                if(submissionsCountDb == 0)
+                {
+                    possibleSubmissionsCount.Add(null);
+                }
+                else
+                {
+                    possibleSubmissionsCount.Add(submissionsCountDb);
+                }
+
+            }
+
+            return possibleSubmissionsCount;
+        }
+
+        public async Task<List<int>> GetAllSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year)
+        {
+            List<int> submissionsCount = new();
+
+            for (int i = 1; i <= monthsCount; i++)
+            {
+                int submissionsCountDb = await Context.AssignmentAppUsers
+                    .AsNoTracking()
+                    .Include(aa => aa.Assignment)
+                    .ThenInclude(aa => aa.Lesson)
+                    .CountAsync(aa =>
+                    aa.IsSubmitted==true
+                    && aa.Assignment.Lesson.GroupId == groupId
+                    && aa.Assignment.CreationDate.Year == year
+                    && aa.Assignment.CreationDate.Month == i);
+
+                submissionsCount.Add(submissionsCountDb);
+
+            }
+
+            return submissionsCount;
+        }
     }
 }

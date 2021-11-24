@@ -17,7 +17,8 @@ namespace DataAccess.Concrete
 
         public async Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYear(int groupId, int year)
         {
-            return await Context.GroupSubmissions.AsNoTracking()
+            return await Context.GroupSubmissions
+                .AsNoTracking()
                 .Where(gs => gs.GroupId == groupId && gs.Date.Year == year)
                 .ToListAsync();
         }

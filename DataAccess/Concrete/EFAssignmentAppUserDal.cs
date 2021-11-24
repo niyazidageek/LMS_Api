@@ -6,6 +6,7 @@ using Core.Repository.EFRepository;
 using DataAccess.Abstract;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq.Extensions;
 
 namespace DataAccess.Concrete
 {
@@ -170,6 +171,19 @@ namespace DataAccess.Concrete
             }
 
             return submissionsCount;
+        }
+
+        public async Task<List<int>> GetPossibleYearsAsync(int groupId)
+        {
+            var groupSubmissionsDb = await Context.AssignmentAppUsers
+                .AsNoTracking()
+                .Include(aa=>aa.Assignment)
+                .ThenInclude(aa => aa.Lesson)
+                .Where(aa => aa.Assignment.Lesson.GroupId == groupId)
+                .ToListAsync();
+
+            return groupSubmissionsDb.DistinctBy(gs => gs.Assignment.CreationDate.Year)
+                .Select(gs => gs.Assignment.CreationDate.Year).ToList();
         }
     }
 }

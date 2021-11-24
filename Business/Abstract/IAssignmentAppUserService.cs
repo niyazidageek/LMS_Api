@@ -26,5 +26,7 @@ namespace Business.Abstract
         Task<int> GetAssignmentAppUsersByLessonIdCountAsync(int lessonId);
 
         Task<List<int?>> GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year);
+
+        Task<List<int>> GetPossibleYearsAsync(int groupId);
     }
 }

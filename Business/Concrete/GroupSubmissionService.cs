@@ -37,9 +37,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYear(int groupId, int year)
+        public async Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYearAsync(int groupId, int year)
         {
-            return await _context.GetAllGroupSubmissionsByGroupIdAndYear(groupId, year);
+            return await _context.GetAllGroupSubmissionsByGroupIdAndYearAsync(groupId, year);
         }
 
         public async Task<GroupSubmission> GetGroupSubmissionByIdAsync(int id)
@@ -50,6 +50,11 @@ namespace Business.Concrete
         public async Task<List<GroupSubmission>> GetGroupSubmissionsAsync()
         {
             return await _context.GetAllAsync();
+        }
+
+        public async Task<List<int>> GetPossibleYearsAsync(int groupId)
+        {
+            return await _context.GetPossibleYearsAsync(groupId);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace Business.Abstract
 
         Task<bool> DeleteGroupSubmissionAsync(int id);
 
-        Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYear(int groupId, int year);
+        Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYearAsync(int groupId, int year);
+
+        Task<List<int>> GetPossibleYearsAsync(int groupId);
     }
 }

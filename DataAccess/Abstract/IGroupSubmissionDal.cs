@@ -8,6 +8,8 @@ namespace DataAccess.Abstract
 {
     public interface IGroupSubmissionDal: IRepository<GroupSubmission>
     {
-        Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYear(int groupId, int year);
+        Task<List<GroupSubmission>> GetAllGroupSubmissionsByGroupIdAndYearAsync(int groupId, int year);
+
+        Task<List<int>> GetPossibleYearsAsync(int groupId);
     }
 }

@@ -25,5 +25,7 @@ namespace DataAccess.Abstract
         Task<bool> ReinitializeAssignmentsAsync(List<AppUserGroup> appUserGroups, List<Assignment> assignments);
 
         Task<List<int?>> GetAllPossibleSubmissionsCountByGroupIdAndYearAsync(int monthsCount, int groupId, int year);
+
+        Task<List<int>> GetPossibleYearsAsync(int groupId);
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lqt+xacbxLHXSOETXNl/nFfzpVaEnoGT4IvFdcoOMVYU1cB47N8a+Rv3jIBIafm7vY3FDe3knAkfllBD2KFGTw==",
+  "dgSpecHash": "FnUKFX4bqHmm4uqnjEU26bmFGHfFqfUH66G5qMiyLA8Qfs2zJTewXc1GtrZ6orO/aSuxlQejQXmLtP94dtAMoA==",
   "success": true,
   "projectFilePath": "/Users/niyazibabayev/Projects/LMS_Api/Business/Business.csproj",
   "expectedPackageFiles": [
@@ -68,6 +68,7 @@
     "/Users/niyazibabayev/.nuget/packages/microsoft.netcore.targets/1.1.3/microsoft.netcore.targets.1.1.3.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.systemevents/4.7.0/microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/morelinq/3.3.2/morelinq.3.3.2.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/system.buffers/4.5.0/system.buffers.4.5.0.nupkg.sha512",

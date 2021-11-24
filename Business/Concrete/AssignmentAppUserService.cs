@@ -58,6 +58,11 @@ namespace Business.Concrete
             return await _context.GetAssignmentAppUsersByLessonIdCountAsync(lessonId);
         }
 
+        public async Task<List<int>> GetPossibleYearsAsync(int groupId)
+        {
+            return await _context.GetPossibleYearsAsync(groupId);
+        }
+
         public async Task<bool> InitializeAssignmentAsync(List<AppUserGroup> appUserGroups, int assignmentId)
         {
             await _context.InitializeAssignmentAsync(appUserGroups, assignmentId);

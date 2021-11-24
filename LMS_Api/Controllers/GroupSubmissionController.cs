@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace LMS_Api.Controllers
         {
             int _year = year ?? DateTime.UtcNow.Year;
 
-            var groupSubmissionsDb = await _groupSubmissionService.GetAllGroupSubmissionsByGroupIdAndYear(groupId, _year);
+            var groupSubmissionsDb = await _groupSubmissionService.GetAllGroupSubmissionsByGroupIdAndYearAsync(groupId, _year);
 
             List<int> submissionsCounts = new();
 
@@ -59,7 +60,15 @@ namespace LMS_Api.Controllers
                 }
             }
 
-            return Ok(submissionsCounts);
+            var possibleYears = await _groupSubmissionService.GetPossibleYearsAsync(groupId);
+
+            var submissionCountDto = new SubmissionCountDTO
+            {
+                Data = submissionsCounts,
+                Years = possibleYears
+            };
+
+            return Ok(submissionCountDto);
         }
 
         [HttpGet]
@@ -90,8 +99,6 @@ namespace LMS_Api.Controllers
 
                     int submissionCount = submissionsCount[i];
 
-                    var jjj = submissionCount / possibleSubmissionCount;
-
                     int resultPercentage = (int)Math.Round(submissionCount / (decimal)possibleSubmissionCount*100);
 
                     submissionPercentages.Add(resultPercentage);
@@ -117,13 +124,21 @@ namespace LMS_Api.Controllers
 
                     int submissionCount = submissionsCount[i];
 
-                    int resultPercentage = (int)Math.Ceiling((decimal)(submissionCount / (int)possibleSubmissionCount));
+                    int resultPercentage = (int)Math.Round(submissionCount / (decimal)possibleSubmissionCount * 100);
 
                     submissionPercentages.Add(resultPercentage);
                 }
             }
 
-            return Ok(submissionPercentages);
+            var possibleYears = await _assignmentAppUserService.GetPossibleYearsAsync(groupId);
+
+            var groupAssignmentPorgressDto = new GroupAssignmentProgressDTO
+            {
+                Data = submissionPercentages,
+                Years = possibleYears
+            };
+
+            return Ok(groupAssignmentPorgressDto);
         }
     }
 }

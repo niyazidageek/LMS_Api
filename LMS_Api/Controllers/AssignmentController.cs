@@ -261,6 +261,13 @@ namespace LMS_Api.Controllers
         [Route("{groupId}/{page:int?}/{size:int?}")]
         public async Task<ActionResult> GetAllAssignemntsByGroupId(int groupId, int? page, int? size)
         {
+            if (page < 0)
+                return BadRequest(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.OffsetError),
+                    Message = "Can't load information!"
+                });
+
             var groupDb = await _groupService.GetGroupByIdAsync(groupId);
 
             if (groupDb is null)

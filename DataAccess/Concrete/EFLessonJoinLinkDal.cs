@@ -19,5 +19,11 @@ namespace DataAccess.Concrete
             return await Context.LessonJoinLinks.AsNoTracking()
                 .FirstOrDefaultAsync(lj => lj.LessonId == lessonId);
         }
+
+        public async Task<bool> HasLessonStartedByLessonIdAsync(int lessonId)
+        {
+            return await Context.LessonJoinLinks.AsNoTracking()
+                .AnyAsync(lj => lj.LessonId == lessonId);
+        }
     }
 }

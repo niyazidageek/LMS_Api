@@ -14,6 +14,8 @@ namespace Utils
         ConfirmationError,
         ResetPasswordError,
         AssignmentError,
-        TheoryError
+        TheoryError,
+        LessonJoinLinkError,
+        OffsetError
     }
 }

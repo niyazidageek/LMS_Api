@@ -8,5 +8,7 @@ namespace DataAccess.Abstract
     public interface ILessonJoinLinkDal : IRepository<LessonJoinLink>
     {
         Task<LessonJoinLink> GetByLessonIdAsync(int lessonId);
+
+        Task<bool> HasLessonStartedByLessonIdAsync(int lessonId);
     }
 }

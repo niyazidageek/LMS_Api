@@ -18,5 +18,7 @@ namespace Business.Abstract
         Task<bool> EditLessonJoinLinkAsync(LessonJoinLink lessonJoinLink);
 
         Task<bool> DeleteLessonJoinLinkAsync(int id);
+
+        Task<bool> HasLessonStartedByLessonIdAsync(int lessonId);
     }
 }

@@ -60,6 +60,22 @@ namespace LMS_Api.Controllers
             if (lessonDb is null)
                 return NotFound();
 
+            if (!lessonDb.IsOnline)
+                return Conflict(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.LessonJoinLinkError),
+                    Message = "Since lesson format is offline, you can't start it"
+                });
+
+            var hasStarted = await _lessonJoinLinkService.HasLessonStartedByLessonIdAsync(id);
+
+            if (hasStarted)
+                return Conflict(new ResponseDTO
+                {
+                    Status=nameof(StatusTypes.LessonJoinLinkError),
+                    Message="Lesson has already been started or ended!"
+                });
+
             var appUserGroups = await _appUserGroupService.GetAppUserGroupsByGroupIdAsync(lessonDb.GroupId);
 
             var userIds = appUserGroups.Select(ag => ag.AppUserId).ToList();
@@ -75,7 +91,11 @@ namespace LMS_Api.Controllers
                 JoinLink = lessonJoinLinkDto.JoinLink
             });
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Lesson has been started!"
+            });
         }
 
         [HttpGet]
@@ -115,6 +135,13 @@ namespace LMS_Api.Controllers
             if (userId is null)
                 return Unauthorized();
 
+            if (page < 0)
+                return BadRequest(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.OffsetError),
+                    Message = "Can't load information!"
+                });
+
             var lessonsDb = futureDaysCount is null ?
                 await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size) :
                 await _lessonService.GetLessonsByGroupIdAndUserIdAsync(id, userId, page, size, (int)futureDaysCount);
@@ -135,6 +162,13 @@ namespace LMS_Api.Controllers
         [Route("{groupId}/{page}/{size}/{futureDaysCount?}")]
         public async Task<ActionResult> GetLessonsByGroupId(int groupId, int page, int size, int? futureDaysCount)
         {
+            if (page < 0)
+                return BadRequest(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.OffsetError),
+                    Message = "Can't load information!"
+                });
+
             var lessonsDb = futureDaysCount is null ?
                 await _lessonService.GetLessonsByGroupIdAsync(groupId, page, size) :
                 await _lessonService.GetLessonsByGroupIdAsync(groupId, page, size, (int)futureDaysCount);
@@ -157,6 +191,13 @@ namespace LMS_Api.Controllers
         [Roles(nameof(Roles.Teacher), nameof(Roles.Admin), nameof(Roles.SuperAdmin))]
         public async Task<ActionResult> GetLessonsWithSubmissionsByGroupId(int groupId, int page, int size)
         {
+            if (page < 0)
+                return BadRequest(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.OffsetError),
+                    Message = "Can't load information!"
+                });
+
             var lessonsDb = await _lessonService.GetLessonsByGroupIdWithSubmissionsAsync(groupId, page, size);
 
             if (lessonsDb is null)

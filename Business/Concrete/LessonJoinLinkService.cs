@@ -51,5 +51,10 @@ namespace Business.Concrete
         {
             return await _context.GetAllAsync();
         }
+
+        public async Task<bool> HasLessonStartedByLessonIdAsync(int lessonId)
+        {
+            return await _context.HasLessonStartedByLessonIdAsync(lessonId);
+        }
     }
 }

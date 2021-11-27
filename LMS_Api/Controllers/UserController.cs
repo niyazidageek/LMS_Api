@@ -60,6 +60,40 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
+        [Route("{input}")]
+        public async Task<ActionResult> SearchAllStudents(string input)
+        {
+            input = input.Trim();
+
+            var students = await _userManager.GetUsersInRoleAsync(nameof(Roles.Student));
+
+            students = students.Where(s => s.Email.Contains(input) || s.UserName.Contains(input)
+            || s.Name.Contains(input))
+            .ToList();
+
+            var studentsDto = _mapper.Map<List<AppUserDTO>>(students);
+
+            return Ok(studentsDto);
+        }
+
+        [HttpGet]
+        [Route("{input}")]
+        public async Task<ActionResult> SearchAllTeachers(string input)
+        {
+            input = input.Trim();
+
+            var teachers = await _userManager.GetUsersInRoleAsync(nameof(Roles.Teacher));
+
+            teachers = teachers.Where(s => s.Email.Contains(input) || s.UserName.Contains(input)
+            || s.Name.Contains(input))
+            .ToList();
+
+            var teachersDto = _mapper.Map<List<AppUserDTO>>(teachers);
+
+            return Ok(teachersDto);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetAllTeachers()
         {
             var teachers = await _userManager.GetUsersInRoleAsync(nameof(Roles.Teacher));
@@ -178,7 +212,7 @@ namespace LMS_Api.Controllers
                     return Ok(new ResponseDTO
                     {
                         Status = StatusTypes.Success.ToString(),
-                        Message = $"Student with the username {user.UserName} has succesfully registered"
+                        Message = $"User with the username {user.UserName} has succesfully registered!"
                     });
 
                 return BadRequest(new ResponseDTO
@@ -256,7 +290,8 @@ namespace LMS_Api.Controllers
                     Roles = (List<string>)roles,
                     Name = user.Name,
                     Surname = user.Surname,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    IsMailConfirmed=user.EmailConfirmed
                 });
             }
             else
@@ -485,10 +520,16 @@ namespace LMS_Api.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> SendConfirmationEmail([FromBody] SendConfirmEmailDTO sendConfirmEmailDto)
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> SendConfirmationEmail()
         {
-            var user = await _userManager.FindByEmailAsync(sendConfirmEmailDto.Email);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+
+            if (userId is null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user is null)
                 return NotFound(new ResponseDTO

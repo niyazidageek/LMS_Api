@@ -24,5 +24,9 @@ namespace Entities.Models
         public List<AppUserGroup> AppUserGroups { get; set; }
 
         public List<AppUserQuiz> AppUserQuizzes { get; set; }
+
+        public List<AppUserNotification> AppUserNotifications { get; set; }
+
+        public List<Application> Applications { get; set; }
     }
 }

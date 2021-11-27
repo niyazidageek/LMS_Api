@@ -15,7 +15,7 @@ namespace Entities.Models
         public decimal Point { get; set; }
 
         public int QuizId { get; set; }
-
+            
         public Quiz Quiz { get; set; }
 
         public string FileName { get; set; }

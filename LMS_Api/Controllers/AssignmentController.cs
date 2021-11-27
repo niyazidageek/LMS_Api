@@ -7,12 +7,15 @@ using Business.Abstract;
 using DataAccess.Identity;
 using Entities.DTOs;
 using Entities.Models;
+using LMS_Api.Hubs;
 using LMS_Api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Utils;
 
 namespace LMS_Api.Controllers
@@ -33,6 +36,9 @@ namespace LMS_Api.Controllers
         private readonly IAppUserGroupPointService _appUserGroupPointService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IAppUserGroupService _appUserGroupService;
+        private readonly IAppUserNotificationService _appUserNotificationService;
+        private readonly INotificationService _notificationService;
+        private readonly IHubContext<BroadcastHub> _hub;
 
         public AssignmentController(IAssignmentService assignmentService,
             IAssignmentAppUserService assignmentAppUserService,
@@ -40,6 +46,9 @@ namespace LMS_Api.Controllers
             IAssignmentMaterialService assignmentMaterialService,
             UserManager<AppUser> userManager,
             IMapper mapper,
+            IAppUserNotificationService appUserNotificationService,
+            INotificationService notificationService,
+            IHubContext<BroadcastHub> hub,
             IGroupService groupService,
             IAppUserGroupPointService appUserGroupPointService,
             IGroupMaxPointService groupMaxPointService,
@@ -47,6 +56,9 @@ namespace LMS_Api.Controllers
             ILessonService lessonService,
             IAppUserGroupService appUserGroupService)
         {
+            _notificationService = notificationService;
+            _appUserNotificationService = appUserNotificationService;
+            _hub = hub;
             _groupService = groupService;
             _groupSubmissionService = groupSubmissionService;
             _appUserGroupService = appUserGroupService;
@@ -68,8 +80,17 @@ namespace LMS_Api.Controllers
             AssignmentDTO assignmentDto = JsonConvert.DeserializeObject<AssignmentDTO>(assignmentAttachmentDto.Values);
 
             var assignmentDb = _mapper.Map<Assignment>(assignmentDto);
+            assignmentDb.CreationDate = DateTime.UtcNow;
 
             await _assignmentService.AddAssignmentAsync(assignmentDb);
+
+            Notification notification = new()
+            {
+                Content = $"Assignment '{assignmentDb.Name}' is available!",
+                CreationDate = DateTime.UtcNow
+            };
+
+            await _notificationService.AddNotificationAsync(notification);
 
             if (assignmentAttachmentDto.Materials is not null)
             {
@@ -106,6 +127,25 @@ namespace LMS_Api.Controllers
                 if (isStudent is true)
                 {
                     students.Add(appUserGroup);
+
+
+                    AppUserNotification appUserNotification = new()
+                    {
+                        AppUserId = appUserGroup.AppUserId,
+                        NotificationId = notification.Id,
+                        Notification = notification,
+                        IsRead = false
+                    };
+
+                    await _appUserNotificationService
+                        .AddAppUserNotificationAsync(appUserNotification);
+
+                    var appUserNotificationDto = _mapper.Map<AppUserNotificationDTO>(appUserNotification);
+
+                    var appUserNotificationJson = JsonConvert.SerializeObject(appUserNotificationDto,
+                        new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+                    await _hub.Clients.User(appUserGroup.AppUserId).SendAsync("ReceiveNotification", appUserNotificationJson);
 
                     if (user.IsSubscribedToSender is true)
                         receivers.Add(user.Email);
@@ -163,6 +203,33 @@ namespace LMS_Api.Controllers
             }
 
             await _assignmentAppUserService.EditAssignmentAppUserAsync(assignmentAppUserDb);
+
+
+            Notification notification = new()
+            {
+                Content = $"You got '{assignmentAppUserDto.Grade}' from '{assignmentAppUserDb.Assignment.Name}' assignment!",
+                CreationDate = DateTime.UtcNow
+            };
+
+            await _notificationService.AddNotificationAsync(notification);
+
+            AppUserNotification appUserNotification = new()
+            {
+                AppUserId = assignmentAppUserDb.AppUserId,
+                NotificationId = notification.Id,
+                Notification = notification,
+                IsRead = false
+            };
+
+            await _appUserNotificationService
+                .AddAppUserNotificationAsync(appUserNotification);
+
+            var appUserNotificationDto = _mapper.Map<AppUserNotificationDTO>(appUserNotification);
+
+            var appUserNotificationJson = JsonConvert.SerializeObject(appUserNotificationDto,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            await _hub.Clients.User(assignmentAppUserDb.AppUserId).SendAsync("ReceiveNotification", appUserNotificationJson);
 
             var lessonDb = await _lessonService.GetLessonByIdAsync(assignmentAppUserDb.Assignment.LessonId);
 
@@ -511,7 +578,11 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status = nameof(StatusTypes.Success),
+                Message = "Assignment has been successfully deleted!"
+            });
         }
 
     }

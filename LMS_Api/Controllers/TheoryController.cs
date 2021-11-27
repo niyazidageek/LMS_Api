@@ -285,7 +285,11 @@ namespace LMS_Api.Controllers
 
             await _groupMaxPointService.EditGroupMaxPoint(groupMaxPoint);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Theory has been successfully deleted!"
+            });
         }
 
         [HttpPost]

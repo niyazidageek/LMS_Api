@@ -9,6 +9,7 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/AutoMapper.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Humanizer.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNet.SignalR.Core.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -46,6 +47,7 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/MoreLinq.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Swashbuckle.AspNetCore.Swagger.dll
@@ -59,6 +61,7 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Configuration.ConfigurationManager.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Diagnostics.DiagnosticSource.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Net.WebSockets.WebSocketProtocol.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Runtime.Caching.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Security.Cryptography.ProtectedData.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/cs/Microsoft.CodeAnalysis.resources.dll
@@ -153,6 +156,3 @@
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/ref/LMS_Api.dll
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.pdb
 /Users/niyazibabayev/Projects/LMS_Api/LMS_Api/obj/Debug/net5.0/LMS_Api.genruntimeconfig.cache
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/Microsoft.AspNet.SignalR.Core.dll
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/System.Net.WebSockets.WebSocketProtocol.dll
-/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/bin/Debug/net5.0/MoreLinq.dll

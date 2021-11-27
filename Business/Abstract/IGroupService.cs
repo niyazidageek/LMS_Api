@@ -9,7 +9,7 @@ namespace Business.Abstract
     {
         Task<List<Group>> GetGroupsAsync();
 
-        Task<List<Group>> GetGroupsByCountAsync(int skipCount, int takeCount);
+        Task<List<Group>> GetGroupsByCountAsync(int page, int size);
 
         Task<Group> GetGroupDetailsByIdAsync(int id);
 
@@ -22,5 +22,7 @@ namespace Business.Abstract
         Task<bool> DeleteGroupAsync(int id);
 
         Task<List<Group>> GetGroupsByUserIdAsync(string userId);
+
+        Task<int> GetGroupsCountAsync();
     }
 }

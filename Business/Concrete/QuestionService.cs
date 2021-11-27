@@ -32,7 +32,7 @@ namespace Business.Concrete
 
         public async Task<bool> DeleteQuestionAsync(Question question)
         {
-            await _context.DeleteWithOptionsAsync(question);
+            await _context.DeleteAsync(question);
 
             return true;
         }
@@ -51,19 +51,9 @@ namespace Business.Concrete
             return true;
         }
 
-        public async Task<Question> GetQuestionWithOptionsByIdAsync(int id)
-        {
-            return await _context.GetQuestionWithOptionsAsync(id);
-        }
-
         public async Task<Question> GetQuestionByIdAsync(int id)
         {
-            return await _context.GetAsync(q => q.Id == id);
-        }
-
-        public async Task<List<Question>> GetQuestionsAsync()
-        {
-            return await _context.GetQuestionsWithOptionsAsync();
+            return await _context.GetAsync(id);
         }
 
         public async Task<bool> EditQuestionAsync(Question question)
@@ -71,6 +61,26 @@ namespace Business.Concrete
             await _context.UpdateAsync(question);
 
             return true;
+        }
+
+        public async Task<int> GetQuestionsCountByQuizIdAsync(int quizId)
+        {
+            return await _context.GetQuestionsCountByQuizIdAsync(quizId);
+        }
+
+        public async Task<Question> GetQuestionByPageAndQuizId(int page, int quizId)
+        {
+            return await _context.GetQuestionByPageAndQuizId(page, quizId);
+        }
+
+        public async Task<List<Question>> GetQuestionsByQuizId(int quizId)
+        {
+            return await _context.GetAllByQuizId(quizId);
+        }
+
+        public async Task<List<Question>> GetQuestionsByQuizId(int quizId, int page = 0, int take = 3)
+        {
+            return await _context.GetAllByQuizId(quizId, page, take);
         }
     }
 }

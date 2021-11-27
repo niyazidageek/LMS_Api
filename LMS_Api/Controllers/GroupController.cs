@@ -66,10 +66,10 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
-        [Route("{skip}/{take}")]
-        public async Task<ActionResult> GetGroupsByCountAsync(int skip, int take)
+        [Route("{page}/{size}")]
+        public async Task<ActionResult> GetGroupsByCountAsync(int page, int size)
         {
-            var groupsDb = await _groupService.GetGroupsByCountAsync(skip, take);
+            var groupsDb = await _groupService.GetGroupsByCountAsync(page, size);
 
             if (groupsDb is null)
                 return NotFound();
@@ -80,6 +80,10 @@ namespace LMS_Api.Controllers
             {
                 groupsDto[i].AppUsersCount = groupsDb[i].AppUserGroups.Count;
             }
+
+            var groupsDbCount = await _groupService.GetGroupsCountAsync();
+
+            HttpContext.Response.Headers.Add("Count", groupsDbCount.ToString());
 
             return Ok(groupsDto);
         }
@@ -242,7 +246,11 @@ namespace LMS_Api.Controllers
         {
             await _groupService.DeleteGroupAsync(id);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Group has been successfully deleted!"
+            });
         }
     }
 }

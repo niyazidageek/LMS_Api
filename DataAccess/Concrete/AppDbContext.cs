@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -61,5 +62,15 @@ namespace DataAccess.Concrete
         public DbSet<GroupSubmission> GroupSubmissions { get; set; }
 
         public DbSet<LessonJoinLink> LessonJoinLinks { get; set; }
+
+        public DbSet<AppUserOption> AppUserOptions { get; set; }
+
+        public DbSet<QuizMaxPoint> QuizMaxPoints { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
+
+        public DbSet<AppUserNotification> AppUserNotifications { get; set; }
+
+        public DbSet<Application> Applications { get; set; }
     }
 }

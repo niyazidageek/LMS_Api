@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Utils;
 
 namespace LMS_Api.Controllers
@@ -81,9 +82,10 @@ namespace LMS_Api.Controllers
             var userIds = appUserGroups.Select(ag => ag.AppUserId).ToList();
 
             lessonJoinLinkDto.LessonId = id;
-            var lessonJoinLinkJson = JsonConvert.SerializeObject(lessonJoinLinkDto);
+            var lessonJoinLinkJson = JsonConvert.SerializeObject(lessonJoinLinkDto,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-            await _hub.Clients.Users(userIds).SendAsync("ReceiveMessage", lessonJoinLinkJson);
+            await _hub.Clients.Users(userIds).SendAsync("ReceiveLink", lessonJoinLinkJson);
 
             await _lessonJoinLinkService.AddLessonJoinLinkAsync(new LessonJoinLink
             {
@@ -285,7 +287,11 @@ namespace LMS_Api.Controllers
 
             await _lessonService.DeleteLessonAsync(id);
 
-            return Ok();
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Lesson has been successfully deleted!"
+            });
         }
     }
 }

@@ -52,14 +52,19 @@ namespace Business.Concrete
             return await _context.GetAllAsync();
         }
 
-        public async Task<List<Group>> GetGroupsByCountAsync(int skipCount, int takeCount)
+        public async Task<List<Group>> GetGroupsByCountAsync(int page, int size)
         {
-            return await _context.GetByCountAsync(skipCount, takeCount);
+            return await _context.GetByCountAsync(page, size);
         }
 
         public async Task<List<Group>> GetGroupsByUserIdAsync(string userId)
         {
             return await _context.GetGroupsByUserIdAsync(userId);
+        }
+
+        public async Task<int> GetGroupsCountAsync()
+        {
+            return await _context.GetGroupsCountAsync();
         }
     }
 }

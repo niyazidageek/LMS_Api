@@ -29,5 +29,7 @@ namespace Entities.Models
         public List<AppUserGroup> AppUserGroups { get; set; }
 
         public List<Lesson> Lessons { get; set; }
+
+        public List<Quiz> Quizzes { get; set; }
     }
 }

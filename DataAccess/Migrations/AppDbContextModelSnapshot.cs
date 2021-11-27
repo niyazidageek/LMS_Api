@@ -146,6 +146,58 @@ namespace DataAccess.Migrations
                     b.ToTable("AppUserGroupPoints");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.ToTable("AppUserNotifications");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("OptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OptionId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("AppUserOptions");
+                });
+
             modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
                 {
                     b.Property<int>("Id")
@@ -156,11 +208,23 @@ namespace DataAccess.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("CorrectAnswers")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSubmitted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("QuizId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Result")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("SubmissionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("isLate")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -169,6 +233,29 @@ namespace DataAccess.Migrations
                     b.HasIndex("QuizId");
 
                     b.ToTable("AppUserQuizzes");
+                });
+
+            modelBuilder.Entity("Entities.Models.Application", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("Entities.Models.Assignment", b =>
@@ -402,6 +489,24 @@ namespace DataAccess.Migrations
                     b.ToTable("LessonJoinLinks");
                 });
 
+            modelBuilder.Entity("Entities.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Entities.Models.Option", b =>
                 {
                     b.Property<int>("Id")
@@ -461,17 +566,47 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DurationSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubjectId")
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("Entities.Models.QuizMaxPoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("MaxPoint")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("QuizId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubjectId");
+                    b.HasIndex("QuizId")
+                        .IsUnique();
 
-                    b.ToTable("Quizzes");
+                    b.ToTable("QuizMaxPoints");
                 });
 
             modelBuilder.Entity("Entities.Models.Subject", b =>
@@ -701,6 +836,46 @@ namespace DataAccess.Migrations
                     b.Navigation("AppUserGroup");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserNotification", b =>
+                {
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany("AppUserNotifications")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Entities.Models.Notification", "Notification")
+                        .WithMany("AppUserNotifications")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserOption", b =>
+                {
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Entities.Models.Option", "Option")
+                        .WithMany()
+                        .HasForeignKey("OptionId");
+
+                    b.HasOne("Entities.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("Entities.Models.AppUserQuiz", b =>
                 {
                     b.HasOne("Entities.Models.AppUser", "AppUser")
@@ -716,6 +891,15 @@ namespace DataAccess.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("Entities.Models.Application", b =>
+                {
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithMany("Applications")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Entities.Models.Assignment", b =>
@@ -822,7 +1006,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.Question", b =>
                 {
                     b.HasOne("Entities.Models.Quiz", "Quiz")
-                        .WithMany()
+                        .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -832,13 +1016,24 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.Quiz", b =>
                 {
-                    b.HasOne("Entities.Models.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
+                    b.HasOne("Entities.Models.Group", "Group")
+                        .WithMany("Quizzes")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subject");
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Entities.Models.QuizMaxPoint", b =>
+                {
+                    b.HasOne("Entities.Models.Quiz", "Quiz")
+                        .WithOne("QuizMaxPoint")
+                        .HasForeignKey("Entities.Models.QuizMaxPoint", "QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("Entities.Models.Theory", b =>
@@ -922,7 +1117,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.AppUser", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("AppUserGroups");
+
+                    b.Navigation("AppUserNotifications");
 
                     b.Navigation("AppUserQuizzes");
                 });
@@ -951,6 +1150,8 @@ namespace DataAccess.Migrations
                     b.Navigation("GroupMaxPoint");
 
                     b.Navigation("Lessons");
+
+                    b.Navigation("Quizzes");
                 });
 
             modelBuilder.Entity("Entities.Models.Lesson", b =>
@@ -962,6 +1163,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Theories");
                 });
 
+            modelBuilder.Entity("Entities.Models.Notification", b =>
+                {
+                    b.Navigation("AppUserNotifications");
+                });
+
             modelBuilder.Entity("Entities.Models.Question", b =>
                 {
                     b.Navigation("Options");
@@ -970,6 +1176,10 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.Quiz", b =>
                 {
                     b.Navigation("AppUserQuizzes");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("QuizMaxPoint");
                 });
 
             modelBuilder.Entity("Entities.Models.Theory", b =>

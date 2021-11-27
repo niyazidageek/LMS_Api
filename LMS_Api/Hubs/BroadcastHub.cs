@@ -12,9 +12,14 @@ namespace LMS_Api.Hubs
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BroadcastHub : Hub
     {
-        public async Task SendMessage(string message)
+        public async Task SendLink(string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message);
+            await Clients.All.SendAsync("ReceiveLink", message);
+        }
+
+        public async Task SendNotification(string message)
+        {
+            await Clients.All.SendAsync("ReceiveNotification", message);
         }
     }
 }

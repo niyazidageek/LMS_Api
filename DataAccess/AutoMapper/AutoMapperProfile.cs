@@ -22,19 +22,35 @@ namespace DataAccess.AutoMapper
 
             CreateMap<Question, QuestionDTO>().ReverseMap();
 
+            CreateMap<Notification, NotificationDTO>().ReverseMap();
+
+            CreateMap<AppUserNotification, AppUserNotificationDTO>().ReverseMap();
+
             CreateMap<Option, OptionDTO>().ReverseMap();
 
             CreateMap<Quiz, QuizDTO>().ReverseMap();
 
+            CreateMap<AppUserQuiz, AppUserQuizDTO>().ReverseMap();
+
             CreateMap<Theory, TheoryDTO>().ReverseMap();
 
-            CreateMap<LessonJoinLink, LessonJoinLinkDTO>();
+            CreateMap<Option, OptionQuizDTO>().ReverseMap();
 
-            CreateMap<TheoryAppUser, TheoryAppUserDTO>();
+            CreateMap<Question, QuestionQuizDTO>().ReverseMap();
+
+            CreateMap<LessonJoinLink, LessonJoinLinkDTO>().ReverseMap();
+
+            CreateMap<TheoryAppUser, TheoryAppUserDTO>().ReverseMap();
+
+            CreateMap<QuizMaxPoint, QuizMaxPointDTO>().ReverseMap();
+
+            CreateMap<AppUserOption, AppUserOptionDTO>().ReverseMap();
 
             CreateMap<AssignmentMaterial, AssignmentMaterialDTO>().ReverseMap();
 
             CreateMap<Assignment, AssignmentDTO>().ReverseMap();
+
+            CreateMap<Application, ApplicationDTO>().ReverseMap();
 
             CreateMap<AssignmentAppUser, AssignmentAppUserDto>().ReverseMap();
 

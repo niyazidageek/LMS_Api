@@ -17,8 +17,6 @@ namespace Entities.DTOs
 
         public List<OptionDTO> Options { get; set; }
 
-        public int OptionsCount { get; set; }
-
         public string FileName { get; set; }
     }
 }

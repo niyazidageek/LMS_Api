@@ -6,5 +6,7 @@ namespace Entities.DTOs
     public class ProfilePictureAttachmentDTO
     {
         public IFormFile Picture { get; set; }
+
+        public string Value { get; set; }
     }
 }

@@ -12,10 +12,15 @@ namespace Utils
         RoleError,
         InvalidToken,
         ConfirmationError,
+        GroupError,
         ResetPasswordError,
         AssignmentError,
         TheoryError,
         LessonJoinLinkError,
-        OffsetError
+        OffsetError,
+        NotFoundError,
+        QuizError,
+        NotificationError,
+        ApplicationError
     }
 }

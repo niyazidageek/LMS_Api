@@ -16,5 +16,9 @@ namespace Business.Abstract
         Task<bool> EditSubjectAsync(Subject subject);
 
         Task<bool> DeleteSubjectAsync(int id);
+
+        Task<List<Subject>> GetSubjectsByPageAndSizeAsync(int page, int size);
+
+        Task<int> GetSubjectsCountAsync();
     }
 }

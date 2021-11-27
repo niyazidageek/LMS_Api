@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -37,7 +38,6 @@ namespace LMS_Api.Controllers
                 return NotFound();
 
             var optionDto = _mapper.Map<OptionDTO>(optionDb);
-
 
             return Ok(optionDto);
         }
@@ -74,7 +74,11 @@ namespace LMS_Api.Controllers
             {
                 await _optionService.AddOptionAsync(optionDb);
 
-                return Ok();
+                return Ok(new ResponseDTO
+                {
+                    Status=nameof(StatusTypes.Success),
+                    Message="Option has been successfully created!"
+                });
             }
         }
 
@@ -100,13 +104,21 @@ namespace LMS_Api.Controllers
 
                 await _optionService.EditQuestionWithFileAsync(optionDb);
 
-                return Ok();
+                return Ok(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Option has been successfully edited!"
+                });
             }
             else
             {
                 await _optionService.EditQuestionWithoutFileAsync(optionDb);
 
-                return Ok();
+                return Ok(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.Success),
+                    Message = "Option has been successfully edited!"
+                });
             }
             
         }
@@ -120,9 +132,20 @@ namespace LMS_Api.Controllers
             if (optionDb is null)
                 return NotFound();
 
-            await _optionService.DeleteQuestionWithFileAsync(optionDb);
-
-            return Ok();
+            if (optionDb.FileName is not null)
+            {
+                await _optionService.DeleteQuestionWithFileAsync(optionDb);
+            }
+            else
+            {
+                await _optionService.DeleteOptionAsync(optionDb);
+            }
+           
+            return Ok(new ResponseDTO
+            {
+                Status=nameof(StatusTypes.Success),
+                Message="Option has been successfully deleted!"
+            });
         }
     }
 }

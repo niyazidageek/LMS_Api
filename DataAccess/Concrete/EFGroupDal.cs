@@ -33,12 +33,19 @@ namespace DataAccess.Concrete
                 .ToListAsync();
         }
 
-        public async Task<List<Group>> GetByCountAsync(int skipCount, int takeCount)
+        public async Task<int> GetGroupsCountAsync()
+        {
+            return await Context.Groups.AsNoTracking()
+                 .CountAsync();
+        }
+
+        public async Task<List<Group>> GetByCountAsync(int page, int size)
         {
             return await Context.Groups.Include(g => g.Subject)
                 .Include(g => g.AppUserGroups)
                 .ThenInclude(g=>g.AppUser)
-                .Skip(skipCount).Take(takeCount)
+                .Skip(page*size)
+                .Take(size)
                 .ToListAsync();
         }
 

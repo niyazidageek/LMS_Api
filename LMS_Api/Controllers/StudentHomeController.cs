@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Utils;
 
 namespace LMS_Api.Controllers
 {
@@ -56,6 +57,15 @@ namespace LMS_Api.Controllers
                 return Unauthorized();
 
             var groups = await _groupService.GetGroupsByUserIdAsync(userId);
+
+            if(groups is null)
+            {
+                return NotFound(new ResponseDTO
+                {
+                    Status = nameof(StatusTypes.GroupError),
+                    Message = "You dont participate in any of the groups!"
+                });
+            }
 
             var group = groupId == null ? groups.First() : groups
                 .FirstOrDefault(g=>g.Id == (int)groupId);

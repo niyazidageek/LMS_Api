@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using Utils;
 
 namespace LMS_Api.Controllers
@@ -67,33 +68,60 @@ namespace LMS_Api.Controllers
             if (userId is null)
                 return Unauthorized();
 
-            if (profilePictureAttachmentDto.Picture is null)
-                return BadRequest();
+            AppUserDTO appUserDto = JsonConvert.DeserializeObject<AppUserDTO>(profilePictureAttachmentDto.Value);
 
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user is null)
                 return NotFound();
 
-            if(user.Filename is not null)
+            if(profilePictureAttachmentDto.Picture is null)
             {
-                FileHelper.DeleteFile(user.Filename);
-            }
-
-            var fileName = await FileHelper.AddFile(profilePictureAttachmentDto.Picture);
-
-            user.Filename = fileName;
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (result.Succeeded)
-            {
-                return Ok(new ResponseDTO
+                if(appUserDto.Filename is null)
                 {
-                    Status = nameof(StatusTypes.Success),
-                    Message = "Profile picture has been changed!"
-                });
+                    if(user.Filename is not null)
+                    {
+                        FileHelper.DeleteFile(user.Filename);
+                    }
+                    user.Filename = null;
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return Ok(new ResponseDTO
+                        {
+                            Status = nameof(StatusTypes.Success),
+                            Message = "Profile picture has been changed!"
+                        });
+                    }
+                }
+                else
+                {
+                    return Ok();
+                }
             }
+            else
+            {
+                if (user.Filename is not null)
+                {
+                    FileHelper.DeleteFile(user.Filename);
+                }
+
+                var fileName = await FileHelper.AddFile(profilePictureAttachmentDto.Picture);
+
+                user.Filename = fileName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new ResponseDTO
+                    {
+                        Status = nameof(StatusTypes.Success),
+                        Message = "Profile picture has been changed!"
+                    });
+                }
+            }
+
             return BadRequest(new ResponseDTO
             {
                 Status = nameof(StatusTypes.UserError),

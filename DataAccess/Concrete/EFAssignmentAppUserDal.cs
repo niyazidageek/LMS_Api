@@ -99,6 +99,7 @@ namespace DataAccess.Concrete
         public async Task<AssignmentAppUser> GetAssignmentAppUserByAssignmentIdAndUserIdAsync(int assignmentId, string userId)
         {
             return await Context.AssignmentAppUsers.AsNoTracking()
+                .Include(aa=>aa.Assignment)
                 .Include(aa => aa.AssignmentAppUserMaterials)
                 .FirstOrDefaultAsync(aa => aa.AppUserId == userId && aa.AssignmentId == assignmentId);
         }

@@ -39,6 +39,24 @@ namespace LMS_Api.Controllers
         }
 
         [HttpGet]
+        [Route("{page}/{size}")]
+        public async Task<ActionResult> GetSubjectsByPageAndSize(int page, int size)
+        {
+            var subjectsDb = await _subjectService.GetSubjectsByPageAndSizeAsync(page, size);
+
+            if (subjectsDb is null)
+                return NotFound();
+
+            var subjectsDto = _mapper.Map<List<SubjectDTO>>(subjectsDb);
+
+            var subjectsCountDb = await _subjectService.GetSubjectsCountAsync();
+
+            HttpContext.Response.Headers.Add("Count", subjectsCountDb.ToString());
+
+            return Ok(subjectsDto);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult> GetSubjectById(int id)
         {

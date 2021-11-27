@@ -46,5 +46,15 @@ namespace Business.Concrete
         {
             return await _conext.GetAllAsync();
         }
+
+        public async Task<List<Subject>> GetSubjectsByPageAndSizeAsync(int page, int size)
+        {
+            return await _conext.GetByPageAndSizeAsync(page, size);
+        }
+
+        public async Task<int> GetSubjectsCountAsync()
+        {
+            return await _conext.GetSubjectsCountAsync();
+        }
     }
 }

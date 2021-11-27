@@ -16,5 +16,7 @@ namespace Entities.DTOs
         public string Surname { get; set; }
 
         public string Username { get; set; }
+
+        public bool IsMailConfirmed { get; set; }
     }
 }

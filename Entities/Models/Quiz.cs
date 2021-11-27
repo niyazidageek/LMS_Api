@@ -10,10 +10,19 @@ namespace Entities.Models
 
         public string Name { get; set; }
 
-        public int SubjectId { get; set; }
+        public Group Group { get; set; }
+        public int GroupId { get; set; }
 
-        public Subject Subject { get; set; }
+        public DateTime Deadline { get; set; }
+
+        public bool IsAvailable { get; set; }
 
         public List<AppUserQuiz> AppUserQuizzes { get; set; }
+
+        public List<Question> Questions { get; set; }
+
+        public int DurationSeconds { get; set; }
+
+        public QuizMaxPoint QuizMaxPoint { get; set; }
     }
 }

@@ -144,6 +144,24 @@ namespace LMS_Api
             services.AddScoped<ILessonJoinLinkService, LessonJoinLinkService>();
             services.AddScoped<ILessonJoinLinkDal, EFLessonJoinLinkDal>();
 
+            services.AddScoped<IAppUserQuizService, AppUserQuizService>();
+            services.AddScoped<IAppUserQuizDal, EFAppUserQuizDal>();
+
+            services.AddScoped<IAppUserOptionService, AppUserOptionService>();
+            services.AddScoped<IAppUserOptionDal, EFAppUserOptionDal>();
+
+            services.AddScoped<IQuizMaxPointService, QuizMaxPointService>();
+            services.AddScoped<IQuizMaxPointDal, EFQuizMaxPointDal>();
+
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<INotificationDal, EFNotificationDal>();
+
+            services.AddScoped<IAppUserNotificationService, AppUserNotificationService>();
+            services.AddScoped<IAppUserNotificationDal, EFAppUserNotificationDal>();
+
+            services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<IApplicationDal, EFApplicationDal>();
+
             services.AddSignalR();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
         }

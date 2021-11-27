@@ -68,6 +68,7 @@ namespace DataAccess.Concrete
         public async Task<List<AppUserGroup>> GetAllByGroupIdAsync(int groupId)
         {
             return await Context.AppUserGroups.AsNoTracking()
+                .Include(ag=>ag.AppUser)
                 .Where(ag => ag.GroupId == groupId)
                 .ToListAsync();
         }

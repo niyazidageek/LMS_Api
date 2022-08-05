@@ -20,12 +20,18 @@ namespace DataAccess.Concrete
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Server=localhost;Database=LmsDb;User Id = sa;Password=MyPass@word;Initial Catalog = LmsDb;");
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var server = "localhost";
+        //    var port = "1433";
+        //    var user = "sa";
+        //    var password = "MyPass@word";
+        //    var database = "LmsDb";
 
-        }
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer($"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password}");
+
+        //}
 
         public DbSet<Subject> Subjects { get; set; }
 

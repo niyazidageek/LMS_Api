@@ -19,27 +19,15 @@ namespace LMS_Api
         {
             var webHost = CreateHostBuilder(args).Build();
 
-            using (var scope = webHost.Services.CreateScope())
-            {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                var dataInitializer = new DataInitializer(userManager, roleManager);
-
-                await dataInitializer.SeedAsync();
-            }
-
             await webHost.RunAsync();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("http://*:80");
                     webBuilder.UseStartup<Startup>();
                 });
-
-
     }
 }

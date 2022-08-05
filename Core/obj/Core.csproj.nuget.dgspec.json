@@ -14,7 +14,7 @@
         "outputPath": "/Users/niyazibabayev/Projects/LMS_Api/Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/niyazibabayev/.config/NuGet/NuGet.Config"
+          "/Users/niyazibabayev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.402/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/5.0.404/RuntimeIdentifierGraph.json"
         }
       }
     }

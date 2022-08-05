@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Y1tqfmwsqdXaPA76nmOlXuVVaxezIzJLXZN1NfVfKDlPa/mOxefPFGTMoT1Bfox+rx7VLrPgVj2gtzEcMVH7Mg==",
+  "dgSpecHash": "5bSq/H3JDEeXoToMQYoJUOi2ZMdev5btYQxUdheULKIUASsVsQ9XVBse7T4Vlrms044Dqn5Xu0S08ZimT4rnHg==",
   "success": true,
   "projectFilePath": "/Users/niyazibabayev/Projects/LMS_Api/LMS_Api/LMS_Api.csproj",
   "expectedPackageFiles": [
@@ -97,7 +97,7 @@
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/microsoft.win32.systemevents/4.7.0/microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/morelinq/3.3.2/morelinq.3.3.2.nupkg.sha512",
-    "/Users/niyazibabayev/.nuget/packages/newtonsoft.json/12.0.2/newtonsoft.json.12.0.2.nupkg.sha512",
+    "/Users/niyazibabayev/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
     "/Users/niyazibabayev/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",

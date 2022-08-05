@@ -44,8 +44,14 @@ namespace LMS_Api
                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling
                                         = ReferenceLoopHandling.Ignore);
 
+            var server = Configuration["DbServer"] ?? "localhost";
+            var port = Configuration["DbPort"] ?? "1433";
+            var user = Configuration["DbUser"] ?? "sa";
+            var password = Configuration["Password"] ?? "MyPass@word";
+            var database = Configuration["Database"] ?? "LmsDb";
+
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer($"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password}"));
 
             services.AddIdentity<AppUser, IdentityRole>(options=> {
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
@@ -169,6 +175,9 @@ namespace LMS_Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            DatabaseManagementService.MigrationInitialization(app);
+            DatabaseManagementService.RoleInitialization(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
